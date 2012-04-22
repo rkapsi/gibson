@@ -1,22 +1,37 @@
 package org.ardverk.logging;
 
-import java.util.UUID;
+import java.util.Map;
 
 import com.basho.riak.client.convert.RiakKey;
 
 public class Event {
 
-  public static Event valueOf() {
-    Event value = new Event();
-    value.setKey(UUID.randomUUID().toString());
-    value.setCreationTime(System.currentTimeMillis());
-    return value;
+  public static enum Level {
+    TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR;
   }
   
   @RiakKey
   private String key;
   
   private long creationTime;
+  
+  private String logger;
+  
+  private String marker;
+  
+  private Level level;
+  
+  private String threadName;
+  
+  private String message;
+  
+  private Throwable throwable;
+  
+  private Map<String, String> mdc;
   
   public String getKey() {
     return key;
@@ -32,5 +47,61 @@ public class Event {
 
   public void setCreationTime(long creationTime) {
     this.creationTime = creationTime;
+  }
+
+  public String getLogger() {
+    return logger;
+  }
+
+  public void setLogger(String logger) {
+    this.logger = logger;
+  }
+
+  public String getMarker() {
+    return marker;
+  }
+
+  public void setMarker(String marker) {
+    this.marker = marker;
+  }
+
+  public Level getLevel() {
+    return level;
+  }
+
+  public void setLevel(Level level) {
+    this.level = level;
+  }
+  
+  public String getThreadName() {
+    return threadName;
+  }
+
+  public void setThreadName(String threadName) {
+    this.threadName = threadName;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  public Throwable getThrowable() {
+    return throwable;
+  }
+
+  public void setThrowable(Throwable throwable) {
+    this.throwable = throwable;
+  }
+
+  public Map<String, String> getMdc() {
+    return mdc;
+  }
+
+  public void setMdc(Map<String, String> mdc) {
+    this.mdc = mdc;
   }
 }
