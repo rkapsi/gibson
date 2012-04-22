@@ -1,21 +1,23 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'eclipse-wtp'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+allprojects {
+  apply plugin: 'java'
+  apply plugin: 'maven'
+  apply plugin: 'eclipse-wtp'
+  apply plugin: 'eclipse'
+  apply plugin: 'idea'
 
-sourceCompatibility = 1.6
+  sourceCompatibility = 1.6
 
-group = 'org.ardverk'
-version = '0.1-SNAPSHOT'
+  group = 'org.ardverk'
+  version = '0.1-SNAPSHOT'
 
-repositories {
-  mavenCentral()
-  mavenLocal()
-}
+  repositories {
+    mavenCentral()
+    mavenLocal()
+  }
 
-configurations { 
-  all*.exclude group: 'commons-logging', module: 'commons-logging'
+  configurations { 
+    all*.exclude group: 'commons-logging', module: 'commons-logging'
+  }
 }
 
 dependencies {

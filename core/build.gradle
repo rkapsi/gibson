@@ -1,0 +1,10 @@
+
+project.ext {
+  slf4j = "1.6.4"
+  logback = "1.0.1"
+}
+
+dependencies {
+  compile "org.slf4j:slf4j-api:${ext.slf4j}"
+  compile "ch.qos.logback:logback-classic:${ext.logback}"
+}

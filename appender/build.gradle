@@ -1,0 +1,11 @@
+
+project.ext {
+  riak = "1.0.5"
+}
+
+dependencies {
+  compile (":core")
+  
+  compile "org.slf4j:jcl-over-slf4j:${ext.slf4j}"
+  compile "com.basho.riak:riak-client:${ext.riak}"
+}
