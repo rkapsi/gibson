@@ -6,8 +6,9 @@ import org.ardverk.logging.Event.Level;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.ThrowableProxy;
 
-public class EventFactory {
+class EventFactory {
 
   public static Event valueOf(ILoggingEvent evt) {
     Event event = new Event();
@@ -23,6 +24,7 @@ public class EventFactory {
     event.setMdc(evt.getMDCPropertyMap());
     
     event.setMessage(evt.getMessage());
+    event.setThrowable(toThrowable(evt));
     
     return event;
   }
@@ -52,6 +54,14 @@ public class EventFactory {
     Marker marker = evt.getMarker();
     if (marker != null) {
       return marker.getName();
+    }
+    return null;
+  }
+  
+  private static Throwable toThrowable(ILoggingEvent evt) {
+    ThrowableProxy proxy = (ThrowableProxy)evt.getThrowableProxy();
+    if (proxy != null) {
+      return proxy.getThrowable();
     }
     return null;
   }
