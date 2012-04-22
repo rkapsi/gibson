@@ -3,11 +3,21 @@ project.ext {
   slf4j = "1.6.4"
   logback = "1.0.1"
   jackson = "1.9.6"
+  riak = "1.0.5"
+  codec = "1.6"
 }
 
 dependencies {
-  compile "org.slf4j:slf4j-api:${ext.slf4j}"
-  compile "ch.qos.logback:logback-classic:${ext.logback}"
+  //compile "org.slf4j:slf4j-api:${ext.slf4j}"
+  //compile "ch.qos.logback:logback-classic:${ext.logback}"
   
   compile "org.codehaus.jackson:jackson-mapper-asl:${ext.jackson}"
+  
+  runtime "org.slf4j:jcl-over-slf4j:${ext.slf4j}"
+  compile "commons-codec:commons-codec:${ext.codec}"
+  
+  compile ("com.basho.riak:riak-client:${ext.riak}") {
+    exclude group: "com.google.protobuf", module: "protobuf-java"
+    exclude group: "commons-codec", module: "commons-codec"
+  }
 }
