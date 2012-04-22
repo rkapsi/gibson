@@ -19,7 +19,7 @@ public class Event {
   
   private long creationTime;
   
-  private String logger;
+  private String loggerName;
   
   private String marker;
   
@@ -49,12 +49,12 @@ public class Event {
     this.creationTime = creationTime;
   }
 
-  public String getLogger() {
-    return logger;
+  public String getLoggerName() {
+    return loggerName;
   }
 
-  public void setLogger(String logger) {
-    this.logger = logger;
+  public void setLoggerName(String loggerName) {
+    this.loggerName = loggerName;
   }
 
   public String getMarker() {
