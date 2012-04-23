@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.basho.riak.client.convert.RiakKey;
 
-public class Event {
+public class GibsonEvent {
 
   public static enum Level {
     TRACE,
@@ -29,7 +29,7 @@ public class Event {
   
   private String message;
   
-  private Throwable throwable;
+  private GibsonThrowable throwable;
   
   private Map<String, String> mdc;
   
@@ -89,11 +89,11 @@ public class Event {
     this.message = message;
   }
 
-  public Throwable getThrowable() {
+  public GibsonThrowable getThrowable() {
     return throwable;
   }
 
-  public void setThrowable(Throwable throwable) {
+  public void setThrowable(GibsonThrowable throwable) {
     this.throwable = throwable;
   }
 

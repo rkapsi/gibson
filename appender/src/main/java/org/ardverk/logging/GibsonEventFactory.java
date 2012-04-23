@@ -2,16 +2,16 @@ package org.ardverk.logging;
 
 import java.util.UUID;
 
-import org.ardverk.logging.Event.Level;
+import org.ardverk.logging.GibsonEvent.Level;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
-class EventFactory {
+class GibsonEventFactory {
 
-  public static Event valueOf(ILoggingEvent evt) {
-    Event event = new Event();
+  public static GibsonEvent valueOf(ILoggingEvent evt) {
+    GibsonEvent event = new GibsonEvent();
     
     event.setKey(UUID.randomUUID().toString());
     event.setCreationTime(System.currentTimeMillis());
@@ -58,13 +58,13 @@ class EventFactory {
     return null;
   }
   
-  private static Throwable toThrowable(ILoggingEvent evt) {
+  private static GibsonThrowable toThrowable(ILoggingEvent evt) {
     ThrowableProxy proxy = (ThrowableProxy)evt.getThrowableProxy();
     if (proxy != null) {
-      return proxy.getThrowable();
+      return GibsonThrowable.valueOf(proxy.getThrowable());
     }
     return null;
   }
   
-  private EventFactory() {}
+  private GibsonEventFactory() {}
 }
