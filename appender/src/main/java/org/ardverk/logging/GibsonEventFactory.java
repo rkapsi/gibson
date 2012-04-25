@@ -26,6 +26,7 @@ class GibsonEventFactory {
     event.setMessage(evt.getMessage());
     event.setThrowable(toThrowable(evt));
     
+    event.setFingerprint(HashBuilder.valueOf(event));
     return event;
   }
   

@@ -33,6 +33,8 @@ public class GibsonEvent {
   
   private Map<String, String> mdc;
   
+  private String fingerprint;
+  
   public String getKey() {
     return key;
   }
@@ -103,5 +105,13 @@ public class GibsonEvent {
 
   public void setMdc(Map<String, String> mdc) {
     this.mdc = mdc;
+  }
+
+  public String getFingerprint() {
+    return fingerprint;
+  }
+
+  public void setFingerprint(String fingerprint) {
+    this.fingerprint = fingerprint;
   }
 }

@@ -25,7 +25,7 @@ public class GibsonThrowable {
   private static final Method STACK_TRACE = getOurStackTrace();
   
   public static GibsonThrowable valueOf(Throwable throwable) {
-    if (throwable instanceof IgnorableGibsonException) {
+    if (throwable instanceof NonSerializableException) {
       return null;
     }
     
@@ -35,7 +35,7 @@ public class GibsonThrowable {
   private static GibsonThrowable create(Throwable throwable) {
     GibsonThrowable proxy = new GibsonThrowable();
     
-    proxy.setType(throwable.getClass().getName());
+    proxy.setClassName(throwable.getClass().getName());
     proxy.setMessage(throwable.getMessage());
     proxy.setStackTrace(getStackTrace(throwable));
     
@@ -47,7 +47,7 @@ public class GibsonThrowable {
     return proxy;
   }
   
-  private String type;
+  private String className;
   
   private String message;
   
@@ -57,12 +57,12 @@ public class GibsonThrowable {
   
   private GibsonThrowable cause;
   
-  public String getType() {
-    return type;
+  public String getClassName() {
+    return className;
   }
 
-  public void setType(String type) {
-    this.type = type;
+  public void setClassName(String className) {
+    this.className = className;
   }
 
   public String getMessage() {
@@ -144,7 +144,7 @@ public class GibsonThrowable {
 
   @Override
   public String toString() {
-    return (message != null) ? (type + ": " + message) : type;
+    return (message != null) ? (className + ": " + message) : className;
   }
   
   private static StackTraceElement[] getStackTrace(Throwable throwable) {
@@ -152,9 +152,9 @@ public class GibsonThrowable {
       try {
         return (StackTraceElement[])STACK_TRACE.invoke(throwable);
       } catch (IllegalAccessException err) {
-        LOG.error("IllegalAccessException", new IgnorableGibsonException("IllegalAccessException", err));
+        LOG.error("IllegalAccessException", new NonSerializableException("IllegalAccessException", err));
       } catch (InvocationTargetException err) {
-        LOG.error("InvocationTargetException", new IgnorableGibsonException("InvocationTargetException", err));
+        LOG.error("InvocationTargetException", new NonSerializableException("InvocationTargetException", err));
       }
     }
     
@@ -171,7 +171,7 @@ public class GibsonThrowable {
       method = Throwable.class.getDeclaredMethod("getOurStackTrace");
       method.setAccessible(true);
     } catch (NoSuchMethodException err) {
-      LOG.error("NoSuchMethodException", new IgnorableGibsonException("NoSuchMethodException", err));
+      LOG.error("NoSuchMethodException", new NonSerializableException("NoSuchMethodException", err));
     }
     return method;
   }
@@ -208,15 +208,6 @@ public class GibsonThrowable {
       int lineNumber = jp.readValueAs(Integer.class);
       
       return new StackTraceElement(className, methodName, fileName, lineNumber);
-    }
-  }
-  
-  private static class IgnorableGibsonException extends IllegalStateException {
-    
-    private static final long serialVersionUID = 5248569070496124230L;
-
-    public IgnorableGibsonException(String message, Throwable cause) {
-      super(message, cause);
     }
   }
 }
