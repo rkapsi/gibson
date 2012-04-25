@@ -93,7 +93,7 @@ public class HashBuilder {
     try {
       return MessageDigest.getInstance(ALGORITHM);
     } catch (NoSuchAlgorithmException err) {
-      throw new NonSerializableException("NoSuchAlgorithmException: " + ALGORITHM, err);
+      throw new IgnorableException("NoSuchAlgorithmException: " + ALGORITHM, err);
     }
   }
 }

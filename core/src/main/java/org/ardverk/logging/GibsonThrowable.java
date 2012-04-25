@@ -25,7 +25,7 @@ public class GibsonThrowable {
   private static final Method STACK_TRACE = getOurStackTrace();
   
   public static GibsonThrowable valueOf(Throwable throwable) {
-    if (throwable instanceof NonSerializableException) {
+    if (throwable instanceof IgnorableException) {
       return null;
     }
     
@@ -152,9 +152,9 @@ public class GibsonThrowable {
       try {
         return (StackTraceElement[])STACK_TRACE.invoke(throwable);
       } catch (IllegalAccessException err) {
-        LOG.error("IllegalAccessException", new NonSerializableException("IllegalAccessException", err));
+        LOG.error("IllegalAccessException", new IgnorableException("IllegalAccessException", err));
       } catch (InvocationTargetException err) {
-        LOG.error("InvocationTargetException", new NonSerializableException("InvocationTargetException", err));
+        LOG.error("InvocationTargetException", new IgnorableException("InvocationTargetException", err));
       }
     }
     
@@ -171,7 +171,7 @@ public class GibsonThrowable {
       method = Throwable.class.getDeclaredMethod("getOurStackTrace");
       method.setAccessible(true);
     } catch (NoSuchMethodException err) {
-      LOG.error("NoSuchMethodException", new NonSerializableException("NoSuchMethodException", err));
+      LOG.error("NoSuchMethodException", new IgnorableException("NoSuchMethodException", err));
     }
     return method;
   }
