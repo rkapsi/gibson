@@ -72,7 +72,7 @@ class JsonConverter<T> implements Converter<T> {
           .withContentType(Constants.CTYPE_JSON_UTF8)
           .build();
     } catch (IOException err) {
-      throw toConversionException("IOException", err);
+      throw new JsonConversionException("IOException", err);
     }
   }
 
@@ -94,13 +94,7 @@ class JsonConverter<T> implements Converter<T> {
       
       return domainObject;
     } catch (IOException err) {
-      throw toConversionException("IOException", err);
+      throw new JsonConversionException("IOException", err);
     }
-  }
-  
-  private static ConversionException toConversionException(String message, Throwable cause) {
-    ConversionException ce = new ConversionException(message);
-    ce.initCause(cause);
-    return ce;
   }
 }

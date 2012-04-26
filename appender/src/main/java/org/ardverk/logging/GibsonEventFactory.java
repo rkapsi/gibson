@@ -2,7 +2,6 @@ package org.ardverk.logging;
 
 import java.util.UUID;
 
-import org.ardverk.logging.GibsonEvent.Level;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -26,7 +25,7 @@ class GibsonEventFactory {
     event.setMessage(evt.getMessage());
     event.setThrowable(toThrowable(evt));
     
-    event.setFingerprint(HashBuilder.valueOf(event));
+    event.setSignature(Signature.valueOf(event));
     return event;
   }
   

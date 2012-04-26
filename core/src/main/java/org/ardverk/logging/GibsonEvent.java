@@ -6,14 +6,6 @@ import com.basho.riak.client.convert.RiakKey;
 
 public class GibsonEvent {
 
-  public static enum Level {
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR;
-  }
-  
   @RiakKey
   private String key;
   
@@ -33,7 +25,7 @@ public class GibsonEvent {
   
   private Map<String, String> mdc;
   
-  private String fingerprint;
+  private String signature;
   
   public String getKey() {
     return key;
@@ -107,11 +99,11 @@ public class GibsonEvent {
     this.mdc = mdc;
   }
 
-  public String getFingerprint() {
-    return fingerprint;
+  public String getSignature() {
+    return signature;
   }
 
-  public void setFingerprint(String fingerprint) {
-    this.fingerprint = fingerprint;
+  public void setSignature(String signature) {
+    this.signature = signature;
   }
 }
