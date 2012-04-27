@@ -77,9 +77,9 @@ class RiakTransport extends AbstractTransport {
         public void run() {
           try {
             process(client);
-          } catch (InterruptedException err) {
+          } catch (InterruptedException err) {err.printStackTrace();
             logger.error("InterruptedException", err);
-          } catch (RiakException err) {
+          } catch (RiakException err) {err.printStackTrace();
             logger.error("RiakException", err);
           } finally {
             destroy(client);
@@ -149,7 +149,7 @@ class RiakTransport extends AbstractTransport {
         for (EventTuple tuple : tuples) {
             domainBucket.store(tuple);
         }
-      } catch (Exception err) {
+      } catch (Exception err) {err.printStackTrace();
         logger.error("RiakException", err);
       }
     }
