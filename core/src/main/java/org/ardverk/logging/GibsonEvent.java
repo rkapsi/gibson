@@ -2,12 +2,7 @@ package org.ardverk.logging;
 
 import java.util.Map;
 
-import com.basho.riak.client.convert.RiakKey;
-
 public class GibsonEvent {
-
-  @RiakKey
-  private String key;
   
   private long creationTime;
   
@@ -26,14 +21,6 @@ public class GibsonEvent {
   private Map<String, String> mdc;
   
   private String signature;
-  
-  public String getKey() {
-    return key;
-  }
-
-  public void setKey(String key) {
-    this.key = key;
-  }
 
   public long getCreationTime() {
     return creationTime;

@@ -22,6 +22,7 @@ allprojects {
 
 dependencies {
   compile project(":core")
+  compile project(":riak")
   compile project(":appender")
   compile project(":dashboard")
 }

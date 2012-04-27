@@ -1,0 +1,13 @@
+
+project.ext {
+  riak = "1.0.5"
+}
+
+dependencies {
+  compile (":core")
+  
+  compile ("com.basho.riak:riak-client:${ext.riak}") {
+    exclude group: "com.google.protobuf", module: "protobuf-java"
+    exclude group: "commons-codec", module: "commons-codec"
+  }
+}

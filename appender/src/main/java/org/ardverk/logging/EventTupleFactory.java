@@ -7,12 +7,18 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
-class GibsonEventFactory {
+class EventTupleFactory {
 
-  public static GibsonEvent valueOf(ILoggingEvent evt) {
+  public static EventTuple valueOf(ILoggingEvent evt) {
+    EventTuple tuple = new EventTuple();
+    tuple.setKey(UUID.randomUUID().toString());
+    tuple.setEvent(toGibsonEvent(evt));
+    return tuple;
+  }
+  
+  private static GibsonEvent toGibsonEvent(ILoggingEvent evt) {
     GibsonEvent event = new GibsonEvent();
     
-    event.setKey(UUID.randomUUID().toString());
     event.setCreationTime(System.currentTimeMillis());
     
     event.setThreadName(evt.getThreadName());
@@ -66,5 +72,5 @@ class GibsonEventFactory {
     return null;
   }
   
-  private GibsonEventFactory() {}
+  private EventTupleFactory() {}
 }
