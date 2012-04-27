@@ -117,17 +117,15 @@ class RiakTransport extends AbstractTransport {
   private void process(IRiakClient client) throws RiakException, InterruptedException {
     
     Bucket bucket = client.createBucket(bucketName)
-        .r(r)
-        .w(w)
         .nVal(nVal)
-        .dw(w)
-        .pw(w)
         .execute();
     
     DomainBucket<EventTuple> domainBucket 
       = DomainBucket.builder(bucket, EventTuple.class)
       .withConverter(new EventTupleConverter(bucketName))
       .retrier(DefaultRetrier.attempts(1))
+      .r(r)
+      .w(w)
       .build();
     
     while (true) {
