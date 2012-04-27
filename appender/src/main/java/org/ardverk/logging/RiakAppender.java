@@ -12,13 +12,15 @@ import ch.qos.logback.core.AppenderBase;
  */
 public class RiakAppender extends AppenderBase<ILoggingEvent> {
   
+  private static final InetSocketAddress ENDPOINT = new InetSocketAddress("localhost", RiakTransport.PORT);
+  
   private final TransportLogger logger = new TransportLogger();
   
-  private volatile SocketAddress endpoint = null;
+  private volatile SocketAddress endpoint = ENDPOINT;
   
   private volatile Transport transport = null;
   
-  private volatile String bucketName = null;
+  private volatile String bucket = null;
   
   private volatile int r = 1;
   
@@ -33,12 +35,12 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
       return;
     }
 
-    if (bucketName == null) {
+    if (bucket == null) {
       addError("Bucket name is not defined");
       return;
     }
     
-    transport = new RiakTransport(logger, bucketName, r, w, nVal);
+    transport = new RiakTransport(logger, bucket, r, w, nVal);
 
     try {
       transport.connect(endpoint);
@@ -64,8 +66,8 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   }
   
   //Called from logback.xml
-  public void setBucketName(String bucketName) {
-    this.bucketName = bucketName;
+  public void setBucket(String bucket) {
+    this.bucket = bucket;
   }
 
   // Called from logback.xml
@@ -77,6 +79,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   protected void append(ILoggingEvent event) {
     if (transport != null && transport.isConnected()) {
       EventTuple tuple = EventTupleFactory.valueOf(event);
+      
       if (tuple != null) {
         transport.send(tuple);
       }

@@ -21,7 +21,9 @@ class RiakTransport extends AbstractTransport {
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
       new SimpleThreadFactory("RiakTransportThread", true));
   
-  private static final int DEFAULT_PORT = 8098;
+  private static final String URL = "http://%s:%s/riak";
+  
+  public static final int PORT = 8098;
   
   private List<EventTuple> queue = new ArrayList<EventTuple>();
   
@@ -63,7 +65,7 @@ class RiakTransport extends AbstractTransport {
       throw new IOException("connected");
     }
     
-    String url = "http://" + toHostPort(address) + "/riak";
+    String url = toURL(address);
     
     logger.info("Connecting to: " + url);
     
@@ -114,7 +116,13 @@ class RiakTransport extends AbstractTransport {
   
   private void process(IRiakClient client) throws RiakException, InterruptedException {
     
-    Bucket bucket = client.createBucket(bucketName).r(r).w(w).nVal(nVal).execute();
+    Bucket bucket = client.createBucket(bucketName)
+        .r(r)
+        .w(w)
+        .nVal(nVal)
+        .dw(w)
+        .pw(w)
+        .execute();
     
     DomainBucket<EventTuple> domainBucket 
       = DomainBucket.builder(bucket, EventTuple.class)
@@ -163,7 +171,7 @@ class RiakTransport extends AbstractTransport {
     }
   }
 
-  private static String toHostPort(SocketAddress address) {
+  private static String toURL(SocketAddress address) {
     InetSocketAddress isa = (InetSocketAddress)address;
     
     String hostname = isa.getHostName();
@@ -173,9 +181,9 @@ class RiakTransport extends AbstractTransport {
     
     int port = isa.getPort();
     if (port == -1) {
-      port = DEFAULT_PORT;
+      port = PORT;
     }
     
-    return hostname + ":" + port;
+    return String.format(URL, hostname, port);
   }
 }
