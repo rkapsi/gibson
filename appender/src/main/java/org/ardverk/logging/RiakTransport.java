@@ -149,7 +149,7 @@ class RiakTransport extends AbstractTransport {
         for (EventTuple tuple : tuples) {
             domainBucket.store(tuple);
         }
-      } catch (RiakException err) {
+      } catch (Exception err) {
         logger.error("RiakException", err);
       }
     }

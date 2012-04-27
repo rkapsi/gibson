@@ -43,6 +43,7 @@ class JsonConverter<T> implements Converter<T> {
     this.bucket = bucket;
     
     mapper.registerModule(new RiakJacksonModule());
+    mapper.registerModule(new GibsonModule());
   }
   
   public ObjectMapper getObjectMapper() {

@@ -22,7 +22,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   
   private volatile String bucket = null;
   
-  private volatile int r = 0;
+  private volatile int r = 1;
   
   private volatile int w = 1;
   
@@ -65,7 +65,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
     }
   }
   
-  //Called from logback.xml
+  // Called from logback.xml
   public void setBucket(String bucket) {
     this.bucket = bucket;
   }

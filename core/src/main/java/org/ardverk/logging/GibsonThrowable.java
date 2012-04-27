@@ -1,23 +1,16 @@
 package org.ardverk.logging;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class GibsonThrowable {
 
   private static final Logger LOG = LoggerFactory.getLogger(GibsonThrowable.class);
@@ -51,8 +44,6 @@ public class GibsonThrowable {
   
   private String message;
   
-  @JsonSerialize(using=Serializer.class)
-  @JsonDeserialize(using=Deserializer.class)
   private StackTraceElement[] stackTrace;
   
   private GibsonThrowable cause;
@@ -174,40 +165,5 @@ public class GibsonThrowable {
       LOG.error("NoSuchMethodException", new IgnorableException("NoSuchMethodException", err));
     }
     return method;
-  }
-  
-  public static class Serializer extends JsonSerializer<StackTraceElement> {
-
-    @Override
-    public Class<StackTraceElement> handledType() {
-      return StackTraceElement.class;
-    }
-
-    @Override
-    public void serialize(StackTraceElement value, JsonGenerator jgen,
-        SerializerProvider provider) throws IOException,
-        JsonProcessingException {
-      
-      jgen.writeStartObject();
-      jgen.writeObjectField("className", value.getClassName());
-      jgen.writeObjectField("methodName", value.getMethodName());
-      jgen.writeObjectField("fileName", value.getFileName());
-      jgen.writeObjectField("lineNumber", value.getLineNumber());
-      jgen.writeEndObject();
-    }
-  }
-  
-  public static class Deserializer extends JsonDeserializer<StackTraceElement> {
-    @Override
-    public StackTraceElement deserialize(JsonParser jp, DeserializationContext ctxt)
-        throws IOException, JsonProcessingException {
-      
-      String className = jp.readValueAs(String.class);
-      String methodName = jp.readValueAs(String.class);
-      String fileName = jp.readValueAs(String.class);
-      int lineNumber = jp.readValueAs(Integer.class);
-      
-      return new StackTraceElement(className, methodName, fileName, lineNumber);
-    }
   }
 }
