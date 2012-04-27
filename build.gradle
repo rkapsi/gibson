@@ -18,6 +18,10 @@ allprojects {
   configurations { 
     all*.exclude group: 'commons-logging', module: 'commons-logging'
   }
+  
+  project.ext {
+    slf4j = "1.6.4"
+  }
 }
 
 dependencies {

@@ -1,10 +1,14 @@
 
 project.ext {
+  codec = "1.6"
   riak = "1.0.5"
 }
 
 dependencies {
   compile (":core")
+  
+  runtime "org.slf4j:jcl-over-slf4j:${ext.slf4j}"
+  compile "commons-codec:commons-codec:${ext.codec}"
   
   compile ("com.basho.riak:riak-client:${ext.riak}") {
     exclude group: "com.google.protobuf", module: "protobuf-java"
