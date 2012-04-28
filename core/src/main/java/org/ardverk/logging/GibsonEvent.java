@@ -97,4 +97,9 @@ public class GibsonEvent {
   public void setSignature(String signature) {
     this.signature = signature;
   }
+  
+  @Override
+  public String toString() {
+    return "logger=" + loggerName + ", signature=" + signature + ", throwable=" + (throwable != null ? throwable.toStringValue() : null);
+  }
 }

@@ -25,4 +25,9 @@ public class EventTuple {
   public void setEvent(GibsonEvent event) {
     this.event = event;
   }
+  
+  @Override
+  public String toString() {
+    return "key=" + key + ", event=" + event;
+  }
 }

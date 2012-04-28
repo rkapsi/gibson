@@ -10,6 +10,8 @@
     <bucket>slf4j</bucket>
   </appender>
   
+  <logger name="org.apache.http" level="ERROR"/>
+  
   <logger name="org.ardverk.logging.Main">
     <appender-ref ref="RIAK" />
   </logger>
