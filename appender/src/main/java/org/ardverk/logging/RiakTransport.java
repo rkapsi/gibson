@@ -153,6 +153,11 @@ class RiakTransport extends AbstractTransport {
           EventTuple value = domainBucket.fetch(key);
           System.out.println(key + " -> " + value);*/
         }
+        
+        /*int index = 0;
+        for (String key : bucket.keys()) {
+          System.out.println((index++ + ": ") + key);
+        }*/
       } catch (Exception err) {
         logger.error("RiakException", err);
       }
