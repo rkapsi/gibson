@@ -41,11 +41,11 @@ interface Transport extends Closeable {
    */
   public static interface Status {
 
+    public boolean isInfoEnabled();
+    
+    public boolean isErrorEnabled();
+    
     public void info(String message);
-    
-    public void info(String message, Throwable t);
-    
-    public void error(String message);
     
     public void error(String message, Throwable t);
   }

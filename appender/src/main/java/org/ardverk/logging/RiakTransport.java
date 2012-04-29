@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
@@ -19,7 +21,7 @@ import com.basho.riak.client.cap.DefaultRetrier;
 class RiakTransport extends AbstractTransport {
   
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
-      new SimpleThreadFactory("RiakTransportThread", true));
+      new TransportThreadFactory(RiakTransport.class));
   
   private static final String URL = "http://%s:%s/riak";
   
@@ -43,7 +45,8 @@ class RiakTransport extends AbstractTransport {
   
   private Future<?> future = null;
   
-  public RiakTransport(Status status, String bucketName, int r, int w, int dw, int nVal) {
+  public RiakTransport(Status status, String bucketName, 
+      int r, int w, int dw, int nVal) {
     super(status);
     
     this.bucketName = bucketName;
@@ -70,7 +73,9 @@ class RiakTransport extends AbstractTransport {
     
     String url = toURL(address);
     
-    status.info("Connecting to: " + url);
+    if (status.isInfoEnabled()) {
+      status.info("Connecting to: " + url);
+    }
     
     try {
       final IRiakClient client = RiakFactory.httpClient(url);
@@ -199,5 +204,23 @@ class RiakTransport extends AbstractTransport {
     }
     
     return String.format(URL, hostname, port);
+  }
+  
+  private static class TransportThreadFactory implements ThreadFactory {
+
+    private final AtomicInteger counter = new AtomicInteger();
+    
+    private final String name;
+    
+    public TransportThreadFactory(Class<?> clazz) {
+      this.name = clazz.getSimpleName() + "Thread";
+    }
+    
+    @Override
+    public Thread newThread(Runnable r) {
+      Thread thread = new Thread(r, name + "-" + counter.getAndIncrement());
+      thread.setDaemon(true);
+      return thread;
+    }
   }
 }

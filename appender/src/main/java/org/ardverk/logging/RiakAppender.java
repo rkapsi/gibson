@@ -106,21 +106,21 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
     return new InetSocketAddress(host, port);
   }
   
-  private class TransportStatus implements AbstractTransport.Status {
+  private class TransportStatus implements Transport.Status {
+
+    @Override
+    public boolean isInfoEnabled() {
+      return true;
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+      return true;
+    }
 
     @Override
     public void info(String message) {
       addInfo(message);
-    }
-
-    @Override
-    public void info(String message, Throwable t) {
-      addInfo(message, t);
-    }
-
-    @Override
-    public void error(String message) {
-      addError(message);
     }
 
     @Override
