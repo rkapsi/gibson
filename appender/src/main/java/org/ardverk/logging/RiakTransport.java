@@ -25,7 +25,7 @@ class RiakTransport extends AbstractTransport {
   
   public static final int PORT = 8098;
   
-  private List<EventTuple> queue = new ArrayList<EventTuple>();
+  private List<GibsonEvent> queue = new ArrayList<GibsonEvent>();
   
   private final String bucketName;
   
@@ -120,9 +120,9 @@ class RiakTransport extends AbstractTransport {
         .nVal(nVal)
         .execute();
     
-    DomainBucket<EventTuple> domainBucket 
-      = DomainBucket.builder(bucket, EventTuple.class)
-      .withConverter(new EventTupleConverter(bucketName))
+    DomainBucket<GibsonEvent> domainBucket 
+      = DomainBucket.builder(bucket, GibsonEvent.class)
+      .withConverter(new GibsonEventConverter(bucketName))
       .retrier(DefaultRetrier.attempts(1))
       .r(r)
       .w(w)
@@ -130,7 +130,7 @@ class RiakTransport extends AbstractTransport {
     
     while (true) {
       
-      List<EventTuple> tuples = null;
+      List<GibsonEvent> events = null;
       
       synchronized (this) {
         while (open && queue.isEmpty()) {
@@ -141,15 +141,15 @@ class RiakTransport extends AbstractTransport {
           break;
         }
         
-        tuples = queue;
-        queue = new ArrayList<EventTuple>();
+        events = queue;
+        queue = new ArrayList<GibsonEvent>();
       }
       
       try {
-        for (EventTuple tuple : tuples) {
-          domainBucket.store(tuple);
+        for (GibsonEvent event : events) {
+          domainBucket.store(event);
           
-          /*String key = tuple.getKey();
+          /*String key = event.getKey();
           EventTuple value = domainBucket.fetch(key);
           System.out.println(key + " -> " + value);*/
         }
@@ -159,20 +159,20 @@ class RiakTransport extends AbstractTransport {
           System.out.println((index++ + ": ") + key);
         }*/
       } catch (Exception err) {
-        logger.error("RiakException", err);
+        logger.error("Exception", err);
       }
     }
   }
 
   @Override
-  public void send(EventTuple tuple) {
-    if (tuple == null) {
-      throw new NullPointerException("tuple");
+  public void send(GibsonEvent event) {
+    if (event == null) {
+      throw new NullPointerException("event");
     }
     
     synchronized (this) {
       if (open && connected) {
-        queue.add(tuple);
+        queue.add(event);
         notifyAll();
       }
     }

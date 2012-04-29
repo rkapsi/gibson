@@ -34,5 +34,5 @@ interface Transport extends Closeable {
   /**
    * Sends the given message.
    */
-  public void send(EventTuple event);
+  public void send(GibsonEvent event);
 }

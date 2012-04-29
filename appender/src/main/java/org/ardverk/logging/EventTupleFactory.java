@@ -1,24 +1,17 @@
 package org.ardverk.logging;
 
-import java.util.UUID;
-
+import org.ardverk.logging.GibsonEvent.Level;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
 class EventTupleFactory {
-
-  public static EventTuple valueOf(ILoggingEvent evt) {
-    EventTuple tuple = new EventTuple();
-    tuple.setKey(UUID.randomUUID().toString());
-    tuple.setEvent(toGibsonEvent(evt));
-    return tuple;
-  }
   
-  private static GibsonEvent toGibsonEvent(ILoggingEvent evt) {
+  public static GibsonEvent valueOf(ILoggingEvent evt) {
     GibsonEvent event = new GibsonEvent();
     
+    event.setKey(GibsonUtils.createKey());
     event.setCreationTime(System.currentTimeMillis());
     
     event.setThreadName(evt.getThreadName());
@@ -31,7 +24,7 @@ class EventTupleFactory {
     event.setMessage(evt.getMessage());
     event.setThrowable(toThrowable(evt));
     
-    event.setSignature(Signature.valueOf(event));
+    event.setSignature(GibsonUtils.createSignature(event));
     return event;
   }
   

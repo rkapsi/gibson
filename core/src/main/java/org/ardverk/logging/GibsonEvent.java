@@ -2,11 +2,23 @@ package org.ardverk.logging;
 
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class GibsonEvent {
+  
+  public static enum Level {
+    TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR;
+  }
+  
+  @JsonIgnore
+  private String key;
   
   private long creationTime;
   
@@ -25,6 +37,14 @@ public class GibsonEvent {
   private Map<String, String> mdc;
   
   private String signature;
+  
+  public String getKey() {
+    return key;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
+  }
 
   public long getCreationTime() {
     return creationTime;

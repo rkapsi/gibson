@@ -1,21 +1,20 @@
 package org.ardverk.logging;
 
+import static org.ardverk.logging.GibsonUtils.MAPPER;
+
 import java.io.IOException;
 
 import junit.framework.TestCase;
 
+import org.ardverk.logging.GibsonEvent.Level;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 public class GibsonModuleTest {
 
   @Test
   public void json() throws JsonGenerationException, JsonMappingException, IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new GibsonModule());
-    
     GibsonEvent event = new GibsonEvent();
     event.setCreationTime(System.currentTimeMillis());
     event.setLoggerName(GibsonModuleTest.class.getName());
@@ -25,16 +24,16 @@ public class GibsonModuleTest {
     event.setMessage("Hello World");
     event.setThrowable(GibsonThrowable.valueOf(new IllegalStateException()));
     
-    event.setSignature(Signature.valueOf(event));
+    event.setSignature(GibsonUtils.createSignature(event));
     
     // Serialize
-    String json1 = mapper.writeValueAsString(event);
+    String json1 = MAPPER.writeValueAsString(event);
     
     // Deserialize
-    GibsonEvent other = mapper.readValue(json1, GibsonEvent.class);
+    GibsonEvent other = MAPPER.readValue(json1, GibsonEvent.class);
     
     // Serialize again and they should be the same
-    String json2 = mapper.writeValueAsString(other);
+    String json2 = MAPPER.writeValueAsString(other);
     TestCase.assertEquals(json1, json2);
   }
 }

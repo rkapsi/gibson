@@ -78,10 +78,10 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   @Override
   protected void append(ILoggingEvent event) {
     if (transport != null && transport.isConnected()) {
-      EventTuple tuple = EventTupleFactory.valueOf(event);
+      GibsonEvent ge = EventTupleFactory.valueOf(event);
       
-      if (tuple != null) {
-        transport.send(tuple);
+      if (ge != null) {
+        transport.send(ge);
       }
     }
   }
