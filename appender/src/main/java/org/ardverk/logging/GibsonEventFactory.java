@@ -6,7 +6,7 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
-class EventTupleFactory {
+class GibsonEventFactory {
   
   public static GibsonEvent valueOf(ILoggingEvent evt) {
     GibsonEvent event = new GibsonEvent();
@@ -65,5 +65,5 @@ class EventTupleFactory {
     return null;
   }
   
-  private EventTupleFactory() {}
+  private GibsonEventFactory() {}
 }
