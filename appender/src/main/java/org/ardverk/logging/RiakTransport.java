@@ -33,6 +33,8 @@ class RiakTransport extends AbstractTransport {
   
   private final int w;
   
+  private final int dw = 0;
+  
   private final int nVal;
   
   private boolean open = true;
@@ -126,6 +128,7 @@ class RiakTransport extends AbstractTransport {
       .retrier(DefaultRetrier.attempts(1))
       .r(r)
       .w(w)
+      .dw(dw)
       .build();
     
     while (true) {
@@ -150,7 +153,7 @@ class RiakTransport extends AbstractTransport {
           domainBucket.store(event);
           
           /*String key = event.getKey();
-          EventTuple value = domainBucket.fetch(key);
+          GibsonEvent value = domainBucket.fetch(key);
           System.out.println(key + " -> " + value);*/
         }
         
