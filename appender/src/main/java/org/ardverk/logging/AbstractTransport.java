@@ -9,10 +9,10 @@ import java.net.InetSocketAddress;
  */
 abstract class AbstractTransport implements Transport {
 
-  protected final Logger logger;
+  protected final Status status;
   
-  public AbstractTransport(Logger logger) {
-    this.logger = logger;
+  public AbstractTransport(Status status) {
+    this.status = status;
   }
   
   @Override
@@ -23,16 +23,5 @@ abstract class AbstractTransport implements Transport {
   @Override
   public void connect(InetAddress addr, int port) throws IOException {
     connect(new InetSocketAddress(addr, port));
-  }
-  
-  public static interface Logger {
-
-    public void info(String message);
-    
-    public void info(String message, Throwable t);
-    
-    public void error(String message);
-    
-    public void error(String message, Throwable t);
   }
 }

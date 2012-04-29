@@ -14,7 +14,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   
   private static final InetSocketAddress ENDPOINT = new InetSocketAddress("localhost", RiakTransport.PORT);
   
-  private final TransportLogger logger = new TransportLogger();
+  private final TransportStatus status = new TransportStatus();
   
   private volatile SocketAddress endpoint = ENDPOINT;
   
@@ -25,6 +25,8 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   private volatile int r = 1;
   
   private volatile int w = 1;
+  
+  private volatile int dw = 0;
   
   private volatile int nVal = 1;
   
@@ -40,7 +42,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
       return;
     }
     
-    transport = new RiakTransport(logger, bucket, r, w, nVal);
+    transport = new RiakTransport(status, bucket, r, w, dw, nVal);
 
     try {
       transport.connect(endpoint);
@@ -104,10 +106,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
     return new InetSocketAddress(host, port);
   }
   
-  /**
-   * 
-   */
-  private class TransportLogger implements AbstractTransport.Logger {
+  private class TransportStatus implements AbstractTransport.Status {
 
     @Override
     public void info(String message) {

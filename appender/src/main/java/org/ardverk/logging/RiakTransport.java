@@ -33,7 +33,7 @@ class RiakTransport extends AbstractTransport {
   
   private final int w;
   
-  private final int dw = 0;
+  private final int dw;
   
   private final int nVal;
   
@@ -43,12 +43,13 @@ class RiakTransport extends AbstractTransport {
   
   private Future<?> future = null;
   
-  public RiakTransport(Logger logger, String bucketName, int r, int w, int nVal) {
-    super(logger);
+  public RiakTransport(Status status, String bucketName, int r, int w, int dw, int nVal) {
+    super(status);
     
     this.bucketName = bucketName;
     this.r = r;
     this.w = w;
+    this.dw = dw;
     this.nVal = nVal;
   }
 
@@ -69,7 +70,7 @@ class RiakTransport extends AbstractTransport {
     
     String url = toURL(address);
     
-    logger.info("Connecting to: " + url);
+    status.info("Connecting to: " + url);
     
     try {
       final IRiakClient client = RiakFactory.httpClient(url);
@@ -80,9 +81,9 @@ class RiakTransport extends AbstractTransport {
           try {
             process(client);
           } catch (InterruptedException err) {
-            logger.error("InterruptedException", err);
+            status.error("InterruptedException", err);
           } catch (RiakException err) {
-            logger.error("RiakException", err);
+            status.error("RiakException", err);
           } finally {
             destroy(client);
           }
@@ -98,8 +99,11 @@ class RiakTransport extends AbstractTransport {
   }
   
   private void destroy(IRiakClient client) {
-    close();
-    client.shutdown();
+    try {
+      close();
+    } finally {
+      client.shutdown();
+    }
   }
   
   @Override
@@ -162,7 +166,7 @@ class RiakTransport extends AbstractTransport {
           System.out.println((index++ + ": ") + key);
         }*/
       } catch (Exception err) {
-        logger.error("Exception", err);
+        status.error("Exception", err);
       }
     }
   }

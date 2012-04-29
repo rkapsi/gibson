@@ -35,4 +35,18 @@ interface Transport extends Closeable {
    * Sends the given message.
    */
   public void send(GibsonEvent event);
+  
+  /**
+   * 
+   */
+  public static interface Status {
+
+    public void info(String message);
+    
+    public void info(String message, Throwable t);
+    
+    public void error(String message);
+    
+    public void error(String message, Throwable t);
+  }
 }
