@@ -34,6 +34,8 @@ public class GibsonEvent {
   
   private GibsonThrowable throwable;
   
+  private StackTraceElement[] callerData;
+  
   private Map<String, String> mdc;
   
   private String signature;
@@ -100,6 +102,14 @@ public class GibsonEvent {
 
   public void setThrowable(GibsonThrowable throwable) {
     this.throwable = throwable;
+  }
+  
+  public StackTraceElement[] getCallerData() {
+    return callerData;
+  }
+
+  public void setCallerData(StackTraceElement[] callerData) {
+    this.callerData = callerData;
   }
 
   public Map<String, String> getMdc() {

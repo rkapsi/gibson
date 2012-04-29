@@ -6,7 +6,7 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
-class GibsonEventFactory {
+class Factory {
   
   public static GibsonEvent valueOf(ILoggingEvent evt) {
     GibsonEvent event = new GibsonEvent();
@@ -23,6 +23,10 @@ class GibsonEventFactory {
     
     event.setMessage(evt.getMessage());
     event.setThrowable(toThrowable(evt));
+    
+    if (evt.hasCallerData()) {
+      event.setCallerData(evt.getCallerData());
+    }
     
     event.setSignature(GibsonUtils.createSignature(event));
     return event;
@@ -65,5 +69,5 @@ class GibsonEventFactory {
     return null;
   }
   
-  private GibsonEventFactory() {}
+  private Factory() {}
 }
