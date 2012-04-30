@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.ardverk.riak.DefaultArdverkRiakClient;
 import org.ardverk.riak.ArdverkRiakClient;
-import org.ardverk.riak.RiakClientFactory;
+import org.ardverk.riak.ArdverkRiakClientFactory;
 
 import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
@@ -84,7 +84,7 @@ class RiakTransport extends AbstractTransport {
       status.info("Connecting to: " + url);
     }
     
-    final ArdverkRiakClient client = RiakClientFactory.httpClient(url, RETRIER);
+    final ArdverkRiakClient client = ArdverkRiakClientFactory.httpClient(url, RETRIER);
     
     Runnable task = new Runnable() {
       @Override

@@ -4,7 +4,7 @@ import com.basho.riak.client.cap.Retrier;
 import com.basho.riak.client.raw.RawClient;
 import com.basho.riak.client.raw.http.HTTPClientAdapter;
 
-public class RiakClientFactory {
+public class ArdverkRiakClientFactory {
 
   public static ArdverkRiakClient httpClient(String url) {
     RawClient client = new HTTPClientAdapter(url);
@@ -16,5 +16,5 @@ public class RiakClientFactory {
     return new DefaultArdverkRiakClient(client, retrier);
   }
   
-  private RiakClientFactory() {}
+  private ArdverkRiakClientFactory() {}
 }
