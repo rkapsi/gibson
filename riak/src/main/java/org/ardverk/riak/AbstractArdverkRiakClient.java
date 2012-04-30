@@ -1,5 +1,7 @@
 package org.ardverk.riak;
 
+import static com.basho.riak.client.http.util.Constants.RIAK_CLIENT_ID_LENGTH;
+
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -22,8 +24,8 @@ public abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
   
   @Override
   public ArdverkRiakClient setClientId(final byte[] clientId) throws RiakException {
-    if (clientId == null || clientId.length != 4) {
-      throw new IllegalArgumentException("Client Id must be 4 bytes long");
+    if (clientId == null || clientId.length != RIAK_CLIENT_ID_LENGTH) {
+      throw new IllegalArgumentException("Client Id must be " + RIAK_CLIENT_ID_LENGTH + " bytes long");
     }
     
     getRetrier().attempt(new Callable<Void>() {
