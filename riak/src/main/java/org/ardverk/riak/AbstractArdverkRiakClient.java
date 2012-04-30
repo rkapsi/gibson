@@ -19,7 +19,7 @@ import com.basho.riak.client.query.SearchMapReduce;
 import com.basho.riak.client.raw.Transport;
 import com.basho.riak.client.raw.query.indexes.IndexQuery;
 
-abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
+public abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
   
   /**
    * Returns the {@link Retrier}.
