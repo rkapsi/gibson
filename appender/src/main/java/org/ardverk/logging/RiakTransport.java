@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.ardverk.logging.riak.GibsonEventConverter;
+import org.ardverk.logging.riak.JsonConverter;
 import org.ardverk.riak.ArdverkRiakClient;
 import org.ardverk.riak.ArdverkRiakClientFactory;
 
@@ -135,7 +135,7 @@ class RiakTransport extends AbstractTransport {
     
     DomainBucket<GibsonEvent> domainBucket 
       = DomainBucket.builder(bucket, GibsonEvent.class)
-      .withConverter(new GibsonEventConverter(bucketName))
+      .withConverter(new JsonConverter(bucketName))
       .retrier(DefaultRetrier.attempts(1))
       .r(r)
       .w(w)

@@ -2,9 +2,10 @@ package org.ardverk.logging;
 
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
+import com.basho.riak.client.convert.RiakKey;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class GibsonEvent {
@@ -17,6 +18,7 @@ public class GibsonEvent {
     ERROR;
   }
   
+  @RiakKey
   private String key;
   
   private long creationTime;
