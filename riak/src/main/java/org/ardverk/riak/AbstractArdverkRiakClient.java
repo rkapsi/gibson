@@ -1,11 +1,9 @@
-package org.ardverk.logging;
+package org.ardverk.riak;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.IRiakObject;
 import com.basho.riak.client.RiakException;
 import com.basho.riak.client.bucket.Bucket;
@@ -18,26 +16,25 @@ import com.basho.riak.client.query.IndexMapReduce;
 import com.basho.riak.client.query.LinkWalk;
 import com.basho.riak.client.query.NodeStats;
 import com.basho.riak.client.query.SearchMapReduce;
-import com.basho.riak.client.raw.RawClient;
 import com.basho.riak.client.raw.Transport;
 import com.basho.riak.client.raw.query.indexes.IndexQuery;
 
-abstract class AbstractRiakClient implements IRiakClient, Closeable {
-
-  public abstract RawClient getClient();
+abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
   
+  /**
+   * Returns the {@link Retrier}.
+   */
   public abstract Retrier getRetrier();
   
   @Override
-  public IRiakClient setClientId(byte[] clientId) throws RiakException {
+  public ArdverkRiakClient setClientId(final byte[] clientId) throws RiakException {
     if (clientId == null || clientId.length != 4) {
       throw new IllegalArgumentException("Client Id must be 4 bytes long");
     }
     
-    final byte[] cloned = clientId.clone();
     getRetrier().attempt(new Callable<Void>() {
       public Void call() throws IOException {
-        getClient().setClientId(cloned);
+        getClient().setClientId(clientId);
         return null;
       }
     });
@@ -59,7 +56,7 @@ abstract class AbstractRiakClient implements IRiakClient, Closeable {
   @Override
   public byte[] getClientId() throws RiakException {
     byte[] clientId = getRetrier().attempt(new Callable<byte[]>() {
-      public byte[] call() throws Exception {
+      public byte[] call() throws IOException {
         return getClient().getClientId();
       }
     });
@@ -71,8 +68,8 @@ abstract class AbstractRiakClient implements IRiakClient, Closeable {
   public Set<String> listBuckets() throws RiakException {
     try {
       return getClient().listBuckets();
-    } catch (IOException e) {
-      throw new RiakException(e);
+    } catch (IOException err) {
+      throw new RiakException("IOException", err);
     }
   }
 
@@ -120,8 +117,8 @@ abstract class AbstractRiakClient implements IRiakClient, Closeable {
   public void ping() throws RiakException {
     try {
       getClient().ping();
-    } catch (IOException e) {
-      throw new RiakException(e);
+    } catch (IOException err) {
+      throw new RiakException("IOException", err);
     }
   }
 
@@ -144,8 +141,8 @@ abstract class AbstractRiakClient implements IRiakClient, Closeable {
   public Iterable<NodeStats> stats() throws RiakException {
     try {
       return getClient().stats();
-    } catch (Exception e) {
-      throw new RiakException(e);
+    } catch (IOException err) {
+      throw new RiakException("IOException", err);
     }
   }
 }

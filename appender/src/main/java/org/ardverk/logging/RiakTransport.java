@@ -11,6 +11,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.ardverk.riak.DefaultArdverkRiakClient;
+import org.ardverk.riak.ArdverkRiakClient;
+import org.ardverk.riak.RiakClientFactory;
+
 import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
 import com.basho.riak.client.bucket.Bucket;
@@ -80,7 +84,7 @@ class RiakTransport extends AbstractTransport {
       status.info("Connecting to: " + url);
     }
     
-    final DefaultRiakClient client = RiakFactory2.httpClient(url, RETRIER);
+    final ArdverkRiakClient client = RiakClientFactory.httpClient(url, RETRIER);
     
     Runnable task = new Runnable() {
       @Override
@@ -123,12 +127,12 @@ class RiakTransport extends AbstractTransport {
     }
   }
   
-  private void process(DefaultRiakClient client) throws RiakException, InterruptedException {
+  private void process(ArdverkRiakClient client) throws RiakException, InterruptedException {
     
     Bucket bucket = client.createBucket(bucketName)
         .nVal(nVal)
         .execute();
-    bucket.store(key, o)
+    
     DomainBucket<GibsonEvent> domainBucket 
       = DomainBucket.builder(bucket, GibsonEvent.class)
       .withConverter(new GibsonEventConverter(bucketName))
@@ -174,7 +178,7 @@ class RiakTransport extends AbstractTransport {
     }
   }
 
-  private GibsonEvent store(DefaultRiakClient client, String bucket, GibsonEvent event) throws RiakException {
+  private GibsonEvent store(DefaultArdverkRiakClient client, String bucket, GibsonEvent event) throws RiakException {
     String key = event.getKey();
     StoreObject<GibsonEvent> store = new StoreObject<GibsonEvent>(client.getClient(), bucket, key, RETRIER);
     store.r(r)
