@@ -1,10 +1,9 @@
-package org.ardverk.logging.riak;
+package org.ardverk.riak.convert;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
-import org.ardverk.logging.GibsonModule;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.basho.riak.client.IRiakObject;
@@ -44,7 +43,6 @@ public class JsonConverter<T> implements Converter<T> {
     this.bucket = bucket;
     
     mapper.registerModule(new RiakJacksonModule());
-    mapper.registerModule(new GibsonModule());
   }
   
   public ObjectMapper getObjectMapper() {

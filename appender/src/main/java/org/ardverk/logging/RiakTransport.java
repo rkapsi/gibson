@@ -11,9 +11,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.ardverk.logging.riak.JsonConverter;
 import org.ardverk.riak.ArdverkRiakClient;
 import org.ardverk.riak.ArdverkRiakClientFactory;
+import org.ardverk.riak.convert.JsonConverter;
 
 import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
