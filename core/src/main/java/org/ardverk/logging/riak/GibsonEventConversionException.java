@@ -1,4 +1,4 @@
-package org.ardverk.logging;
+package org.ardverk.logging.riak;
 
 import com.basho.riak.client.convert.ConversionException;
 

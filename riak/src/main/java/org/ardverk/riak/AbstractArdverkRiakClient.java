@@ -9,7 +9,6 @@ import com.basho.riak.client.RiakException;
 import com.basho.riak.client.bucket.Bucket;
 import com.basho.riak.client.bucket.FetchBucket;
 import com.basho.riak.client.bucket.WriteBucket;
-import com.basho.riak.client.cap.Retrier;
 import com.basho.riak.client.query.BucketKeyMapReduce;
 import com.basho.riak.client.query.BucketMapReduce;
 import com.basho.riak.client.query.IndexMapReduce;
@@ -20,11 +19,6 @@ import com.basho.riak.client.raw.Transport;
 import com.basho.riak.client.raw.query.indexes.IndexQuery;
 
 public abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
-  
-  /**
-   * Returns the {@link Retrier}.
-   */
-  public abstract Retrier getRetrier();
   
   @Override
   public ArdverkRiakClient setClientId(final byte[] clientId) throws RiakException {

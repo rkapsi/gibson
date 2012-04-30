@@ -4,7 +4,7 @@ project.ext {
 }
 
 dependencies {
-  compile (":riak")
+  compile (":core")
   
   compile "ch.qos.logback:logback-classic:${ext.logback}"
 }

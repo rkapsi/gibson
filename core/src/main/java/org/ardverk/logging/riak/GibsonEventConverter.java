@@ -1,7 +1,9 @@
-package org.ardverk.logging;
+package org.ardverk.logging.riak;
 
 import java.io.IOException;
 
+import org.ardverk.logging.GibsonEvent;
+import org.ardverk.logging.GibsonModule;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.basho.riak.client.IRiakObject;

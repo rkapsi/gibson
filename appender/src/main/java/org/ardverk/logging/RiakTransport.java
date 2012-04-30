@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.ardverk.riak.DefaultArdverkRiakClient;
+import org.ardverk.logging.riak.GibsonEventConverter;
 import org.ardverk.riak.ArdverkRiakClient;
 import org.ardverk.riak.ArdverkRiakClientFactory;
 
@@ -178,9 +178,12 @@ class RiakTransport extends AbstractTransport {
     }
   }
 
-  private GibsonEvent store(DefaultArdverkRiakClient client, String bucket, GibsonEvent event) throws RiakException {
+  private GibsonEvent store(ArdverkRiakClient client, String bucket, GibsonEvent event) throws RiakException {
     String key = event.getKey();
-    StoreObject<GibsonEvent> store = new StoreObject<GibsonEvent>(client.getClient(), bucket, key, RETRIER);
+    
+    StoreObject<GibsonEvent> store = new StoreObject<GibsonEvent>(
+        client.getClient(), bucket, key, client.getRetrier());
+    
     store.r(r)
       .w(w)
       .dw(dw)
