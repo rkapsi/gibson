@@ -24,7 +24,7 @@ public class GibsonModuleTest {
     event.setMessage("Hello World");
     event.setThrowable(GibsonThrowable.valueOf(new IllegalStateException()));
     
-    event.setSignature(GibsonUtils.createSignature(event));
+    SignatureUtils.sign(event);
     
     // Serialize
     String json1 = MAPPER.writeValueAsString(event);

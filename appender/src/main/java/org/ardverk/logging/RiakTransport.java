@@ -21,7 +21,7 @@ import com.basho.riak.client.bucket.Bucket;
 import com.basho.riak.client.bucket.DomainBucket;
 import com.basho.riak.client.cap.DefaultRetrier;
 import com.basho.riak.client.cap.Retrier;
-import com.basho.riak.client.operations.StoreObject;
+import com.basho.riak.client.convert.Converter;
 
 class RiakTransport extends AbstractTransport {
   
@@ -35,6 +35,8 @@ class RiakTransport extends AbstractTransport {
   public static final int PORT = 8098;
   
   private List<GibsonEvent> queue = new ArrayList<GibsonEvent>();
+  
+  private final Converter<GibsonEvent> converter;
   
   private final String bucketName;
   
@@ -61,6 +63,8 @@ class RiakTransport extends AbstractTransport {
     this.w = w;
     this.dw = dw;
     this.nVal = nVal;
+    
+    converter = new JsonConverter<GibsonEvent>(GibsonUtils.MAPPER, GibsonEvent.class, bucketName);
   }
 
   @Override
@@ -135,8 +139,8 @@ class RiakTransport extends AbstractTransport {
     
     DomainBucket<GibsonEvent> domainBucket 
       = DomainBucket.builder(bucket, GibsonEvent.class)
-      .withConverter(new JsonConverter(bucketName))
-      .retrier(DefaultRetrier.attempts(1))
+      .withConverter(converter)
+      .retrier(client.getRetrier())
       .r(r)
       .w(w)
       .dw(dw)
@@ -176,20 +180,6 @@ class RiakTransport extends AbstractTransport {
         status.error("Exception", err);
       }
     }
-  }
-
-  private GibsonEvent store(ArdverkRiakClient client, String bucket, GibsonEvent event) throws RiakException {
-    String key = event.getKey();
-    
-    StoreObject<GibsonEvent> store = new StoreObject<GibsonEvent>(
-        client.getClient(), bucket, key, client.getRetrier());
-    
-    store.r(r)
-      .w(w)
-      .dw(dw)
-      .returnBody(false);
-    
-    return store.execute();
   }
   
   @Override

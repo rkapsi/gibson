@@ -28,8 +28,7 @@ class Factory {
       event.setCallerData(evt.getCallerData());
     }
     
-    event.setSignature(GibsonUtils.createSignature(event));
-    return event;
+    return SignatureUtils.sign(event);
   }
   
   private static Level toLevel(ILoggingEvent evt) {
