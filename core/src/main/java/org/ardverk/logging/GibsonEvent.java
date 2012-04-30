@@ -17,7 +17,6 @@ public class GibsonEvent {
     ERROR;
   }
   
-  @JsonIgnore
   private String key;
   
   private long creationTime;

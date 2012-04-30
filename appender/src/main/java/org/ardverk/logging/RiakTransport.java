@@ -13,10 +13,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
-import com.basho.riak.client.RiakFactory;
 import com.basho.riak.client.bucket.Bucket;
 import com.basho.riak.client.bucket.DomainBucket;
 import com.basho.riak.client.cap.DefaultRetrier;
+import com.basho.riak.client.cap.Retrier;
+import com.basho.riak.client.operations.StoreObject;
 
 class RiakTransport extends AbstractTransport {
   
@@ -24,6 +25,8 @@ class RiakTransport extends AbstractTransport {
       new TransportThreadFactory(RiakTransport.class));
   
   private static final String URL = "http://%s:%s/riak";
+  
+  private static final Retrier RETRIER = DefaultRetrier.attempts(1);
   
   public static final int PORT = 8098;
   
@@ -77,30 +80,25 @@ class RiakTransport extends AbstractTransport {
       status.info("Connecting to: " + url);
     }
     
-    try {
-      final IRiakClient client = RiakFactory.httpClient(url);
-      
-      Runnable task = new Runnable() {
-        @Override
-        public void run() {
-          try {
-            process(client);
-          } catch (InterruptedException err) {
-            status.error("InterruptedException", err);
-          } catch (RiakException err) {
-            status.error("RiakException", err);
-          } finally {
-            destroy(client);
-          }
+    final DefaultRiakClient client = RiakFactory2.httpClient(url, RETRIER);
+    
+    Runnable task = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          process(client);
+        } catch (InterruptedException err) {
+          status.error("InterruptedException", err);
+        } catch (RiakException err) {
+          status.error("RiakException", err);
+        } finally {
+          destroy(client);
         }
-      };
-      
-      this.future = EXECUTOR.submit(task);
-      this.connected = true;
-      
-    } catch (RiakException err) {
-      throw new IOException("RiakException", err);
-    }
+      }
+    };
+    
+    this.future = EXECUTOR.submit(task);
+    this.connected = true;
   }
   
   private void destroy(IRiakClient client) {
@@ -125,12 +123,12 @@ class RiakTransport extends AbstractTransport {
     }
   }
   
-  private void process(IRiakClient client) throws RiakException, InterruptedException {
+  private void process(DefaultRiakClient client) throws RiakException, InterruptedException {
     
     Bucket bucket = client.createBucket(bucketName)
         .nVal(nVal)
         .execute();
-    
+    bucket.store(key, o)
     DomainBucket<GibsonEvent> domainBucket 
       = DomainBucket.builder(bucket, GibsonEvent.class)
       .withConverter(new GibsonEventConverter(bucketName))
@@ -161,21 +159,32 @@ class RiakTransport extends AbstractTransport {
         for (GibsonEvent event : events) {
           domainBucket.store(event);
           
-          /*String key = event.getKey();
+          String key = event.getKey();
           GibsonEvent value = domainBucket.fetch(key);
-          System.out.println(key + " -> " + value);*/
+          System.out.println(key + " -> " + value);
         }
         
         /*int index = 0;
         for (String key : bucket.keys()) {
           System.out.println((index++ + ": ") + key);
         }*/
-      } catch (Exception err) {
+      } catch (Exception err) {err.printStackTrace();
         status.error("Exception", err);
       }
     }
   }
 
+  private GibsonEvent store(DefaultRiakClient client, String bucket, GibsonEvent event) throws RiakException {
+    String key = event.getKey();
+    StoreObject<GibsonEvent> store = new StoreObject<GibsonEvent>(client.getClient(), bucket, key, RETRIER);
+    store.r(r)
+      .w(w)
+      .dw(dw)
+      .returnBody(false);
+    
+    return store.execute();
+  }
+  
   @Override
   public void send(GibsonEvent event) {
     if (event == null) {

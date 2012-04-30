@@ -1,7 +1,5 @@
 package org.ardverk.logging;
 
-import static org.ardverk.logging.GibsonUtils.MAPPER;
-
 import java.io.IOException;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -12,6 +10,7 @@ import com.basho.riak.client.cap.VClock;
 import com.basho.riak.client.convert.ConversionException;
 import com.basho.riak.client.convert.Converter;
 import com.basho.riak.client.convert.NoKeySpecifedException;
+import com.basho.riak.client.convert.RiakJacksonModule;
 import com.basho.riak.client.http.util.Constants;
 
 public class GibsonEventConverter implements Converter<GibsonEvent> {
@@ -21,12 +20,15 @@ public class GibsonEventConverter implements Converter<GibsonEvent> {
   private final String bucket;
   
   public GibsonEventConverter(String bucket) {
-    this(MAPPER, bucket);
+    this(new ObjectMapper(), bucket);
   }
   
   public GibsonEventConverter(ObjectMapper mapper, String bucket) {
     this.mapper = mapper;
     this.bucket = bucket;
+    
+    mapper.registerModule(new RiakJacksonModule());
+    mapper.registerModule(new GibsonModule());
   }
   
   @Override
