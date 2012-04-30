@@ -131,6 +131,14 @@ public class GibsonEvent {
   
   @Override
   public String toString() {
-    return "logger=" + loggerName + ", signature=" + signature + ", throwable=" + (throwable != null ? throwable.toStringValue() : null);
+    StringBuilder sb = new StringBuilder();
+    sb.append("l=").append(loggerName)
+      .append(", s=").append(signature);
+    
+    if (throwable != null) {
+      sb.append(", t=").append(throwable.toStringValue());
+    }
+    
+    return sb.toString();
   }
 }
