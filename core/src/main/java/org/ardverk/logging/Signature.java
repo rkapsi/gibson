@@ -19,7 +19,7 @@ public class Signature {
     
     Signature signature = new Signature();
     
-    signature.append(event.getLoggerName());
+    signature.append(event.getLogger());
     signature.append(event.getMarker());
     signature.append(event.getLevel());
     signature.append(event.getThrowable());

@@ -17,7 +17,7 @@ public class GibsonModuleTest {
   public void json() throws JsonGenerationException, JsonMappingException, IOException {
     GibsonEvent event = new GibsonEvent();
     event.setCreationTime(System.currentTimeMillis());
-    event.setLoggerName(GibsonModuleTest.class.getName());
+    event.setLogger(GibsonModuleTest.class.getName());
     event.setLevel(Level.ERROR);
     event.setThreadName(Thread.currentThread().getName());
     

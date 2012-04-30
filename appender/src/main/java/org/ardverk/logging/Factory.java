@@ -15,7 +15,7 @@ class Factory {
     event.setCreationTime(System.currentTimeMillis());
     
     event.setThreadName(evt.getThreadName());
-    event.setLoggerName(evt.getLoggerName());
+    event.setLogger(evt.getLoggerName());
     
     event.setLevel(toLevel(evt));
     event.setMarker(toMarker(evt));

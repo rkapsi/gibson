@@ -23,7 +23,7 @@ public class GibsonEvent {
   
   private long creationTime;
   
-  private String loggerName;
+  private String logger;
   
   private String marker;
   
@@ -57,12 +57,12 @@ public class GibsonEvent {
     this.creationTime = creationTime;
   }
 
-  public String getLoggerName() {
-    return loggerName;
+  public String getLogger() {
+    return logger;
   }
 
-  public void setLoggerName(String loggerName) {
-    this.loggerName = loggerName;
+  public void setLogger(String logger) {
+    this.logger = logger;
   }
 
   public String getMarker() {
@@ -132,7 +132,7 @@ public class GibsonEvent {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("l=").append(loggerName)
+    sb.append("l=").append(logger)
       .append(", s=").append(signature);
     
     if (throwable != null) {
