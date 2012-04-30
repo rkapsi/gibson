@@ -28,7 +28,7 @@ class Factory {
       event.setCallerData(evt.getCallerData());
     }
     
-    return SignatureUtils.sign(event);
+    return Signature.sign(event);
   }
   
   private static Level toLevel(ILoggingEvent evt) {
