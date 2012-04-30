@@ -14,7 +14,7 @@ class Factory {
     event.setKey(GibsonUtils.createKey());
     event.setCreationTime(System.currentTimeMillis());
     
-    event.setThreadName(evt.getThreadName());
+    event.setThread(evt.getThreadName());
     event.setLogger(evt.getLoggerName());
     
     event.setLevel(toLevel(evt));

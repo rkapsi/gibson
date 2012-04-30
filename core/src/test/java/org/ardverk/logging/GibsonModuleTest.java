@@ -19,7 +19,7 @@ public class GibsonModuleTest {
     event.setCreationTime(System.currentTimeMillis());
     event.setLogger(GibsonModuleTest.class.getName());
     event.setLevel(Level.ERROR);
-    event.setThreadName(Thread.currentThread().getName());
+    event.setThread(Thread.currentThread().getName());
     
     event.setMessage("Hello World");
     event.setThrowable(GibsonThrowable.valueOf(new IllegalStateException()));

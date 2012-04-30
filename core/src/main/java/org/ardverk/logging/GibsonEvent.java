@@ -29,7 +29,7 @@ public class GibsonEvent {
   
   private Level level;
   
-  private String threadName;
+  private String thread;
   
   private String message;
   
@@ -81,12 +81,12 @@ public class GibsonEvent {
     this.level = level;
   }
   
-  public String getThreadName() {
-    return threadName;
+  public String getThread() {
+    return thread;
   }
 
-  public void setThreadName(String threadName) {
-    this.threadName = threadName;
+  public void setThread(String thread) {
+    this.thread = thread;
   }
 
   public String getMessage() {
