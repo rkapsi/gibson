@@ -18,7 +18,7 @@ We use [SLF4J](http://www.slf4j.org) and [Logback](http://logback.qos.ch). The a
 
 ### Dashboard
 
-TBD. I'd love to use something like [Play!](http://www.playframework.org) but I have a feeling there is not enough time to learn `Play!` and get this done in a few hours.
+TBD. I'd love to use something like [Play!](http://www.playframework.org) but I have a feeling there is not enough time to learn `Play!` and get this done in a few hours. Unless we start cranking on this now of course. :)
 
 ## Riak
 
