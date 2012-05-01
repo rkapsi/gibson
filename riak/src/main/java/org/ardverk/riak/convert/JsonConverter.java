@@ -23,9 +23,9 @@ import com.basho.riak.client.query.indexes.RiakIndexes;
 
 public class JsonConverter<T> implements Converter<T> {
   
-  private final UsermetaConverter<T> usermetaConverter = new UsermetaConverter<T>();
-  private final RiakIndexConverter<T> riakIndexConverter = new RiakIndexConverter<T>();
-  private final RiakLinksConverter<T> riakLinksConverter = new RiakLinksConverter<T>();
+  private final UsermetaConverter<T> usermeta = new UsermetaConverter<T>();
+  private final RiakIndexConverter<T> riakIndex = new RiakIndexConverter<T>();
+  private final RiakLinksConverter<T> riakLinks = new RiakLinksConverter<T>();
   
   private final ObjectMapper mapper;
   
@@ -60,9 +60,9 @@ public class JsonConverter<T> implements Converter<T> {
     try {
       byte[] data = mapper.writeValueAsBytes(domainObject);
       
-      Map<String, String> usermetaData = usermetaConverter.getUsermetaData(domainObject);
-      RiakIndexes indexes = riakIndexConverter.getIndexes(domainObject);
-      Collection<RiakLink> links = riakLinksConverter.getLinks(domainObject);
+      Map<String, String> usermetaData = usermeta.getUsermetaData(domainObject);
+      RiakIndexes indexes = riakIndex.getIndexes(domainObject);
+      Collection<RiakLink> links = riakLinks.getLinks(domainObject);
       
       return RiakObjectBuilder.newBuilder(bucket, key)
           .withValue(data)
@@ -87,11 +87,11 @@ public class JsonConverter<T> implements Converter<T> {
     try {
       T domainObject = mapper.readValue(riakObject.getValue(), clazz);
       KeyUtil.setKey(domainObject, riakObject.getKey());
-      usermetaConverter.populateUsermeta(riakObject.getMeta(), domainObject);
-      riakIndexConverter.populateIndexes(
+      usermeta.populateUsermeta(riakObject.getMeta(), domainObject);
+      riakIndex.populateIndexes(
           new RiakIndexes(riakObject.allBinIndexes(), 
               riakObject.allIntIndexes()), domainObject);
-      riakLinksConverter.populateLinks(riakObject.getLinks(), domainObject);
+      riakLinks.populateLinks(riakObject.getLinks(), domainObject);
       
       return domainObject;
     } catch (IOException err) {
