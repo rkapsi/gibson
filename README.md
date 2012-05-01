@@ -22,7 +22,7 @@ TBD. I'd love to use something like [Play!](http://www.playframework.org) but I 
 
 ## Riak
 
-We use [Riak](http://basho.com/products/riak-overview) to store the logging information. Any `Key-Value` store or other type storage system should be sufficient though as long as it does what we need. Riak seems to be a pretty good fit. There are no special nodes, it does `Map-Reduce`, it scales simply by adding (or removing) nodes from a cluster.
+We use [Riak](http://basho.com/products/riak-overview) to store the logging information. Any `Key-Value` store or other type storage system should be sufficient as long as it does what we need. Riak seems to be a pretty good fit. There are no special nodes, it does `Map-Reduce`, it scales simply by adding (or removing) nodes from a cluster.
 
 ## Gradle
 
