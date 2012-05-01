@@ -20,6 +20,10 @@ We use [SLF4J](http://www.slf4j.org) and [Logback](http://logback.qos.ch). The a
 
 TBD. I'd love to use something like [Play!](http://www.playframework.org) but I have a feeling there is not enough time to learn `Play!` and get this done in a few hours.
 
+## Riak
+
+We use [Riak](http://basho.com/products/riak-overview) to store the logging information.
+
 ## Gradle
 
 We use [Gradle](http://gradle.org) as the build system. Use `gradle eclipse` or `gradle idea` to generate the respective project files. Use `gradle tasks` to get a list of build targets.
