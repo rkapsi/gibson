@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketAddress;
 
+import org.slf4j.Logger;
+
 /**
  * The {@link Transport} interface defines a simple mechanism to send message(s)
  * to a remote host.
@@ -37,7 +39,8 @@ interface Transport extends Closeable {
   public void send(GibsonEvent event);
   
   /**
-   * 
+   * Appenders and their inner guts can't use {@link Logger}s (if a logger writes to an appender and
+   * the appender in turn writes to a logger you're creating a infinite recursion).
    */
   public static interface Status {
 

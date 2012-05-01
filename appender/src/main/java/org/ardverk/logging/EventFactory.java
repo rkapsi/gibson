@@ -6,9 +6,9 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
-class Factory {
+class EventFactory {
   
-  public static GibsonEvent valueOf(ILoggingEvent evt) {
+  public static GibsonEvent toGibsonEvent(ILoggingEvent evt) {
     GibsonEvent event = new GibsonEvent();
     
     event.setKey(GibsonUtils.createKey());
@@ -68,5 +68,5 @@ class Factory {
     return null;
   }
   
-  private Factory() {}
+  private EventFactory() {}
 }

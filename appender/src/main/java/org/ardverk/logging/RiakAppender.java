@@ -126,7 +126,7 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
         }
       }
       
-      GibsonEvent ge = Factory.valueOf(event);
+      GibsonEvent ge = EventFactory.toGibsonEvent(event);
       if (ge != null) {
         transport.send(ge);
       }
