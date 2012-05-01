@@ -6,7 +6,7 @@
 
 ### Riak
 
-Riak has a pretty decent Java Client but they're making certain assumptions regards use-cases and there are many inefficiencies. The Riak module is an attempt to address some of them but for the purpose of this exercise it's not really necessary.  
+[Riak](http://basho.com/products/riak-overview) has a pretty decent [Java Client](https://github.com/basho/riak-java-client) but they're making certain assumptions regards use-cases and there are many inefficiencies. The Riak module is an attempt to address some of them but for the purpose of this exercise it's not really necessary.  
 
 ### Core
 
