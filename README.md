@@ -22,7 +22,7 @@ TBD. I'd love to use something like [Play!](http://www.playframework.org) but I 
 
 ## Riak
 
-We use [Riak](http://basho.com/products/riak-overview) to store the logging information. Any `Key-Value` store or other type storage system should be sufficient as long as it does what we need. Riak seems to be a pretty good fit. There are no special nodes, it does `Map-Reduce`, it scales simply by adding (or removing) nodes from a cluster.
+We use [Riak](http://basho.com/products/riak-overview) to store the logging information. Any `Key-Value` store or other type storage system should be sufficient as long as it does what we need. Riak seems to be a pretty good fit. There are no special nodes, it does `Map-Reduce`, it scales simply by adding (or removing) nodes to the cluster.
 
 Since we've all used [MongoDB](http://www.mongodb.org) quite a bit I'd like to use the opportunity to say that it'd be a bad (as in terrible) choice for this use case. Gibson is super heavy on writing and Mongo's global write-lock would become a huge bottleneck with the potential to take down the appenders if they don't back off. It scales in terms of storage and computational power through sharding and the last thing we want to do think about is shard-keys.
 
