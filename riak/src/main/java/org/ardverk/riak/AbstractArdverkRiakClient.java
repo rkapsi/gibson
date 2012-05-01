@@ -20,6 +20,9 @@ import com.basho.riak.client.query.SearchMapReduce;
 import com.basho.riak.client.raw.Transport;
 import com.basho.riak.client.raw.query.indexes.IndexQuery;
 
+/**
+ * An abstract implementation of {@link ArdverkRiakClient}.
+ */
 public abstract class AbstractArdverkRiakClient implements ArdverkRiakClient {
   
   @Override

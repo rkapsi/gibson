@@ -6,6 +6,9 @@ import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.cap.Retrier;
 import com.basho.riak.client.raw.RawClient;
 
+/**
+ * An implementation of {@link IRiakClient} that exposes the underlying {@link RawClient}.
+ */
 public interface ArdverkRiakClient extends IRiakClient, Closeable {
 
   /**
