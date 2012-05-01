@@ -1,6 +1,6 @@
 # Gibson
 
-Gibson is a highly scalable (TBD) logging backend and analysis tool.
+[Gibson](http://en.wikipedia.org/wiki/Hackers_\(film\)) is a highly scalable (TBD) logging backend and analysis tool.
 
 ## Modules
 
