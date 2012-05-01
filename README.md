@@ -26,7 +26,7 @@ We use [Riak](http://basho.com/products/riak-overview) to store the logging info
 
 ## Gradle
 
-We use [Gradle](http://gradle.org) as the build system. Use `gradle eclipse` or `gradle idea` to generate the respective project files. Use `gradle tasks` to get a list of build targets.
+We use [Gradle](http://gradle.org) as the build system. Run `gradle eclipse` or `gradle idea` to generate the respective project files. Use `gradle tasks` to get a list of build targets.
 
 ## Package
 
