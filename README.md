@@ -1,6 +1,6 @@
 # Gibson
 
-[Gibson](http://en.wikipedia.org/wiki/Hackers_\(film\)) is a highly scalable (TBD) logging backend and analysis tool. The initial focus of the project is on `Exceptions` but may be extended to any type of logging information.
+[Gibson](http://en.wikipedia.org/wiki/Hackers_\(film\)) is a highly scalable (TBD) logging backend and analysis tool. The initial focus of the project is on `Exceptions` but it may be extended to any type of (logging) information.
 
 ## Modules
 
