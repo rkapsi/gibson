@@ -10,7 +10,7 @@
 
 ### Core
 
-This is the model that gets serialized into JSON.
+This is the model that gets serialized into JSON. Every `non-null` value gets serialized into JSON and the `@RiakKey` annotated field gets stripped out and is used as the primary key in Riak.
 
 ### Appender
 
