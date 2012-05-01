@@ -1,10 +1,12 @@
 
 project.ext {
   logback = "1.0.1"
+  commonsio = "2.3"
 }
 
 dependencies {
   compile (":core")
   
   compile "ch.qos.logback:logback-classic:${ext.logback}"
+  compile "commons-io:commons-io:${ext.commonsio}"
 }

@@ -105,14 +105,14 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
   }
 
   @Override
-  protected void append(ILoggingEvent event) {
+  protected void append(ILoggingEvent evt) {
     Transport transport = this.transport;
     
     if (transport != null && transport.isConnected()) {
       
       // Skip LoggingEvents that don't have a StackTrace
       if (hasStackTrace) {
-        IThrowableProxy proxy = event.getThrowableProxy();
+        IThrowableProxy proxy = evt.getThrowableProxy();
         if (proxy == null) {
           return;
         }
@@ -120,15 +120,15 @@ public class RiakAppender extends AppenderBase<ILoggingEvent> {
       
       // Skip LoggingEvents that don't have a matching Marker
       if (markers != null) {
-        Marker marker = event.getMarker();
+        Marker marker = evt.getMarker();
         if (marker != null && markers.contains(marker.getName())) {
           return;
         }
       }
       
-      GibsonEvent ge = EventFactory.toGibsonEvent(event);
-      if (ge != null) {
-        transport.send(ge);
+      GibsonEvent event = EventFactory.toGibsonEvent(evt);
+      if (event != null) {
+        transport.send(event);
       }
     }
   }

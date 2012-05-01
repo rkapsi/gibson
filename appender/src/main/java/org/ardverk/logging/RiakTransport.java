@@ -11,11 +11,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.IOUtils;
 import org.ardverk.riak.ArdverkRiakClient;
 import org.ardverk.riak.ArdverkRiakClientFactory;
 import org.ardverk.riak.convert.JsonConverter;
 
-import com.basho.riak.client.IRiakClient;
 import com.basho.riak.client.RiakException;
 import com.basho.riak.client.bucket.Bucket;
 import com.basho.riak.client.bucket.DomainBucket;
@@ -109,11 +109,11 @@ class RiakTransport extends AbstractTransport {
     this.connected = true;
   }
   
-  private void destroy(IRiakClient client) {
+  private void destroy(ArdverkRiakClient client) {
     try {
       close();
     } finally {
-      client.shutdown();
+      IOUtils.closeQuietly(client);
     }
   }
   
