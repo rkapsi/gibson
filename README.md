@@ -30,9 +30,11 @@ Since we've all used [MongoDB](http://www.mongodb.org) quite a bit I'd like to u
 
 We use [Gradle](http://gradle.org) as the build system. Run `gradle eclipse` or `gradle idea` to generate the respective project files. Use `gradle tasks` to get a list of build targets.
 
-## Package
+## Package + Name
 
-TBD - I'm using `org.ardverk.*` out of convenience.
+TBD - I'm using `org.ardverk.*` out of convenience and the I picked the name simply because I was watching [Hackers](http://en.wikipedia.org/wiki/Hackers_\(film\)) the other day and thought Gibson is a funny name. In particular in the context with `The Plaque` (I really dislike Splunk - It's the plaque).
+
+Should this project to be a success we'll most likely need a better name.
 
 ## License
 
