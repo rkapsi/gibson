@@ -51,10 +51,14 @@ dependencies {
   // User defined libraries (will be copied to lib/ before `play compile`)
   // compile 'group:name:0.1'
   
+  //compile ("${group}:core:${version}")
+  
   compile ("com.basho.riak:riak-client:1.0.5") {
     exclude group: "com.google.protobuf", module: "protobuf-java"
     exclude group: "commons-codec", module: "commons-codec"
   }
+  
+  compile ("com.google.inject:guice:3.0")
   
   // Default Gradle Scala plugin settings below (see Scala plugin page for up-to-date info)
 

@@ -6,7 +6,7 @@ project.ext {
 }
 
 dependencies {
-  compile (":riak")
+  compile ("${group}:riak:${version}")
 
   compile "org.slf4j:slf4j-api:${ext.slf4j}"
   compile "org.codehaus.jackson:jackson-mapper-asl:${ext.jackson}"
