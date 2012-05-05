@@ -12,10 +12,11 @@ import com.basho.riak.client.cap.DefaultRetrier;
 import com.basho.riak.client.cap.Retrier;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 
 public class RiakModule extends AbstractModule {
   
-  private static final String URL = "http://10.0.10.215:8098/riak";
+  private static final String URL = "http://localhost:8098/riak";
   
   private static final Retrier RETRIER = DefaultRetrier.attempts(1);
   
@@ -33,12 +34,12 @@ public class RiakModule extends AbstractModule {
   protected void configure() {
   }
   
-  @Provides
+  @Provides @Singleton
   IRiakClient getRiakClient() throws RiakException {
     return RiakFactory.httpClient(URL);
   }
   
-  @Provides
+  @Provides @Singleton
   Bucket getBucket(IRiakClient client) throws RiakRetryFailedException {
     return client.createBucket(BUCKET_NAME)
       .withRetrier(RETRIER)
@@ -46,7 +47,7 @@ public class RiakModule extends AbstractModule {
       .execute();
   }
   
-  @Provides
+  @Provides @Singleton
   DomainBucket<GibsonEvent> getDomainBucket(IRiakClient client, Bucket bucket) throws RiakException {
     return DomainBucket.builder(bucket, GibsonEvent.class)
         .retrier(RETRIER)
