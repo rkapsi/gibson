@@ -5,9 +5,8 @@ import java.util.List;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
-
 //import static org.ardverk.gibson.dashboard.Context.injector;
-
+import views.html.exceptions;
 
 public class Application extends Controller {
   
@@ -21,7 +20,7 @@ public class Application extends Controller {
 
 
   public static Result exceptions(String className) {
-    List<ExceptionSummary> summaries = service.getSummary();
-    return ok(index.render(summaries));
+    List<UniqueException> uniqueExceptions = service.getExceptions(className);
+    return ok(exceptions.render(uniqueExceptions));
   }
 }
