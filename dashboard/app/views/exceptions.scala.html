@@ -9,6 +9,12 @@
     <ul>
       @for(e <- exceptions) {
       <li>@e.count @e.event.getThrowable().getClassName()</li>
+      <ul>
+        @for(element <- e.event.getThrowable().getStackTrace()) {
+          @element<br>
+        }
+      </ul>
+
       }
     </ul>
 
