@@ -18,4 +18,10 @@ public class Application extends Controller {
     List<ExceptionSummary> summaries = service.getSummary();
     return ok(index.render(summaries));
   }
+
+
+  public static Result exceptions(String className) {
+    List<ExceptionSummary> summaries = service.getSummary();
+    return ok(index.render(summaries));
+  }
 }
