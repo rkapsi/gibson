@@ -4,15 +4,15 @@ package controllers;
 import static play.data.validation.Constraints.Required;
 
 
-public class ExceptionSummary {
+public class UniqueException {
   @Required
   public int count;
   @Required
-  public String className;
+  public Throwable throwable;
 
 
-  public ExceptionSummary(int count, String className) {
+  public UniqueException(int count, Throwable throwable) {
     this.count = count;
-    this.className = className;
+    this.throwable = throwable;
   }
 }
