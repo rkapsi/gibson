@@ -50,7 +50,12 @@ configurations {
 dependencies {
   // User defined libraries (will be copied to lib/ before `play compile`)
   // compile 'group:name:0.1'
-
+  
+  compile ("com.basho.riak:riak-client:1.0.5") {
+    exclude group: "com.google.protobuf", module: "protobuf-java"
+    exclude group: "commons-codec", module: "commons-codec"
+  }
+  
   // Default Gradle Scala plugin settings below (see Scala plugin page for up-to-date info)
 
   // Libraries needed to run the scala tools
@@ -60,7 +65,7 @@ dependencies {
   // Libraries needed for scala API
   provided 'org.scala-lang:scala-library:2.9.1'
 
-  // Play 2.0 Framework public API
+  // Play 2.0.1 Framework public API
   provided group: 'play', name: 'play_2.9.1', version: '2.0.1', configuration: 'compile'
 
   playManaged files('target/scala-2.9.1/classes_managed')
