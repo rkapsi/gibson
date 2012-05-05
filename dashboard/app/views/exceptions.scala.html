@@ -1,6 +1,6 @@
 @(exceptions: List[UniqueException])
 
-@main("Welcome to Play 2.0") {
+@main("Gibson") {
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
   <div class="hero-unit">
@@ -8,7 +8,7 @@
 
     <ul>
       @for(e <- exceptions) {
-      <li>@e.count @e.event.getThrowable().getClassName()</li>
+      <li><blink>@e.count</blink> @e.event.getThrowable().getClassName()</li>
       <ul>
         @for(element <- e.event.getThrowable().getStackTrace()) {
           @element<br>
