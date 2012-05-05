@@ -1,6 +1,8 @@
 package controllers;
 
 
+import org.ardverk.logging.GibsonEvent;
+
 import static play.data.validation.Constraints.Required;
 
 
@@ -8,11 +10,11 @@ public class UniqueException {
   @Required
   public int count;
   @Required
-  public Throwable throwable;
+  public GibsonEvent event;
 
 
-  public UniqueException(int count, Throwable throwable) {
+  public UniqueException(int count, GibsonEvent event) {
     this.count = count;
-    this.throwable = throwable;
+    this.event = event;
   }
 }
