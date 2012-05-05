@@ -35,11 +35,6 @@ public class Context extends GlobalSettings {
       }
     };
     
-    return Guice.createInjector(main, new RiakModule(), new AbstractModule() {
-      @Override
-      protected void configure() {
-        bind(String.class).toInstance("Hello World!!!!");
-      };
-    });
+    return Guice.createInjector(main, new RiakModule(), new GibsonServiceModule());
   }
 }
