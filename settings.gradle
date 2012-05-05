@@ -1,1 +1,1 @@
-include 'core', 'riak', 'appender', 'dashboard'
+include 'core', 'riak', 'appender'
