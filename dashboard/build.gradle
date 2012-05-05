@@ -1,7 +1,0 @@
-
-project.ext {
-}
-
-dependencies {
-  compile (":core")
-}
