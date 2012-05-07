@@ -16,7 +16,8 @@ public class MockService implements GibsonService {
     summaries.add(new ExceptionSummary(5000, "com.java.IOException"));
     summaries.add(new ExceptionSummary(2000, "com.java.NullPointerException"));
     summaries.add(new ExceptionSummary(3, "com.ardverk.FelixSmellsAwfulError"));
-
+    summaries.add(new ExceptionSummary(3, "Hello"));
+    
     return summaries;
   }
 
