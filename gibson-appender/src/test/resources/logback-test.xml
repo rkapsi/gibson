@@ -1,0 +1,22 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="MONGO" class="org.ardverk.gibson.appender.MongoAppender">
+    <!-- <database>Gibson</database> -->
+  </appender>
+  
+  <logger name="org.apache.http" level="ERROR"/>
+  
+  <logger name="org.ardverk.gibson.appender.Main">
+    <appender-ref ref="MONGO" />
+  </logger>
+  
+  <root level="ALL">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
