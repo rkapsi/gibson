@@ -1,1 +1,1 @@
-include 'core', 'riak', 'appender'
+include 'gibson-core', 'gibson-appender'

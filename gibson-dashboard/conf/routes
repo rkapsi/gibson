@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET  /                            controllers.Application.types()
+GET  /events/:typeName            controllers.Application.events(typeName: String)
+GET  /event/:typeName/:signature  controllers.Application.event(typeName: String, signature: String)
+GET  /drop                        controllers.Application.drop()
+
+# Map static resources from the /public folder to the /assets URL path
+GET  /assets/*file  controllers.Assets.at(path="/public", file)

@@ -1,0 +1,11 @@
+
+project.ext {
+  logback = "1.0.3"
+}
+
+dependencies {
+  compile ("${group}:gibson-core:${version}")
+  
+  compile "ch.qos.logback:logback-classic:${ext.logback}"
+  compile "commons-io:commons-io:${ext.commonsio}"
+}

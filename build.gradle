@@ -7,12 +7,16 @@ allprojects {
 
   sourceCompatibility = 1.6
 
-  group = 'org.ardverk'
+  group = 'org.ardverk.gibson'
   version = '0.1-SNAPSHOT'
 
   repositories {
     mavenCentral()
     mavenLocal()
+    
+    maven {
+      url "http://morphia.googlecode.com/svn/mavenrepo"
+    }
   }
 
   configurations { 
@@ -21,11 +25,14 @@ allprojects {
   
   project.ext {
     slf4j = "1.6.4"
+    commonsio = "2.3"
+    commonscodec = "1.6"
+    commonslang = "2.6"
+    junit = "4.10"
   }
 }
 
 dependencies {
-  compile project(":core")
-  compile project(":riak")
-  compile project(":appender")
+  compile project(":gibson-core")
+  compile project(":gibson-appender")
 }
