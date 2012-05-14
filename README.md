@@ -14,7 +14,7 @@ We use [SLF4J](http://www.slf4j.org) and [Logback](http://logback.qos.ch). The a
 
 ### Dashboard
 
-The Dashboard is using the [Play!](http://www.playframework.org).
+The Dashboard is using the [Play!](http://www.playframework.org) Framework.
 
 ## Building
 
