@@ -4,8 +4,8 @@
   @if(items.isEmpty()) {
     <div class="alert alert-success"><h3 class="alert-heading">Awesome!</h3>Looks like there are no errors in the System.</div>
   } else {
-    <div class="alert alert-block">
-      There are approximately <span class="label label-info">@items.count</span> errors in <span class="label label-info">@items.elements.size()</span> different categories in the System.
+    <div class="alert alert-info">
+      There are approximately @items.count errors in @items.elements.size() different categories.
     </div>
     
     <table class="table table-bordered">

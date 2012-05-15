@@ -81,6 +81,11 @@ class EventDAO extends BasicDAO<Event, Event> {
     return dst;
   }
   
+  
+  public Event getEvent(String signature) {
+    return getEvent(null, signature);
+  }
+  
   /**
    * Returns an {@link Event} of the given type that has the given signature.
    */
@@ -121,7 +126,7 @@ class EventDAO extends BasicDAO<Event, Event> {
     
     // Find one (!) Event for each distinct (!) signature
     for (String signature : signatures) {
-      Event event = getEvent(null, signature);
+      Event event = getEvent(signature);
       if (event != null) {
         dst.add(event);
       }

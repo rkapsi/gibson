@@ -1,8 +1,8 @@
 @(items: org.ardverk.gibson.dashboard.EventItems)
 @main() {
 <div class="container">
-  <div class="alert alert-block">
-    There are approximately <span class="label label-info">@items.count</span> errors of type <code>@items.typeName</code> in <span class="label label-info">@items.elements.size()</span> different categories in the System.
+  <div class="alert alert-info">
+    There are approximately @items.count errors of type @items.typeName in @items.elements.size() different categories.
   </div>
   
   <table class="table table-bordered">

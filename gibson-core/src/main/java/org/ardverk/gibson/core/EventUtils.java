@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -17,9 +19,9 @@ public class EventUtils {
   private static final int MIN_KEYWORD_LENGTH = 3;
   
   public static List<String> keywords(String value) {
-    List<String> keywords = new ArrayList<String>();
+    SortedSet<String> keywords = new TreeSet<String>();
     keywords(value, keywords);
-    return keywords;
+    return new ArrayList<String>(keywords);
   }
 
   public static List<String> keywords(Event event) {
@@ -27,7 +29,7 @@ public class EventUtils {
       throw new NullPointerException("event");
     }
     
-    List<String> keywords = new ArrayList<String>();
+    SortedSet<String> keywords = new TreeSet<String>();
     
     String message = event.getMessage();
     if (message != null) {
@@ -39,10 +41,14 @@ public class EventUtils {
       keywords(condition, keywords);
     }
     
-    return !keywords.isEmpty() ? keywords : null;
+    if (keywords.isEmpty()) {
+      return null;
+    }
+    
+    return new ArrayList<String>(keywords);
   }
   
-  private static void keywords(Condition condition, List<String> dst) {
+  private static void keywords(Condition condition, SortedSet<String> dst) {
     String message = condition.getMessage();
     if (message != null) {
       keywords(message, dst);
@@ -54,7 +60,7 @@ public class EventUtils {
     }
   }
   
-  private static void keywords(String value, List<String> dst) {
+  private static void keywords(String value, SortedSet<String> dst) {
     int length = value.length();
     StringBuilder sb = new StringBuilder(length);
     
