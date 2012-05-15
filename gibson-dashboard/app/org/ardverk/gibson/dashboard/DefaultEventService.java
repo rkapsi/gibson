@@ -40,15 +40,13 @@ class DefaultEventService implements EventService {
 
   @Override
   public EventItems getEventItems(String typeName) {
-    List<Event> events = eventDAO.getEvents(typeName);
-    List<EventItem> dst = new ArrayList<EventItem>(events.size());
+    List<String> signatures = eventDAO.getEvents(typeName);
+    List<EventItem> dst = new ArrayList<EventItem>(signatures.size());
     
     long total = 0L;
-    for (Event event : events) {
-      long count = eventDAO.getEventCount(event);
-      
-      // Get all distinct (!) keywords under that signature.
-      event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(event)));
+    for (String signature : signatures) {
+      Event event = eventDAO.getEvent(typeName, signature);
+      long count = eventDAO.getEventCount(signature);
       
       dst.add(new EventItem(event, count));
       total += count;
@@ -72,7 +70,7 @@ class DefaultEventService implements EventService {
 
   @Override
   public long getEventCount(Event event) {
-    return eventDAO.getEventCount(event);
+    return eventDAO.getEventCount(event.getSignature());
   }
 
   @Override
@@ -82,20 +80,23 @@ class DefaultEventService implements EventService {
       return SearchItems.EMPTY;
     }
     
-    List<Event> events = eventDAO.search(keywords);
+    List<String> signatures = eventDAO.search(keywords);
+    if (signatures == null || signatures.isEmpty()) {
+      return SearchItems.EMPTY;
+    }
     
-    List<SearchItem> dst = new ArrayList<SearchItem>(events.size());
+    List<SearchItem> dst = new ArrayList<SearchItem>(signatures.size());
     
     long total = 0L;
-    for (Event event : events) {
-      long count = eventDAO.getEventCount(event);
+    for (String signature : signatures) {
+      Event event = eventDAO.getEvent(signature);
+      long count = eventDAO.getEventCount(signature);
       
       // Get all distinct (!) keywords under that signature.
-      SortedSet<String> everything = eventDAO.getKeywords(event);
+      SortedSet<String> everything = eventDAO.getKeywords(signature);
       everything.retainAll(keywords);
-      event.setKeywords(new ArrayList<String>(everything));
       
-      dst.add(new SearchItem(event, count));
+      dst.add(new SearchItem(everything, event, count));
       total += count;
     }
     

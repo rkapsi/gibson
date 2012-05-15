@@ -18,7 +18,8 @@ import com.google.code.morphia.annotations.Indexes;
   @Index("level"),
   @Index("message"),
   @Index("signature"),
-  @Index("keywords")
+  @Index("keywords"),
+  @Index("condition.typeName")
 })
 public class Event {
   

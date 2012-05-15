@@ -1,6 +1,6 @@
 package org.ardverk.gibson.dashboard;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.ardverk.gibson.core.Condition;
@@ -30,12 +30,12 @@ public class SearchItem implements Countable {
   public final Condition condition;
   
   @Required
-  public final List<String> keywords;
+  public final Set<? extends String> keywords;
   
   @Required
   public final long count;
   
-  public SearchItem(Event event, long count) {
+  public SearchItem(Set<? extends String> keywords, Event event, long count) {
     this.condition = event.getCondition();
     this.typeName = condition.getTypeName();
     
@@ -44,7 +44,7 @@ public class SearchItem implements Countable {
     this.logger = event.getLogger();
     this.level = event.getLevel();
     this.message = event.getMessage();
-    this.keywords = event.getKeywords();
+    this.keywords = keywords;
     
     this.count = count;
   }

@@ -1,8 +1,6 @@
 package org.ardverk.gibson.dashboard;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -11,6 +9,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.ardverk.gibson.core.Event;
+
+import views.html.events;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
@@ -60,31 +60,16 @@ class EventDAO extends BasicDAO<Event, Event> {
   /**
    * Returns all {@link Event}s of the given type.
    */
-  public List<Event> getEvents(String typeName) {
-    
+  @SuppressWarnings("unchecked")
+  public List<String> getEvents(String typeName) {
     BasicDBObject query = new BasicDBObject();
     query.put("condition.typeName", typeName);
-    
-    @SuppressWarnings("unchecked")
-    List<String> signatures = events().distinct("signature", query);
-    if (signatures == null || signatures.isEmpty()) {
-      return Collections.emptyList();
-    }
-    
-    List<Event> dst = new ArrayList<Event>(signatures.size());
-    
-    // Find one (!) Event for each distinct (!) signature
-    for (String signature : signatures) {
-      Event event = getEvent(typeName, signature);
-      if (event != null) {
-        dst.add(event);
-      }
-    }
-    
-    return dst;
+    return events().distinct("signature", query);
   }
   
-  
+  /**
+   * Returns an {@link Event} for the given signature.
+   */
   public Event getEvent(String signature) {
     return getEvent(null, signature);
   }
@@ -102,58 +87,30 @@ class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
-   * Returns the number of occurrences of the given {@link Event}.
-   */
-  public long getEventCount(Event event) {
-    return getEventCount(event.getSignature());
-  }
-  
-  /**
    * @see EventDAO#getEventCount(Event)
    */
-  private long getEventCount(String signature) {
+  public long getEventCount(String signature) {
     return createQuery().filter("signature = ", signature).countAll();
   }
   
   /**
-   * 
+   * Returns a list of distinct (!) signatures of all events that have these keywords.
    */
-  public List<Event> search(Collection<? extends String> keywords) {
+  @SuppressWarnings("unchecked")
+  public List<String> search(Collection<? extends String> keywords) {
     BasicDBObject query = new BasicDBObject();
     query.put("keywords", new BasicDBObject("$in", keywords));
-    
-    @SuppressWarnings("unchecked")
-    List<String> signatures = events().distinct("signature", query);
-    
-    List<Event> dst = new ArrayList<Event>(signatures.size());
-    
-    // Find one (!) Event for each distinct (!) signature
-    for (String signature : signatures) {
-      Event event = getEvent(signature);
-      if (event != null) {
-        dst.add(event);
-      }
-    }
-    
-    return dst;
-  }
-  
-  /**
-   * @see EventDAO#getKeywords(String)
-   */
-  public SortedSet<String> getKeywords(Event event) {
-    return getKeywords(event.getSignature());
+    return events().distinct("signature", query);
   }
   
   /**
    * Returns all distinct (!) keywords under the given signature.
    */
+  @SuppressWarnings("unchecked")
   public SortedSet<String> getKeywords(String signature) {
     BasicDBObject query = new BasicDBObject();
     query.put("signature", signature);
     
-    @SuppressWarnings("unchecked")
-    List<String> list = (List<String>)events().distinct("keywords", query);
-    return new TreeSet<String>(list);
+    return new TreeSet<String>(events().distinct("keywords", query));
   }
 }

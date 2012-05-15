@@ -11,13 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Index;
-import com.google.code.morphia.annotations.Indexes;
 
 @Embedded
-@Indexes({
-  @Index("typeName")
-})
 public class Condition {
 
   private static final Logger LOG = LoggerFactory.getLogger(Condition.class);
