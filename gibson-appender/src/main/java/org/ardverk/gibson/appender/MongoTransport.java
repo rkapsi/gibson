@@ -21,8 +21,6 @@ class MongoTransport implements Transport {
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
       new TransportThreadFactory(MongoTransport.class));
   
-  public static final int PORT = 8098;
-  
   private List<Event> queue = new ArrayList<Event>();
   
   private final Console console;
