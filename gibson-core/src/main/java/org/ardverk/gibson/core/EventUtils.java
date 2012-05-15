@@ -2,7 +2,6 @@ package org.ardverk.gibson.core;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -18,13 +17,13 @@ public class EventUtils {
   
   private static final int MIN_KEYWORD_LENGTH = 3;
   
-  public static List<String> keywords(String value) {
+  public static SortedSet<String> keywords(String value) {
     SortedSet<String> keywords = new TreeSet<String>();
     keywords(value, keywords);
-    return new ArrayList<String>(keywords);
+    return keywords;
   }
 
-  public static List<String> keywords(Event event) {
+  public static SortedSet<String> keywords(Event event) {
     if (event == null) {
       throw new NullPointerException("event");
     }
@@ -41,11 +40,16 @@ public class EventUtils {
       keywords(condition, keywords);
     }
     
+    String marker = event.getMarker();
+    if (marker != null) {
+      keywords(marker, keywords);
+    }
+    
     if (keywords.isEmpty()) {
       return null;
     }
     
-    return new ArrayList<String>(keywords);
+    return keywords;
   }
   
   private static void keywords(Condition condition, SortedSet<String> dst) {

@@ -1,8 +1,11 @@
 package org.ardverk.gibson.dashboard;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -115,7 +118,7 @@ class EventDAO extends BasicDAO<Event, Event> {
   /**
    * 
    */
-  public List<Event> search(List<? extends String> keywords) {
+  public List<Event> search(Collection<? extends String> keywords) {
     BasicDBObject query = new BasicDBObject();
     query.put("keywords", new BasicDBObject("$in", keywords));
     
@@ -133,5 +136,24 @@ class EventDAO extends BasicDAO<Event, Event> {
     }
     
     return dst;
+  }
+  
+  /**
+   * @see EventDAO#getKeywords(String)
+   */
+  public SortedSet<String> getKeywords(Event event) {
+    return getKeywords(event.getSignature());
+  }
+  
+  /**
+   * Returns all distinct (!) keywords under the given signature.
+   */
+  public SortedSet<String> getKeywords(String signature) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("signature", signature);
+    
+    @SuppressWarnings("unchecked")
+    List<String> list = (List<String>)events().distinct("keywords", query);
+    return new TreeSet<String>(list);
   }
 }

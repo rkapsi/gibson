@@ -3,6 +3,7 @@ package org.ardverk.gibson.dashboard;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -45,6 +46,10 @@ class DefaultEventService implements EventService {
     long total = 0L;
     for (Event event : events) {
       long count = eventDAO.getEventCount(event);
+      
+      // Get all distinct (!) keywords under that signature.
+      event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(event)));
+      
       dst.add(new EventItem(event, count));
       total += count;
     }
@@ -55,7 +60,14 @@ class DefaultEventService implements EventService {
   
   @Override
   public Event getEvent(String typeName, String signature) {
-    return eventDAO.getEvent(typeName, signature);
+    Event event = eventDAO.getEvent(typeName, signature);
+    
+    if (event != null) {
+      // Get all distinct (!) keywords under that signature.
+      event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
+    }
+    
+    return event;
   }
 
   @Override
@@ -65,7 +77,7 @@ class DefaultEventService implements EventService {
 
   @Override
   public SearchItems query(String query) {
-    List<String> keywords = EventUtils.keywords(query);
+    SortedSet<String> keywords = EventUtils.keywords(query);
     if (keywords == null || keywords.isEmpty()) {
       return SearchItems.EMPTY;
     }
@@ -77,6 +89,12 @@ class DefaultEventService implements EventService {
     long total = 0L;
     for (Event event : events) {
       long count = eventDAO.getEventCount(event);
+      
+      // Get all distinct (!) keywords under that signature.
+      SortedSet<String> everything = eventDAO.getKeywords(event);
+      everything.retainAll(keywords);
+      event.setKeywords(new ArrayList<String>(everything));
+      
       dst.add(new SearchItem(event, count));
       total += count;
     }

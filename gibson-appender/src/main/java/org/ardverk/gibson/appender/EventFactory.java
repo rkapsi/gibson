@@ -1,5 +1,6 @@
 package org.ardverk.gibson.appender;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -42,7 +43,7 @@ class EventFactory {
     }
     
     event.setSignature(EventUtils.signature(event));
-    event.setKeywords(EventUtils.keywords(event));
+    event.setKeywords(new ArrayList<String>(EventUtils.keywords(event)));
     return event;
   }
   

@@ -1,7 +1,6 @@
 package org.ardverk.gibson.dashboard;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,13 +23,8 @@ public class SearchItems {
   
   @Required
   public final long count;
-
-  public SearchItems(String query, List<? extends String> keywords, 
-      List<? extends SearchItem> elements, long count) {
-    this(query, new HashSet<String>(keywords), elements, count);
-  }
   
-  private SearchItems(String query, Set<? extends String> keywords, 
+  public SearchItems(String query, Set<? extends String> keywords, 
       List<? extends SearchItem> elements, long count) {
     this.query = query;
     this.keywords = keywords;

@@ -9,7 +9,12 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
   
-  private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+  private static final Logger[] LOGGERS = {
+    LoggerFactory.getLogger(Main.class),
+    LoggerFactory.getLogger(System.class),
+    LoggerFactory.getLogger(MongoTransport.class),
+    LoggerFactory.getLogger(Console.class),
+  };
   
   private static final Random GENERATOR = new Random();
   
@@ -37,6 +42,10 @@ public class Main {
     "Builder"
   };
   
+  private static Logger logger() {
+    return LOGGERS[GENERATOR.nextInt(LOGGERS.length)];
+  }
+  
   private static String log() {
     int count = 1 + GENERATOR.nextInt(4);
     return message(count);
@@ -58,9 +67,9 @@ public class Main {
   public static void main(String[] args) throws InterruptedException {
     while (true) {
       try {
-        LOG.error(log(), createThrowable(msg(), 5 + GENERATOR.nextInt(10)));
+        logger().error(log(), createThrowable(msg(), 5 + GENERATOR.nextInt(10)));
       } catch (Exception err) {
-        LOG.error("Excpetion", err);
+        logger().error("Excpetion", err);
       }
       Thread.sleep(50);
     }

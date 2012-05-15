@@ -55,17 +55,11 @@
         <td>Signature</td>
         <td>@event.getSignature()</td>
       </tr>
-      @if(count >= 2) {
-      <tr>
-        <td>Count</td>
-        <td>@count</td>
-      </tr>
-      }
     </tbody>
   </table>
   
   @if(count >= 2) {
-    <div class="alert alert-info">Please note there are approximately <span class="label label-info">@count</span> errors of this type. This is just one sample.</div>
+    <div class="alert alert-info">Please note there are approximately @count errors of this type. This is just one sample.</div>
   }
 </div> <!-- /container -->
 }
