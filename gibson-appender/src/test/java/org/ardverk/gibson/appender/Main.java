@@ -3,6 +3,8 @@ package org.ardverk.gibson.appender;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,14 +70,28 @@ public class Main {
   }
   
   public static void main(String[] args) throws InterruptedException {
-    while (true) {
-      try {
-        logger().error(log(), createThrowable(msg(), 5 + GENERATOR.nextInt(10)));
-      } catch (Exception err) {
-        logger().error("Excpetion", err);
+    Runnable task = new Runnable() {
+      @Override
+      public void run() {
+        while (true) {
+          try {
+            logger().error(log(), createThrowable(msg(), 5 + GENERATOR.nextInt(10)));
+          } catch (Exception err) {
+            logger().error("Excpetion", err);
+          }
+          
+          try { Thread.sleep(25); } catch (InterruptedException ignore) {}
+        }
       }
-      Thread.sleep(50);
+    };
+    
+    ExecutorService executor = Executors.newCachedThreadPool();
+    
+    for (int i = 0; i < 4; i++) {
+      executor.execute(task);
     }
+    
+    Thread.sleep(Long.MAX_VALUE);
   }
   
   private static Throwable createThrowable(String message, int stack) {
