@@ -1,17 +1,9 @@
 @(items: org.ardverk.gibson.dashboard.TypeItems)
-
 @main() {
 <div class="container">          
   @if(items.isEmpty()) {
     <div class="alert alert-success"><h3 class="alert-heading">Awesome!</h3>Looks like there are no errors in the System.</div>
-  } else {  
-    
-    <form class="well form-search">
-      <input type="text" class="input-medium search-query">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-    
-    <hr>
+  } else {
     <div class="alert alert-block">
       There are approximately <span class="label label-info">@items.count</span> errors in <span class="label label-info">@items.elements.size()</span> different categories in the System.
     </div>
@@ -31,6 +23,5 @@
       </tbody>
     </table>
   }
-  
 </div> <!-- /container -->
 }

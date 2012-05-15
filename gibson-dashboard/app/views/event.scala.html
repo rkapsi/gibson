@@ -1,6 +1,6 @@
 @(event: org.ardverk.gibson.core.Event, count: Long = 1)
 
-@main("Gibson") {
+@main() {
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
   <table class="table table-bordered">
@@ -35,13 +35,21 @@
         <td>Message</td>
         <td>@event.getMessage()</td>
       </tr>
-       <tr>
-          <td>Type</td>
-          <td>@event.getCondition().getTypeName()</td>
-        </tr>
+      <tr>
+        <td>Type</td>
+        <td>@event.getCondition().getTypeName()</td>
+      </tr>
       <tr>
         <td>Stack Trace</td>
         <td><pre>@event.getCondition().toStringValue()</pre></td>
+      </tr>
+      <tr>
+        <td>Keywords</td>
+        <td>
+          @for(keyword <- event.getKeywords()) {
+            <span class="label label-info">@keyword</span>
+          }
+        </td>
       </tr>
       <tr>
         <td>Signature</td>

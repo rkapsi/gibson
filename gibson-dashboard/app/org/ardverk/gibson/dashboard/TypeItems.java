@@ -18,6 +18,10 @@ public class TypeItems {
   }
   
   public boolean isEmpty() {
-    return elements == null || elements.isEmpty();
+    return size() == 0;
+  }
+  
+  public int size() {
+    return elements != null ? elements.size() : 0;
   }
 }

@@ -11,6 +11,7 @@ import org.ardverk.gibson.core.Event;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
+import com.google.code.morphia.query.Query;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -84,9 +85,12 @@ class EventDAO extends BasicDAO<Event, Event> {
    * Returns an {@link Event} of the given type that has the given signature.
    */
   public Event getEvent(String typeName, String signature) {
-    return createQuery()
-        .filter("condition.typeName = ", typeName)
-        .filter("signature = ", signature).get();
+    Query<Event> query = createQuery();
+    if (typeName != null) {
+      query.filter("condition.typeName = ", typeName);
+    }
+    
+    return query.filter("signature = ", signature).get();
   }
   
   /**
@@ -101,5 +105,28 @@ class EventDAO extends BasicDAO<Event, Event> {
    */
   private long getEventCount(String signature) {
     return createQuery().filter("signature = ", signature).countAll();
+  }
+  
+  /**
+   * 
+   */
+  public List<Event> search(List<? extends String> keywords) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("keywords", new BasicDBObject("$in", keywords));
+    
+    @SuppressWarnings("unchecked")
+    List<String> signatures = events().distinct("signature", query);
+    
+    List<Event> dst = new ArrayList<Event>(signatures.size());
+    
+    // Find one (!) Event for each distinct (!) signature
+    for (String signature : signatures) {
+      Event event = getEvent(null, signature);
+      if (event != null) {
+        dst.add(event);
+      }
+    }
+    
+    return dst;
   }
 }

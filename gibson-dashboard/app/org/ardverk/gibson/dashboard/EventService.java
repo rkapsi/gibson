@@ -16,4 +16,6 @@ public interface EventService {
   public Event getEvent(String typeName, String signature);
   
   public long getEventCount(Event event);
+  
+  public SearchItems query(String query);
 }

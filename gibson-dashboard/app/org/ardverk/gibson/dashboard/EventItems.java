@@ -5,7 +5,7 @@ import java.util.List;
 import play.data.validation.Constraints.Required;
 
 public class EventItems {
-
+  
   @Required
   public final String typeName;
   
@@ -22,6 +22,10 @@ public class EventItems {
   }
   
   public boolean isEmpty() {
-    return elements == null || elements.isEmpty();
+    return size() == 0;
+  }
+  
+  public int size() {
+    return elements != null ? elements.size() : 0;
   }
 }

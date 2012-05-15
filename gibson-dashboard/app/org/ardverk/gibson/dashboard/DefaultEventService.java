@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.core.EventUtils;
 
 @Singleton
 class DefaultEventService implements EventService {
@@ -60,5 +61,27 @@ class DefaultEventService implements EventService {
   @Override
   public long getEventCount(Event event) {
     return eventDAO.getEventCount(event);
+  }
+
+  @Override
+  public SearchItems query(String query) {
+    List<String> keywords = EventUtils.keywords(query);
+    if (keywords == null || keywords.isEmpty()) {
+      return SearchItems.EMPTY;
+    }
+    
+    List<Event> events = eventDAO.search(keywords);
+    
+    List<SearchItem> dst = new ArrayList<SearchItem>(events.size());
+    
+    long total = 0L;
+    for (Event event : events) {
+      long count = eventDAO.getEventCount(event);
+      dst.add(new SearchItem(event, count));
+      total += count;
+    }
+    
+    Collections.sort(dst, Countable.DESCENDING);
+    return new SearchItems(query, keywords, dst, total);
   }
 }

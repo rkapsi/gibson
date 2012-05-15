@@ -2,9 +2,11 @@ package controllers;
 
 import static org.ardverk.gibson.dashboard.Context.injector;
 
+import org.apache.commons.lang.StringUtils;
 import org.ardverk.gibson.core.Event;
 import org.ardverk.gibson.dashboard.EventItems;
 import org.ardverk.gibson.dashboard.EventService;
+import org.ardverk.gibson.dashboard.SearchItems;
 import org.ardverk.gibson.dashboard.TypeItems;
 
 import play.mvc.Controller;
@@ -12,6 +14,7 @@ import play.mvc.Result;
 import views.html.event;
 import views.html.events;
 import views.html.types;
+import views.html.search;
 
 public class Main extends Controller {
   
@@ -44,7 +47,13 @@ public class Main extends Controller {
     return ok(event.render(item, count));
   }
   
-  public static Result query(String query) {
-    return ok();
+  public static Result search(String q) {
+    if ((q = StringUtils.trimToNull(q)) == null) {
+      return redirect("/");
+    }
+    
+    EventService service = injector().getInstance(EventService.class);
+    SearchItems items = service.query(q);
+    return ok(search.render(items));
   }
 }
