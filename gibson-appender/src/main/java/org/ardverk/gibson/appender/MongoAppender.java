@@ -99,23 +99,23 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
 
   @Override
   protected void append(ILoggingEvent evt) {
-    Transport transport = this.transport;
     
-    if (transport != null && transport.isConnected()) {
-      
-      // Skip LoggingEvents that don't have a StackTrace
-      IThrowableProxy proxy = evt.getThrowableProxy();
-      if (proxy == null) {
+    // Skip LoggingEvents that don't have a StackTrace
+    IThrowableProxy proxy = evt.getThrowableProxy();
+    if (proxy == null) {
+      return;
+    }
+    
+    // Skip LoggingEvents that don't have a matching Marker
+    if (markers != null) {
+      Marker marker = evt.getMarker();
+      if (marker != null && markers.contains(marker.getName())) {
         return;
       }
-      
-      // Skip LoggingEvents that don't have a matching Marker
-      if (markers != null) {
-        Marker marker = evt.getMarker();
-        if (marker != null && markers.contains(marker.getName())) {
-          return;
-        }
-      }
+    }
+    
+    Transport transport = this.transport;
+    if (transport != null && transport.isConnected()) {
       
       Event event = EventFactory.createEvent(evt);
       if (event != null) {
