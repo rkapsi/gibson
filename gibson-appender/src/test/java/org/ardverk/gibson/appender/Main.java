@@ -39,7 +39,10 @@ public class Main {
     "User",
     "Factory",
     "Facy",
-    "Builder"
+    "Builder",
+    "Hello",
+    "World",
+    "test"
   };
   
   private static Logger logger() {
