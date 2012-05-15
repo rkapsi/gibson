@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.ardverk.gibson.core.DatastoreFactory;
 import org.ardverk.gibson.core.Event;
 import org.slf4j.Marker;
@@ -28,8 +29,6 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   private volatile Transport transport = null;
   
   private volatile Set<String> markers = null;
-  
-  private volatile boolean hasStackTrace = true;
   
   @Override
   public void start() {
@@ -87,7 +86,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
       
       Set<String> dst = new HashSet<String>();
       for (String token : tokens) {
-        if ((token = trimToNull(token)) != null) {
+        if ((token = StringUtils.trimToNull(token)) != null) {
           dst.add(token);
         }
       }
@@ -105,11 +104,9 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     if (transport != null && transport.isConnected()) {
       
       // Skip LoggingEvents that don't have a StackTrace
-      if (hasStackTrace) {
-        IThrowableProxy proxy = evt.getThrowableProxy();
-        if (proxy == null) {
-          return;
-        }
+      IThrowableProxy proxy = evt.getThrowableProxy();
+      if (proxy == null) {
+        return;
       }
       
       // Skip LoggingEvents that don't have a matching Marker
@@ -125,14 +122,5 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
         transport.send(event);
       }
     }
-  }
-  
-  private static String trimToNull(String value) {
-    if (value != null) {
-      if (!(value = value.trim()).isEmpty()) {
-        return value;
-      }
-    }
-    return null;
   }
 }

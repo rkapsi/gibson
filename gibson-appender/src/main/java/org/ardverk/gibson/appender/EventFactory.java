@@ -2,8 +2,8 @@ package org.ardverk.gibson.appender;
 
 import java.util.Date;
 
-import org.ardverk.gibson.core.Event;
 import org.ardverk.gibson.core.Condition;
+import org.ardverk.gibson.core.Event;
 import org.ardverk.gibson.core.Level;
 import org.ardverk.gibson.core.SignatureUtils;
 import org.bson.types.ObjectId;
@@ -12,6 +12,9 @@ import org.slf4j.Marker;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
+/**
+ * This factory turns {@link ILoggingEvent}s into {@link Event}.
+ */
 class EventFactory {
   
   public static Event createEvent(ILoggingEvent evt) {
