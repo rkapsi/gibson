@@ -4,6 +4,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,7 @@ public class Condition {
   
   private String message;
   
-  private StackTraceElement[] stackTrace;
+  private List<StackTraceElement> stackTrace;
   
   private Condition cause;
   
@@ -69,11 +71,11 @@ public class Condition {
     this.message = message;
   }
 
-  public StackTraceElement[] getStackTrace() {
+  public List<StackTraceElement> getStackTrace() {
     return stackTrace;
   }
 
-  public void setStackTrace(StackTraceElement[] stackTrace) {
+  public void setStackTrace(List<StackTraceElement> stackTrace) {
     this.stackTrace = stackTrace;
   }
 
@@ -113,19 +115,19 @@ public class Condition {
     return sb.toString();
   }
   
-  private void printStackTraceAsCause(StringBuilder sb, StackTraceElement[] causedTrace) {
+  private void printStackTraceAsCause(StringBuilder sb, List<? extends StackTraceElement> causedTrace) {
     // Compute number of frames in common between this and caused
-    int m = stackTrace.length - 1, n = causedTrace.length - 1;
-    while (m >= 0 && n >= 0 && stackTrace[m].equals(causedTrace[n])) {
+    int m = stackTrace.size() - 1, n = causedTrace.size() - 1;
+    while (m >= 0 && n >= 0 && stackTrace.get(m).equals(causedTrace.get(n))) {
       m--;
       n--;
     }
-    int framesInCommon = stackTrace.length - 1 - m;
+    int framesInCommon = stackTrace.size() - 1 - m;
 
     sb.append("Caused by: ").append(this).append("\n");
     
     for (int i = 0; i <= m; i++) {
-      sb.append("\tat ").append(stackTrace[i]).append("\n");
+      sb.append("\tat ").append(stackTrace.get(i)).append("\n");
     }
     
     if (framesInCommon != 0) {
@@ -143,10 +145,11 @@ public class Condition {
     return (message != null) ? (typeName + ": " + message) : typeName;
   }
   
-  private static StackTraceElement[] getStackTrace(Throwable throwable) {
+  private static List<StackTraceElement> getStackTrace(Throwable throwable) {
+    StackTraceElement[] elements = null;
     if (STACK_TRACE != null) {
       try {
-        return (StackTraceElement[])STACK_TRACE.invoke(throwable);
+        elements = (StackTraceElement[])STACK_TRACE.invoke(throwable);
       } catch (IllegalAccessException err) {
         LOG.error("IllegalAccessException", new IgnorableException("IllegalAccessException", err));
       } catch (InvocationTargetException err) {
@@ -154,7 +157,15 @@ public class Condition {
       }
     }
     
-    return throwable.getStackTrace();
+    if (elements == null) {
+      elements = throwable.getStackTrace();
+    }
+    
+    if (elements != null) {
+      return Arrays.asList(elements);
+    }
+    
+    return null;
   }
   
   /**

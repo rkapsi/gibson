@@ -16,7 +16,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 
 @Singleton
-public class EventDAO extends BasicDAO<Event, Event> {
+class EventDAO extends BasicDAO<Event, Event> {
 
   @Inject
   public EventDAO(Datastore ds) {
@@ -39,7 +39,7 @@ public class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
-   * 
+   * Returns the type names of all {@link Event}.
    */
   @SuppressWarnings("unchecked")
   public List<String> getTypeNames() {
@@ -47,14 +47,14 @@ public class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
-   * 
+   * Returns the number of occurrences of the given {@link Event} type.
    */
   public long getTypeNameCount(String typeName) {
     return createQuery().filter("condition.typeName = ", typeName).countAll();
   }
   
   /**
-   * 
+   * Returns all {@link Event}s of the given type.
    */
   public List<Event> getEvents(String typeName) {
     
@@ -81,23 +81,25 @@ public class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
-   * 
+   * Returns an {@link Event} of the given type that has the given signature.
    */
   public Event getEvent(String typeName, String signature) {
-    return createQuery().filter("signature = ", signature).get();
+    return createQuery()
+        .filter("condition.typeName = ", typeName)
+        .filter("signature = ", signature).get();
   }
   
   /**
-   * 
+   * Returns the number of occurrences of the given {@link Event}.
    */
   public long getEventCount(Event event) {
     return getEventCount(event.getSignature());
   }
   
   /**
-   * 
+   * @see EventDAO#getEventCount(Event)
    */
-  public long getEventCount(String signature) {
+  private long getEventCount(String signature) {
     return createQuery().filter("signature = ", signature).countAll();
   }
 }

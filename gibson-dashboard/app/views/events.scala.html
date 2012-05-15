@@ -1,7 +1,6 @@
 @(items: org.ardverk.gibson.dashboard.EventItems)
 @main("Gibson") {
 <div class="container">
-  
   <div class="alert alert-block">
     There are approximately <span class="label label-info">@items.count</span> errors of type <code>@items.typeName</code> in <span class="label label-info">@items.elements.size()</span> different categories in the System.
   </div>
@@ -17,9 +16,9 @@
       @for(element <- items.elements) {
         <tr>
           <td>@element.count</td>
-          <td><a href="@routes.Application.event(items.typeName, element.signature)">@element.level</a></td>
-          <td><a href="@routes.Application.event(items.typeName, element.signature)">@element.logger</a></td>
-          <td><a href="@routes.Application.event(items.typeName, element.signature)">@element.message: @element.exception</a></td>
+          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.level</a></td>
+          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.logger</a></td>
+          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.message: @element.exception</a></td>
         </tr>
       }
     </tbody>

@@ -1,11 +1,12 @@
 package org.ardverk.gibson.appender;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.ardverk.gibson.core.Condition;
 import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.core.EventUtils;
 import org.ardverk.gibson.core.Level;
-import org.ardverk.gibson.core.SignatureUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Marker;
 
@@ -34,10 +35,14 @@ class EventFactory {
     event.setCondition(toCondition(evt));
     
     if (evt.hasCallerData()) {
-      event.setCallerData(evt.getCallerData());
+      StackTraceElement[] elements = evt.getCallerData();
+      if (elements != null && elements.length >= 1) {
+        event.setCallerData(Arrays.asList(elements));
+      }
     }
     
-    event.setSignature(SignatureUtils.signature(event));
+    event.setSignature(EventUtils.signature(event));
+    event.setKeywords(EventUtils.keywords(event));
     return event;
   }
   

@@ -13,15 +13,9 @@ import views.html.event;
 import views.html.events;
 import views.html.types;
 
-public class Application extends Controller {
+public class Main extends Controller {
   
-  public static Result drop() {
-    EventService service = injector().getInstance(EventService.class);
-    service.drop();
-    return redirect("/");
-  }
-  
-  public static Result types() {
+  public static Result index() {
     EventService service = injector().getInstance(EventService.class);
     TypeItems items = service.getTypeItems();
     return ok(types.render(items));
@@ -48,5 +42,9 @@ public class Application extends Controller {
     
     long count = service.getEventCount(item);
     return ok(event.render(item, count));
+  }
+  
+  public static Result query(String query) {
+    return ok();
   }
 }

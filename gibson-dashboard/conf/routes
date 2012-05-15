@@ -3,10 +3,11 @@
 # ~~~~
 
 # Home page
-GET  /                            controllers.Application.types()
-GET  /events/:typeName            controllers.Application.events(typeName: String)
-GET  /event/:typeName/:signature  controllers.Application.event(typeName: String, signature: String)
-GET  /drop                        controllers.Application.drop()
+GET  /                            controllers.Main.index()
+GET  /events/:typeName            controllers.Main.events(typeName: String)
+GET  /event/:typeName/:signature  controllers.Main.event(typeName: String, signature: String)
+GET  /admin                       controllers.Admin.index()
+GET  /admin/drop                  controllers.Admin.drop()
 
 # Map static resources from the /public folder to the /assets URL path
 GET  /assets/*file  controllers.Assets.at(path="/public", file)

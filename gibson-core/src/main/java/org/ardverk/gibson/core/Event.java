@@ -1,6 +1,7 @@
 package org.ardverk.gibson.core;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -16,13 +17,12 @@ import com.google.code.morphia.annotations.Indexes;
   @Index("logger"),
   @Index("level"),
   @Index("message"),
-  @Index("signature")
+  @Index("signature"),
+  @Index("keywords")
 })
 public class Event {
   
   public static final String COLLECTION = "Events";
-  
-  private static final StackTraceElement[] EMPTY = new StackTraceElement[0];
   
   @Id
   private ObjectId id;
@@ -41,11 +41,13 @@ public class Event {
   
   private Condition condition;
   
-  private StackTraceElement[] callerData = EMPTY;
+  private List<StackTraceElement> callerData;
   
   private Map<String, String> mdc;
   
   private String signature;
+  
+  private List<String> keywords;
   
   public ObjectId getId() {
     return id;
@@ -111,14 +113,11 @@ public class Event {
     this.condition = condition;
   }
   
-  public StackTraceElement[] getCallerData() {
+  public List<StackTraceElement> getCallerData() {
     return callerData;
   }
 
-  public void setCallerData(StackTraceElement[] callerData) {
-    if (callerData == null) {
-      throw new NullPointerException("callerData");
-    }
+  public void setCallerData(List<StackTraceElement> callerData) {
     this.callerData = callerData;
   }
 
@@ -138,6 +137,14 @@ public class Event {
     this.signature = signature;
   }
   
+  public List<String> getKeywords() {
+    return keywords;
+  }
+
+  public void setKeywords(List<String> keywords) {
+    this.keywords = keywords;
+  }
+
   @Override
   public String toString() {
     return new ToStringBuilder(this).toString();
