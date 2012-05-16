@@ -15,7 +15,7 @@ public class Main {
     LoggerFactory.getLogger(Main.class),
     LoggerFactory.getLogger(System.class),
     LoggerFactory.getLogger(MongoTransport.class),
-    LoggerFactory.getLogger(Console.class),
+    LoggerFactory.getLogger(SystemConsole.class),
   };
   
   private static final Random GENERATOR = new Random();

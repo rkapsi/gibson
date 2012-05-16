@@ -20,7 +20,7 @@ import com.mongodb.MongoURI;
  */
 public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
-  private final Console console = new Console();
+  private final Console console = new SystemConsole();
   
   private volatile MongoURI endpoint = DatastoreFactory.ENDPOINT;
   
