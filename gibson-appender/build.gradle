@@ -4,8 +4,6 @@ project.ext {
 }
 
 dependencies {
-  compile ("${group}:gibson-core:${version}")
-  
+  compile (":gibson-core")
   compile "ch.qos.logback:logback-classic:${ext.logback}"
-  compile "commons-io:commons-io:${ext.commonsio}"
 }

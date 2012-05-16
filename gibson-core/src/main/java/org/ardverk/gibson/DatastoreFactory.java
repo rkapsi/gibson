@@ -1,18 +1,13 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.converters.DefaultConverters;
 import com.google.code.morphia.mapping.Mapper;
 import com.mongodb.Mongo;
-import com.mongodb.MongoURI;
 
 public class DatastoreFactory {
 
-  public static final MongoURI ENDPOINT = new MongoURI("mongodb://localhost");
-
-  public static final String DATABASE = "Gibson";
-  
   private final Mongo mongo;
 
   public DatastoreFactory(Mongo mongo) {

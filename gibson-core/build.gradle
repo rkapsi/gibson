@@ -9,6 +9,7 @@ dependencies {
   
   compile "commons-lang:commons-lang:${ext.commonslang}"
   compile "commons-codec:commons-codec:${ext.commonscodec}"
+  compile "commons-io:commons-io:${ext.commonsio}"
   
   compile "org.mongodb:mongo-java-driver:${ext.mongo}"
   compile "com.google.code.morphia:morphia:${ext.morphia}"

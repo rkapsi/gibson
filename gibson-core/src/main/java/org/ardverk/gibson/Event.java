@@ -1,4 +1,4 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 import java.util.Date;
 import java.util.List;

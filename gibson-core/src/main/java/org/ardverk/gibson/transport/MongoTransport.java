@@ -1,4 +1,4 @@
-package org.ardverk.gibson.appender;
+package org.ardverk.gibson.transport;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,22 +9,30 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.ardverk.gibson.core.DatastoreFactory;
-import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.DatastoreFactory;
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.Gibson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.code.morphia.Datastore;
 import com.mongodb.DBTCPConnector;
 import com.mongodb.Mongo;
 import com.mongodb.MongoURI;
 
-class MongoTransport implements Transport {
+/**
+ * An implementation of {@link Transport} that is backed by MongoDB.
+ */
+public class MongoTransport implements Transport {
   
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
       new TransportThreadFactory(MongoTransport.class));
   
+  private static final Logger LOG = LoggerFactory.getLogger(MongoTransport.class);
+  
   private List<Event> queue = new ArrayList<Event>();
   
-  private final Console console;
+  private final MongoURI uri;
   
   private final String database;
   
@@ -36,8 +44,8 @@ class MongoTransport implements Transport {
   
   private Future<?> future = null;
   
-  public MongoTransport(Console console, String database) {
-    this.console = console;
+  public MongoTransport(MongoURI uri, String database) {
+    this.uri = uri;
     this.database = database;
   }
 
@@ -60,7 +68,7 @@ class MongoTransport implements Transport {
   }
 
   @Override
-  public synchronized void connect(MongoURI uri) throws IOException {
+  public synchronized void connect() throws IOException {
     if (!open) {
       throw new IOException("closed");
     }
@@ -69,8 +77,8 @@ class MongoTransport implements Transport {
       throw new IOException("connected");
     }
     
-    if (console.isInfoEnabled()) {
-      console.info("Connecting to: " + uri);
+    if (LOG.isInfoEnabled()) {
+      LOG.info(Gibson.MARKER, "Connecting to: " + uri);
     }
     
     this.mongo = new Mongo(uri);
@@ -84,7 +92,7 @@ class MongoTransport implements Transport {
         try {
           process(datastore);
         } catch (InterruptedException err) {
-          console.error("InterruptedException", err);
+          LOG.error(Gibson.MARKER, "InterruptedException", err);
         } finally {
           destroy(mongo);
         }
@@ -139,7 +147,7 @@ class MongoTransport implements Transport {
       try {
         datastore.save(events);
       } catch (Exception err) {
-        console.error("Exception", err);
+        LOG.error(Gibson.MARKER, "Exception", err);
       }
     }
   }

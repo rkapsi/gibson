@@ -1,4 +1,4 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 /**
  * The {@link Level} of the logging {@link Event}.

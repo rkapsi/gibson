@@ -5,8 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.ardverk.gibson.core.DatastoreFactory;
-import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.Gibson;
+import org.ardverk.gibson.transport.MongoTransport;
+import org.ardverk.gibson.transport.Transport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -20,11 +24,11 @@ import com.mongodb.MongoURI;
  */
 public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
-  private final Console console = new SystemConsole();
+  private static final Logger LOG = LoggerFactory.getLogger(MongoAppender.class);
   
-  private volatile MongoURI endpoint = DatastoreFactory.ENDPOINT;
+  private volatile MongoURI endpoint = Gibson.ENDPOINT;
   
-  private volatile String database = DatastoreFactory.DATABASE;
+  private volatile String database = Gibson.DATABASE;
   
   private volatile Transport transport = null;
   
@@ -33,22 +37,22 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   @Override
   public void start() {
     if (endpoint == null) {
-      console.error("Endpoint is not defined");
+      LOG.error(Gibson.MARKER, "Endpoint is not defined");
       return;
     }
 
     if (database == null) {
-      console.error("Database name is not defined");
+      LOG.error(Gibson.MARKER, "Database name is not defined");
       return;
     }
     
-    transport = new MongoTransport(console, database);
+    transport = new MongoTransport(endpoint, database);
     
     try {
-      transport.connect(endpoint);
+      transport.connect();
     } catch (IOException err) {
-      if (console.isErrorEnabled()) {
-        console.error("Failed to connect: " + endpoint, err);
+      if (LOG.isErrorEnabled()) {
+        LOG.error(Gibson.MARKER, "Failed to connect: " + endpoint, err);
       }
       return;
     }
@@ -60,11 +64,12 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   public void stop() {
     super.stop();
 
+    Transport transport = this.transport;
     if (transport != null) {
       try {
         transport.close();
       } catch (IOException err) {
-        console.error("IOException", err);
+        LOG.error(Gibson.MARKER, "IOException", err);
       }
     }
   }
@@ -99,17 +104,30 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
 
   @Override
   protected void append(ILoggingEvent evt) {
-    
+    // Make sure we're never entering a recursion if there are any problems with the appender.
+    try {
+      process(evt);
+    } catch (Exception err) {
+      LOG.error(Gibson.MARKER, "Exception", err);
+    }
+  }
+  
+  private void process(ILoggingEvent evt) {
     // Skip LoggingEvents that don't have a StackTrace
     IThrowableProxy proxy = evt.getThrowableProxy();
     if (proxy == null) {
       return;
     }
     
-    // Skip LoggingEvents that don't have a matching Marker
-    if (markers != null) {
-      Marker marker = evt.getMarker();
-      if (marker != null && markers.contains(marker.getName())) {
+    Marker marker = evt.getMarker();
+    if (marker != null) {
+      // Skip LoggingEvents that don't have a matching Marker
+      if (markers != null && markers.contains(marker.getName())) {
+        return;
+      }
+      
+      // Skip LoggingEvents that originate from Gibson itself.
+      if (marker.equals(Gibson.MARKER)) {
         return;
       }
     }

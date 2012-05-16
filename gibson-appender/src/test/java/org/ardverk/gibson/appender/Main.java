@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.ardverk.gibson.transport.MongoTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ public class Main {
     LoggerFactory.getLogger(Main.class),
     LoggerFactory.getLogger(System.class),
     LoggerFactory.getLogger(MongoTransport.class),
-    LoggerFactory.getLogger(SystemConsole.class),
+    LoggerFactory.getLogger(ClassLoader.class),
   };
   
   private static final Random GENERATOR = new Random();

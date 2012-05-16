@@ -1,4 +1,4 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,9 @@ import com.google.code.morphia.converters.TypeConverter;
 import com.google.code.morphia.mapping.MappedField;
 import com.google.code.morphia.mapping.MappingException;
 
+/**
+ * 
+ */
 class StackTraceElementConverter extends TypeConverter implements SimpleValueConverter {
   
   public StackTraceElementConverter() {

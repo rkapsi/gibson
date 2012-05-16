@@ -1,4 +1,4 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.code.morphia.annotations.Embedded;
 
+/**
+ * 
+ */
 @Embedded
 public class Condition {
 
@@ -20,10 +23,6 @@ public class Condition {
   private static final Method STACK_TRACE = getOurStackTrace();
   
   public static Condition valueOf(Throwable throwable) {
-    if (throwable instanceof IgnorableException) {
-      return null;
-    }
-    
     return create(throwable);
   }
   
@@ -146,9 +145,9 @@ public class Condition {
       try {
         elements = (StackTraceElement[])STACK_TRACE.invoke(throwable);
       } catch (IllegalAccessException err) {
-        LOG.error("IllegalAccessException", new IgnorableException("IllegalAccessException", err));
+        LOG.error(Gibson.MARKER, "IllegalAccessException", err);
       } catch (InvocationTargetException err) {
-        LOG.error("InvocationTargetException", new IgnorableException("InvocationTargetException", err));
+        LOG.error(Gibson.MARKER, "InvocationTargetException", err);
       }
     }
     
@@ -173,7 +172,7 @@ public class Condition {
       method = Throwable.class.getDeclaredMethod("getOurStackTrace");
       method.setAccessible(true);
     } catch (NoSuchMethodException err) {
-      LOG.error("NoSuchMethodException", new IgnorableException("NoSuchMethodException", err));
+      LOG.error(Gibson.MARKER, "NoSuchMethodException", err);
     }
     return method;
   }

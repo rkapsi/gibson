@@ -1,4 +1,4 @@
-package org.ardverk.gibson.core;
+package org.ardverk.gibson;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.StringUtils;
 
 public class EventUtils {
 
+  // Using MD5 for speed and it's sufficient for this use-case.
   private static final String ALGORITHM = "MD5";
   
   private static final byte[] NULL = { 'n', 'u', 'l', 'l' };
@@ -157,7 +158,7 @@ public class EventUtils {
     try {
       return MessageDigest.getInstance(algorithm);
     } catch (NoSuchAlgorithmException err) {
-      throw new IgnorableException("NoSuchAlgorithmException: " + algorithm, err);
+      throw new IllegalStateException("NoSuchAlgorithmException: " + algorithm, err);
     }
   }
 }

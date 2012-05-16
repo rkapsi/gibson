@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.ardverk.gibson.core.Condition;
-import org.ardverk.gibson.core.Event;
-import org.ardverk.gibson.core.EventUtils;
-import org.ardverk.gibson.core.Level;
+import org.ardverk.gibson.Condition;
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.EventUtils;
+import org.ardverk.gibson.Level;
 import org.bson.types.ObjectId;
 import org.slf4j.Marker;
 

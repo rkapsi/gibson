@@ -1,19 +1,15 @@
-package org.ardverk.gibson.appender;
+package org.ardverk.gibson.transport;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.net.SocketAddress;
 
-import org.ardverk.gibson.core.Event;
-
-
-import com.mongodb.MongoURI;
+import org.ardverk.gibson.Event;
 
 /**
  * The {@link Transport} interface defines a simple mechanism to send message(s)
  * to a remote host.
  */
-interface Transport extends Closeable {
+public interface Transport extends Closeable {
 
   /**
    * Returns {@code true} if the {@link Transport} is connected.
@@ -21,9 +17,9 @@ interface Transport extends Closeable {
   public boolean isConnected();
 
   /**
-   * Binds the {@link Transport} to the given {@link SocketAddress}.
+   * Connects the {@link Transport} to some (possibly remote) endpoint.
    */
-  public void connect(MongoURI uri) throws IOException;
+  public void connect() throws IOException;
 
   /**
    * Sends the given message.
