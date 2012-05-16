@@ -6,6 +6,7 @@
 .idea
 *.iml
 .gradle
+.ivy
 bin
 build
 target
