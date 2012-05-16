@@ -13,6 +13,7 @@ import org.ardverk.gibson.core.DatastoreFactory;
 import org.ardverk.gibson.core.Event;
 
 import com.google.code.morphia.Datastore;
+import com.mongodb.DBTCPConnector;
 import com.mongodb.Mongo;
 import com.mongodb.MongoURI;
 
@@ -31,6 +32,8 @@ class MongoTransport implements Transport {
   
   private boolean connected = false;
   
+  private Mongo mongo = null;
+  
   private Future<?> future = null;
   
   public MongoTransport(Console console, String database) {
@@ -40,7 +43,20 @@ class MongoTransport implements Transport {
 
   @Override
   public synchronized boolean isConnected() {
-    return connected;
+    if (!connected) {
+      return false;
+    }
+    
+    if (mongo == null) {
+      return false;
+    }
+    
+    DBTCPConnector connector = mongo.getConnector();
+    if (!connector.isOpen()) {
+      return false;
+    }
+    
+    return true;
   }
 
   @Override
@@ -57,7 +73,7 @@ class MongoTransport implements Transport {
       console.info("Connecting to: " + uri);
     }
     
-    Mongo mongo = new Mongo(uri);
+    this.mongo = new Mongo(uri);
     
     DatastoreFactory factory = new DatastoreFactory(mongo);
     final Datastore datastore = factory.createDatastore(database);
@@ -70,7 +86,7 @@ class MongoTransport implements Transport {
         } catch (InterruptedException err) {
           console.error("InterruptedException", err);
         } finally {
-          destroy(datastore);
+          destroy(mongo);
         }
       }
     };
@@ -79,11 +95,11 @@ class MongoTransport implements Transport {
     this.connected = true;
   }
   
-  private void destroy(Datastore datastore) {
+  private void destroy(Mongo mongo) {
     try {
       close();
     } finally {
-      datastore.getMongo().close();
+      mongo.close();
     }
   }
   
@@ -135,7 +151,7 @@ class MongoTransport implements Transport {
     }
     
     synchronized (this) {
-      if (open && connected) {
+      if (open && isConnected()) {
         queue.add(event);
         notifyAll();
       }
