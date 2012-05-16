@@ -8,9 +8,7 @@ import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.ardverk.gibson.core.Event;
-
-import views.html.events;
+import org.ardverk.gibson.Event;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;

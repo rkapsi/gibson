@@ -3,7 +3,7 @@ package controllers;
 import static org.ardverk.gibson.dashboard.Context.injector;
 
 import org.apache.commons.lang.StringUtils;
-import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.Event;
 import org.ardverk.gibson.dashboard.EventItems;
 import org.ardverk.gibson.dashboard.EventService;
 import org.ardverk.gibson.dashboard.SearchItems;

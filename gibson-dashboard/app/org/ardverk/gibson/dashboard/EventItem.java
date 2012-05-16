@@ -1,9 +1,9 @@
 package org.ardverk.gibson.dashboard;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.ardverk.gibson.core.Condition;
-import org.ardverk.gibson.core.Event;
-import org.ardverk.gibson.core.Level;
+import org.ardverk.gibson.Condition;
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.Level;
 
 import play.data.validation.Constraints.Required;
 

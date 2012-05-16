@@ -8,8 +8,8 @@ import java.util.SortedSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.ardverk.gibson.core.Event;
-import org.ardverk.gibson.core.EventUtils;
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.EventUtils;
 
 @Singleton
 class DefaultEventService implements EventService {

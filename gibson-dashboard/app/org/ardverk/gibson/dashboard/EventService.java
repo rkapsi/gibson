@@ -1,6 +1,6 @@
 package org.ardverk.gibson.dashboard;
 
-import org.ardverk.gibson.core.Event;
+import org.ardverk.gibson.Event;
 
 import com.google.inject.ImplementedBy;
 
