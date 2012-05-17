@@ -1,4 +1,4 @@
-@(event: org.ardverk.gibson.Event, count: Long = 1)
+@(item: org.ardverk.gibson.dashboard.EventItem, count: Long = 1)
 
 @main() {
 <div class="container">
@@ -11,49 +11,53 @@
     <tbody>
       <tr>
         <td>Time</td>
-        <td>@event.getCreationTime()</td>
+        <td>@item.event.getCreationTime()</td>
       </tr>
       <tr>
         <td>Level</td>
-        <td>@event.getLevel()</td>
+        <td>@item.event.getLevel()</td>
       </tr>
-      @if(event.getMarker() != null) {
+      @if(item.event.getMarker() != null) {
       <tr>
-        <td>Level</td>
-        <td>@event.getMarker()</td>
+        <td>Marker</td>
+        <td>@item.event.getMarker()</td>
       </tr>
       }
       <tr>
         <td>Logger</td>
-        <td>@event.getLogger()</td>
+        <td>@item.event.getLogger()</td>
       </tr>
       <tr>
         <td>Thread</td>
-        <td>@event.getThread()</td>
+        <td>@item.event.getThread()</td>
       </tr>
       <tr>
         <td>Message</td>
-        <td>@event.getMessage()</td>
+        <td>@item.event.getMessage()</td>
       </tr>
       <tr>
         <td>Type</td>
-        <td>@event.getCondition().getTypeName()</td>
+        <td>@item.event.getCondition().getTypeName()</td>
       </tr>
       <tr>
         <td>Stack Trace</td>
-        <td><pre>@event.getCondition().toStringValue()</pre></td>
+        <td><pre>@item.event.getCondition().toStringValue()</pre></td>
       </tr>
       <tr>
         <td>Keywords</td>
         <td>
-          @for(keyword <- event.getKeywords()) {
+          @for(keyword <- item.getKeywords(100)) {
             <span class="label label-info">@keyword</span>
+          }
+          
+          @if(item.event.getKeywords().size() >= 100) {
+            <span class="label label-important">...</span>
           }
         </td>
       </tr>
       <tr>
         <td>Signature</td>
-        <td>@event.getSignature()</td>
+        <td>@item.event.getSignature()</td>
       </tr>
     </tbody>
   </table>

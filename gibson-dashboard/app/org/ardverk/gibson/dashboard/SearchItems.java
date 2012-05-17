@@ -6,7 +6,7 @@ import java.util.Set;
 
 import play.data.validation.Constraints.Required;
 
-public class SearchItems {
+public class SearchItems extends Items {
 
   public static final SearchItems EMPTY = new SearchItems(
       null, Collections.<String>emptySet(), 
@@ -32,10 +32,7 @@ public class SearchItems {
     this.count = count;
   }
   
-  public boolean isEmpty() {
-    return size() == 0;
-  }
-  
+  @Override
   public int size() {
     return elements != null ? elements.size() : 0;
   }

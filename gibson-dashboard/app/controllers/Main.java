@@ -3,7 +3,7 @@ package controllers;
 import static org.ardverk.gibson.dashboard.Context.injector;
 
 import org.apache.commons.lang.StringUtils;
-import org.ardverk.gibson.Event;
+import org.ardverk.gibson.dashboard.EventItem;
 import org.ardverk.gibson.dashboard.EventItems;
 import org.ardverk.gibson.dashboard.EventService;
 import org.ardverk.gibson.dashboard.SearchItems;
@@ -13,8 +13,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.event;
 import views.html.events;
-import views.html.types;
 import views.html.search;
+import views.html.types;
 
 public class Main extends Controller {
   
@@ -37,13 +37,13 @@ public class Main extends Controller {
   
   public static Result event(String typeName, String signature) {
     EventService service = injector().getInstance(EventService.class);
-    Event item = service.getEvent(typeName, signature);
+    EventItem item = service.getEvent(typeName, signature);
     
     if (item == null) {
       return notFound(typeName + ", " + signature);
     }
     
-    long count = service.getEventCount(item);
+    long count = service.getEventCount(item.event);
     return ok(event.render(item, count));
   }
   

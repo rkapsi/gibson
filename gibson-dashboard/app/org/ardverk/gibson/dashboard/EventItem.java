@@ -1,25 +1,17 @@
 package org.ardverk.gibson.dashboard;
 
+import java.util.List;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Event;
-import org.ardverk.gibson.Level;
 
 import play.data.validation.Constraints.Required;
 
 public class EventItem implements Countable {
   
   @Required
-  public final String signature;
-  
-  @Required
-  public final String logger;
-  
-  @Required
-  public final Level level;
-  
-  @Required
-  public final String message;
+  public final Event event;
   
   @Required
   public final String exception;
@@ -27,12 +19,12 @@ public class EventItem implements Countable {
   @Required
   public final long count;
   
+  public EventItem(Event event) {
+    this(event, 1L);
+  }
+  
   public EventItem(Event event, long count) {
-    this.signature = event.getSignature();
-    
-    this.logger = event.getLogger();
-    this.level = event.getLevel();
-    this.message = event.getMessage();
+    this.event = event;
     this.count = count;
     
     Condition condition = event.getCondition();
@@ -42,6 +34,16 @@ public class EventItem implements Countable {
   @Override
   public long getCount() {
     return count;
+  }
+  
+  public List<String> getKeywords(final int limit) {
+    List<String> keywords = event.getKeywords();
+    
+    if (limit >= 1 && limit < keywords.size()) {
+      keywords = keywords.subList(0, limit);
+    }
+    
+    return keywords;
   }
   
   @Override

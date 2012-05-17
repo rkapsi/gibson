@@ -57,7 +57,7 @@ class DefaultEventService implements EventService {
   }
   
   @Override
-  public Event getEvent(String typeName, String signature) {
+  public EventItem getEvent(String typeName, String signature) {
     Event event = eventDAO.getEvent(typeName, signature);
     
     if (event != null) {
@@ -65,7 +65,7 @@ class DefaultEventService implements EventService {
       event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
     }
     
-    return event;
+    return new EventItem(event);
   }
 
   @Override

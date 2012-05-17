@@ -13,7 +13,7 @@ public interface EventService {
   
   public EventItems getEventItems(String typeName);
   
-  public Event getEvent(String typeName, String signature);
+  public EventItem getEvent(String typeName, String signature);
   
   public long getEventCount(Event event);
   

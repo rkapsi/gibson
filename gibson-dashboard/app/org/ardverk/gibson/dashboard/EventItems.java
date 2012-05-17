@@ -4,7 +4,7 @@ import java.util.List;
 
 import play.data.validation.Constraints.Required;
 
-public class EventItems {
+public class EventItems extends Items {
   
   @Required
   public final String typeName;
@@ -21,10 +21,7 @@ public class EventItems {
     this.count = count;
   }
   
-  public boolean isEmpty() {
-    return size() == 0;
-  }
-  
+  @Override
   public int size() {
     return elements != null ? elements.size() : 0;
   }

@@ -17,10 +17,12 @@
       @for(element <- items.elements) {
         <tr>
           <td>@element.count</td>
-          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.level</a></td>
-          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.logger</a></td>
-          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.message</a></td>
-          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.exception</a></td>
+          @defining(routes.Main.event(items.typeName, element.event.getSignature())) { href =>
+            <td><a href="@href">@element.event.getLevel()</a></td>
+            <td><a href="@href">@element.event.getLogger()</a></td>
+            <td><a href="@href">@element.event.getMessage()</a></td>
+            <td><a href="@href">@element.exception</a></td>
+          }
         </tr>
       }
     </tbody>
