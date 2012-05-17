@@ -11,6 +11,7 @@
       <th>Level</th>
       <th>Logger</th>
       <th>Message</th>
+      <th>Exception</th>
     </thead>
     <tbody>
       @for(element <- items.elements) {
@@ -18,7 +19,8 @@
           <td>@element.count</td>
           <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.level</a></td>
           <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.logger</a></td>
-          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.message: @element.exception</a></td>
+          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.message</a></td>
+          <td><a href="@routes.Main.event(items.typeName, element.signature)">@element.exception</a></td>
         </tr>
       }
     </tbody>

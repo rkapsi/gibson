@@ -5,10 +5,10 @@ import PlayProject._
 object ApplicationBuild extends Build {
 
     val appName = "gibson-dashboard"
-    val appVersion = "0.1-SNAPSHOT"
+    val appVersion = "0.1"
     
     val appDependencies = Seq(
-      "org.ardverk.gibson" % "gibson-core" % "0.1-SNAPSHOT",
+      "org.ardverk.gibson" % "gibson-core" % appVersion,
       "com.google.inject" % "guice" % "3.0",
       "ch.qos.logback" % "logback-core" % "1.0.3"
     )
