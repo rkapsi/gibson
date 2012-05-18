@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -78,7 +77,7 @@ class DefaultEventService implements EventService {
 
   @Override
   public SearchItems query(String query) {
-    SortedSet<String> keywords = EventUtils.keywords(query);
+    Set<String> keywords = EventUtils.keywords(query);
     if (keywords == null || keywords.isEmpty()) {
       return SearchItems.notFound(query);
     }
