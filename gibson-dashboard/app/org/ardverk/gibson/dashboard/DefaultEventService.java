@@ -3,6 +3,7 @@ package org.ardverk.gibson.dashboard;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.inject.Inject;
@@ -95,7 +96,7 @@ class DefaultEventService implements EventService {
       long count = eventDAO.getEventCount(signature);
       
       // Get all distinct (!) keywords under that signature.
-      SortedSet<String> everything = eventDAO.getKeywords(signature);
+      Set<String> everything = eventDAO.getKeywords(signature);
       everything.retainAll(keywords);
       
       dst.add(new SearchItem(everything, event, count));
