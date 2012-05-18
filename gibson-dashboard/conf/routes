@@ -3,13 +3,16 @@
 # ~~~~
 
 # Home page
-GET  /                            controllers.Main.index()
-GET  /events/:typeName            controllers.Main.events(typeName: String)
-GET  /event/:typeName/:signature  controllers.Main.event(typeName: String, signature: String)
-GET  /search                      controllers.Main.search(q: String)
+GET   /                            controllers.Main.index()
+GET   /events/:typeName            controllers.Main.events(typeName: String)
+GET   /event/:typeName/:signature  controllers.Main.event(typeName: String, signature: String)
+GET   /search                      controllers.Main.search(q: String)
 
-GET  /admin                       controllers.Admin.index()
-GET  /admin/drop                  controllers.Admin.drop()
+GET   /admin                       controllers.Admin.index()
+GET   /admin/drop                  controllers.Admin.drop()
+
+GET   /login                       controllers.Login.index(logout : Boolean ?= false)
+POST  /login                       controllers.Login.login()
 
 # Map static resources from the /public folder to the /assets URL path
 GET  /assets/*file  controllers.Assets.at(path="/public", file)
