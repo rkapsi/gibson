@@ -1,8 +1,11 @@
 package org.ardverk.gibson.appender;
 
-import java.util.ArrayList;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Event;
@@ -43,7 +46,7 @@ class EventFactory {
     }
     
     event.setSignature(EventUtils.signature(event));
-    event.setKeywords(new ArrayList<String>(EventUtils.keywords(event)));
+    event.setKeywords(new KeywordsList<String>(EventUtils.keywords(event)));
     return event;
   }
   
@@ -85,4 +88,33 @@ class EventFactory {
   }
   
   private EventFactory() {}
+  
+  /**
+   * The keywords are technically speaking a {@link Set} of strings but we want to treat it like a {@link List}.
+   * Instead of making full copy of the {@link Set} we're simply wrapping it into this fake {@link List} class
+   * which is sufficient for serialization purposes.
+   */
+  private static class KeywordsList<T> extends AbstractList<T> {
+    
+    private final Set<T> keywords;
+
+    public KeywordsList(Set<T> keywords) {
+      this.keywords = keywords;
+    }
+
+    @Override
+    public T get(int index) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+      return keywords.iterator();
+    }
+
+    @Override
+    public int size() {
+      return keywords.size();
+    }
+  }
 }
