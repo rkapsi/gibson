@@ -7,10 +7,11 @@ import java.util.Set;
 import play.data.validation.Constraints.Required;
 
 public class SearchItems extends Items {
-
-  public static final SearchItems EMPTY = new SearchItems(
-      null, Collections.<String>emptySet(), 
-      Collections.<SearchItem>emptyList(), 0L);
+  
+  public static SearchItems notFound(String query) {
+    return new SearchItems(query, Collections.<String>emptySet(), 
+        Collections.<SearchItem>emptyList(), 0L);
+  }
   
   @Required
   public final String query;

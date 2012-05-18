@@ -79,12 +79,12 @@ class DefaultEventService implements EventService {
   public SearchItems query(String query) {
     SortedSet<String> keywords = EventUtils.keywords(query);
     if (keywords == null || keywords.isEmpty()) {
-      return SearchItems.EMPTY;
+      return SearchItems.notFound(query);
     }
     
     List<String> signatures = eventDAO.search(keywords);
     if (signatures == null || signatures.isEmpty()) {
-      return SearchItems.EMPTY;
+      return SearchItems.notFound(query);
     }
     
     List<SearchItem> dst = new ArrayList<SearchItem>(signatures.size());
