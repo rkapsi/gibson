@@ -19,10 +19,6 @@ public class EventItem implements Countable {
   @Required
   public final long count;
   
-  public EventItem(Event event) {
-    this(event, 1L);
-  }
-  
   public EventItem(Event event, long count) {
     this.event = event;
     this.count = count;

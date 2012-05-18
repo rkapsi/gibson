@@ -3,6 +3,7 @@ package org.ardverk.gibson.dashboard;
 import java.util.concurrent.atomic.AtomicReference;
 
 import play.Application;
+import play.Configuration;
 import play.GlobalSettings;
 
 import com.google.inject.AbstractModule;
@@ -28,13 +29,14 @@ public class Context extends GlobalSettings {
   }
   
   private static Injector createInjector(final Application application) {
-    AbstractModule main = new AbstractModule() {
+    AbstractModule play = new AbstractModule() {
       @Override
       protected void configure() {
         bind(Application.class).toInstance(application);
+        bind(Configuration.class).toInstance(application.configuration());
       }
     };
     
-    return Guice.createInjector(main, new MongoModule());
+    return Guice.createInjector(play, new MongoModule());
   }
 }

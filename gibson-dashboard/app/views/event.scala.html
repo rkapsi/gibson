@@ -1,4 +1,4 @@
-@(item: org.ardverk.gibson.dashboard.EventItem, count: Long = 1)
+@(item: org.ardverk.gibson.dashboard.EventItem, limit: Integer = 100)
 
 @main() {
 <div class="container">
@@ -46,12 +46,12 @@
       <tr>
         <td>Keywords</td>
         <td>
-          @for(keyword <- item.getKeywords(100)) {
+          @for(keyword <- item.getKeywords(limit)) {
             <span class="label label-info">@keyword</span>
           }
           
-          @if(item.event.getKeywords().size() >= 100) {
-            <span class="label label-important">...</span>
+          @if(item.event.getKeywords().size() >= limit) {
+            <span class="label label-important">@(item.event.getKeywords().size()-limit)</span>
           }
         </td>
       </tr>
@@ -62,8 +62,8 @@
     </tbody>
   </table>
   
-  @if(count >= 2) {
-    <div class="alert alert-info">Please note there are approximately @count errors of this type. This is just one sample.</div>
+  @if(item.count >= 2) {
+    <div class="alert alert-info">Please note there are approximately @item.count errors of this type. This is just one sample.</div>
   }
 </div> <!-- /container -->
 }

@@ -18,6 +18,8 @@ import views.html.types;
 
 public class Main extends Controller {
   
+  private static final int KEYWORD_LIMIT = 100;
+  
   public static Result index() {
     EventService service = injector().getInstance(EventService.class);
     TypeItems items = service.getTypeItems();
@@ -43,8 +45,7 @@ public class Main extends Controller {
       return notFound(typeName + ", " + signature);
     }
     
-    long count = service.getEventCount(item.event);
-    return ok(event.render(item, count));
+    return ok(event.render(item, KEYWORD_LIMIT));
   }
   
   public static Result search(String q) {

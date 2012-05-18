@@ -59,13 +59,15 @@ class DefaultEventService implements EventService {
   @Override
   public EventItem getEvent(String typeName, String signature) {
     Event event = eventDAO.getEvent(typeName, signature);
-    
-    if (event != null) {
-      // Get all distinct (!) keywords under that signature.
-      event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
+    if (event == null) {
+      return null;
     }
     
-    return new EventItem(event);
+    // Get all distinct (!) keywords under that signature.
+    event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
+    long count = eventDAO.getEventCount(signature);
+    
+    return new EventItem(event, count);
   }
 
   @Override
