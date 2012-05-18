@@ -2,13 +2,12 @@ package org.ardverk.gibson.dashboard;
 
 import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Event;
 
 import play.data.validation.Constraints.Required;
 
-public class EventItem implements Countable {
+public class EventItem extends Item {
   
   @Required
   public final Event event;
@@ -16,20 +15,13 @@ public class EventItem implements Countable {
   @Required
   public final String exception;
   
-  @Required
-  public final long count;
-  
   public EventItem(Event event, long count) {
+    super(count);
+    
     this.event = event;
-    this.count = count;
     
     Condition condition = event.getCondition();
     this.exception = condition.getMessage();
-  }
-  
-  @Override
-  public long getCount() {
-    return count;
   }
   
   public List<String> getKeywords(final int limit) {
@@ -40,10 +32,5 @@ public class EventItem implements Countable {
     }
     
     return keywords;
-  }
-  
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).toString();
   }
 }
