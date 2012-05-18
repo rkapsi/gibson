@@ -15,6 +15,7 @@ import com.google.code.morphia.annotations.Indexes;
 @Entity(Event.COLLECTION)
 @Indexes({
   @Index("logger"),
+  @Index("marker"),
   @Index("level"),
   @Index("message"),
   @Index("signature"),
