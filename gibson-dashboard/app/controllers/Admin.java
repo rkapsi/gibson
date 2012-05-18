@@ -27,6 +27,6 @@ public class Admin extends Controller {
     
     EventService service = injector().getInstance(EventService.class);
     service.drop();
-    return redirect(types.productPrefix());
+    return redirect("/");
   }
 }
