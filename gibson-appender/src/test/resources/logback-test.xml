@@ -6,7 +6,8 @@
     </encoder>
   </appender>
 
-  <appender name="MONGO" class="org.ardverk.gibson.appender.MongoAppender">
+  <appender name="GIBSON" class="org.ardverk.gibson.appender.MongoAppender">
+    <!-- <endpoint>mongodb://localhost</endpoint> -->
     <!-- <database>Gibson</database> -->
   </appender>
   
@@ -14,6 +15,6 @@
   
   <root level="ALL">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="MONGO" />
+    <appender-ref ref="GIBSON" />
   </root>
 </configuration>
