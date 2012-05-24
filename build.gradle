@@ -21,6 +21,19 @@ allprojects {
 
   configurations { 
     all*.exclude group: 'commons-logging', module: 'commons-logging'
+    deployerJars
+  }
+  
+  dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+  }
+  
+  uploadArchives {
+    repositories.mavenDeployer {
+      name = 'sshDeployer' // optional
+      configuration = configurations.deployerJars
+      repository(url: "scp://mvn.ardverk.org/repository/release")
+    }
   }
   
   project.ext {
