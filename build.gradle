@@ -32,7 +32,13 @@ allprojects {
     repositories.mavenDeployer {
       name = 'sshDeployer' // optional
       configuration = configurations.deployerJars
-      repository(url: "scp://mvn.ardverk.org/repository/release")
+      repository(url: "scp://mvn.ardverk.org/repository/release") {
+        authentication(
+          userName: System.properties['ardverk.username'],
+          privateKey: new File(System.properties['ardverk.key']).absolutePath,
+          passphrase: System.properties['ardverk.passphrase']
+        )
+      }
     }
   }
   
