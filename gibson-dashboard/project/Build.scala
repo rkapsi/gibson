@@ -15,5 +15,6 @@ object ApplicationBuild extends Build {
     
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
       resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
+      resolvers += "Ardverk Maven Repository" at "http://mvn.ardverk.org/repository/release"
     )
 }
