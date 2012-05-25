@@ -5,7 +5,7 @@ import PlayProject._
 object ApplicationBuild extends Build {
 
     val appName = "gibson-dashboard"
-    val appVersion = "0.1"
+    val appVersion = "0.1.1"
     
     val appDependencies = Seq(
       "org.ardverk.gibson" % "gibson-core" % appVersion,
@@ -14,7 +14,7 @@ object ApplicationBuild extends Build {
     )
     
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
-      resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
+      resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository",
       resolvers += "Ardverk Maven Repository" at "http://mvn.ardverk.org/repository/release"
     )
 }

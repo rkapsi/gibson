@@ -34,12 +34,8 @@ public class Gibson {
   /**
    * The default {@link MongoURI}.
    */
-  public static final MongoURI ENDPOINT = new MongoURI("mongodb://localhost");
+  public static final MongoURI URI = new MongoURI("mongodb://localhost/Gibson");
   
-  /**
-   * The default name of the MongoDB database.
-   */
-  public static final String DATABASE = "Gibson";
   
   private Gibson() {}
 }

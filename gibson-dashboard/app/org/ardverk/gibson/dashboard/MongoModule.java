@@ -39,8 +39,6 @@ class MongoModule extends AbstractModule {
   
   private static final String URI_KEY = "gibson.mongo.uri";
   
-  private static final String DATABASE_KEY = "gibson.mongo.database";
-  
   @Override
   protected void configure() {
   }
@@ -48,11 +46,15 @@ class MongoModule extends AbstractModule {
   @Provides @Singleton
   Datastore getDatastore(Configuration configuration) throws IOException {
     
-    MongoURI uri = parseURI(configuration.getString(URI_KEY), Gibson.ENDPOINT);
-    String database = parseDatabase(configuration.getString(DATABASE_KEY), Gibson.DATABASE);
+    MongoURI uri = parseURI(configuration.getString(URI_KEY), Gibson.URI);
+    
+    String database = uri.getDatabase();
+    if (database == null) {
+      throw new IOException("Database missing: " + uri);
+    }
     
     if (LOG.isInfoEnabled()) {
-      LOG.info("Connecting: uri=" + uri + ", database=" + database);
+      LOG.info("Connecting: uri=" + uri);
     }
     
     Mongo mongo = new Mongo(uri);
@@ -63,14 +65,6 @@ class MongoModule extends AbstractModule {
   private static MongoURI parseURI(String uri, MongoURI defaultValue) {
     if (uri != null) {
       return new MongoURI(uri);
-    }
-    
-    return defaultValue;
-  }
-  
-  private static String parseDatabase(String database, String defaultValue) {
-    if (database != null) {
-      return database;
     }
     
     return defaultValue;

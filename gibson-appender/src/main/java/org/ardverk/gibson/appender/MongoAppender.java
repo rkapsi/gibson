@@ -42,9 +42,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   private static final Logger LOG = LoggerFactory.getLogger(MongoAppender.class);
   
-  private volatile MongoURI endpoint = Gibson.ENDPOINT;
-  
-  private volatile String database = Gibson.DATABASE;
+  private volatile MongoURI uri = Gibson.URI;
   
   private volatile Transport transport = null;
   
@@ -52,23 +50,18 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   @Override
   public void start() {
-    if (endpoint == null) {
+    if (uri == null) {
       LOG.error(Gibson.MARKER, "Endpoint is not defined");
       return;
     }
-
-    if (database == null) {
-      LOG.error(Gibson.MARKER, "Database name is not defined");
-      return;
-    }
     
-    transport = new MongoTransport(endpoint, database);
+    transport = new MongoTransport(uri);
     
     try {
       transport.connect();
     } catch (IOException err) {
       if (LOG.isErrorEnabled()) {
-        LOG.error(Gibson.MARKER, "Failed to connect: " + endpoint, err);
+        LOG.error(Gibson.MARKER, "Failed to connect: " + uri, err);
       }
       return;
     }
@@ -91,13 +84,8 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   }
   
   // Called from logback.xml
-  public void setEndpoint(String endpoint) {
-    this.endpoint = new MongoURI(endpoint);
-  }
- 
-  // Called from logback.xml
-  public void setDatabase(String database) {
-    this.database = database;
+  public void setUri(String uri) {
+    this.uri = new MongoURI(uri);
   }
   
   // Called from logback.xml

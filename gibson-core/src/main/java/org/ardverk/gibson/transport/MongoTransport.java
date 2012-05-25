@@ -50,8 +50,6 @@ public class MongoTransport implements Transport {
   
   private final MongoURI uri;
   
-  private final String database;
-  
   private boolean open = true;
   
   private boolean connected = false;
@@ -60,9 +58,8 @@ public class MongoTransport implements Transport {
   
   private Future<?> future = null;
   
-  public MongoTransport(MongoURI uri, String database) {
+  public MongoTransport(MongoURI uri) {
     this.uri = uri;
-    this.database = database;
   }
 
   @Override
@@ -91,6 +88,11 @@ public class MongoTransport implements Transport {
     
     if (connected) {
       throw new IOException("connected");
+    }
+    
+    String database = uri.getDatabase();
+    if (database == null) {
+      throw new IOException("Database missing: " + uri);
     }
     
     if (LOG.isInfoEnabled()) {
