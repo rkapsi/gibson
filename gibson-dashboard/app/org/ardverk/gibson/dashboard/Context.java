@@ -25,6 +25,7 @@ import play.GlobalSettings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 
 public class Context extends GlobalSettings {
 
@@ -53,6 +54,11 @@ public class Context extends GlobalSettings {
       }
     };
     
-    return Guice.createInjector(play, new MongoModule());
+    Stage stage = Stage.DEVELOPMENT;
+    if (application.isProd()) {
+      stage = Stage.PRODUCTION;
+    }
+    
+    return Guice.createInjector(stage, play, new MongoModule());
   }
 }
