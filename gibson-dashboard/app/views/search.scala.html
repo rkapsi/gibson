@@ -15,7 +15,7 @@
         @for(element <- items.elements) {
           <tr>
             <td rowspan="2">@element.count</td>
-            <td><a href="@routes.Main.event(element.typeName, element.signature)">@element.typeName</a></td>
+            <td><a href="@routes.Event.show(element.typeName, element.signature)">@element.typeName</a></td>
           </tr>
           <tr>
             <td>

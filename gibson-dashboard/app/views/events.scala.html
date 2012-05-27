@@ -17,7 +17,7 @@
       @for(element <- items.elements) {
         <tr>
           <td>@element.count</td>
-          @defining(routes.Main.event(items.typeName, element.event.getSignature())) { href =>
+          @defining(routes.Event.show(items.typeName, element.event.getSignature())) { href =>
             <td><a href="@href">@element.event.getLevel()</a></td>
             <td><a href="@href">@element.event.getLogger()</a></td>
             <td><a href="@href">@element.event.getMessage()</a></td>
