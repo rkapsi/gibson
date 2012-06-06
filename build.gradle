@@ -28,7 +28,7 @@ allprojects {
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
   }
   
-  /*uploadArchives {
+  uploadArchives {
     repositories.mavenDeployer {
       name = 'sshDeployer' // optional
       configuration = configurations.deployerJars
@@ -40,7 +40,7 @@ allprojects {
         )
       }
     }
-  }*/
+  }
   
   project.ext {
     slf4j = "1.6.4"
