@@ -16,6 +16,8 @@
 
 package org.ardverk.gibson.dashboard;
 
+import java.util.Date;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.bson.types.ObjectId;
 
@@ -26,7 +28,7 @@ import com.google.code.morphia.annotations.Indexes;
 
 @Entity(Note.COLLECTION)
 @Indexes({
-  @Index("signature")
+  @Index(value = "signature", unique = true)
 })
 public class Note {
 
@@ -34,6 +36,10 @@ public class Note {
   
   @Id
   private ObjectId id;
+  
+  private Date addedOn;
+  
+  private Date updatedOn;
   
   private String text;
   
@@ -45,6 +51,22 @@ public class Note {
 
   public void setId(ObjectId id) {
     this.id = id;
+  }
+  
+  public Date getAddedOn() {
+    return addedOn;
+  }
+  
+  public void setAddedOn(Date addedOn) {
+    this.addedOn = addedOn;
+  }
+  
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+  
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
   }
 
   public String getText() {

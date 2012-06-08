@@ -29,4 +29,19 @@ class DefaultNoteService implements NoteService {
   public void drop() {
     noteDAO.clear();
   }
+
+  @Override
+  public void delete(String signature) {
+    noteDAO.delete(signature);
+  }
+
+  @Override
+  public Note find(String signature) {
+    return noteDAO.find(signature);
+  }
+
+  @Override
+  public void save(Note note) {
+    noteDAO.save(note);
+  }
 }

@@ -20,6 +20,8 @@ import static org.ardverk.gibson.dashboard.Context.injector;
 
 import org.ardverk.gibson.dashboard.EventItem;
 import org.ardverk.gibson.dashboard.EventService;
+import org.ardverk.gibson.dashboard.Note;
+import org.ardverk.gibson.dashboard.NoteService;
 
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -30,14 +32,17 @@ public class Event extends Controller {
   private static final int KEYWORD_LIMIT = 100;
   
   public static Result show(String typeName, String signature) {
-    EventService service = injector().getInstance(EventService.class);
-    EventItem item = service.getEvent(typeName, signature);
+    EventService events = injector().getInstance(EventService.class);
+    NoteService notes = injector().getInstance(NoteService.class);
+    
+    EventItem item = events.getEvent(typeName, signature);
+    Note note = notes.find(signature);
     
     if (item == null) {
       return notFound(typeName + ", " + signature);
     }
     
-    return ok(event.render(item, KEYWORD_LIMIT));
+    return ok(event.render(item, note, KEYWORD_LIMIT));
   }
   
   public static Result delete(String typeName, String signature) {

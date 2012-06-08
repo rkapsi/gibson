@@ -22,4 +22,10 @@ import com.google.inject.ImplementedBy;
 public interface NoteService {
   
   public void drop();
+  
+  public void delete(String signature);
+  
+  public Note find(String signature);
+  
+  public void save(Note note);
 }

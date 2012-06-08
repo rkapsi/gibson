@@ -17,5 +17,7 @@ GET     /admin/drop                  controllers.Admin.drop()
 GET     /login                       controllers.Login.index(logout : Boolean ?= false)
 POST    /login                       controllers.Login.login()
 
+POST    /note                        controllers.Notes.save()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                controllers.Assets.at(path="/public", file)

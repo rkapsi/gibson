@@ -1,4 +1,4 @@
-@(item: org.ardverk.gibson.dashboard.EventItem, limit: Integer = 100)
+@(item: org.ardverk.gibson.dashboard.EventItem, note: org.ardverk.gibson.dashboard.Note, limit: Integer = 100)
 
 @main() {
 <div class="container">
@@ -69,25 +69,25 @@
         <td>Signature</td>
         <td>@item.event.getSignature()</td>
       </tr>
-      <!-- <tr>
-              <td>Notes</td>
-              <td style="background-color: whiteSmoke">
-                <form class="form-inline" action="/notes/save" method="POST">
-                  <fieldset>
-                    <input name="signature" value="@item.event.getSignature()" type="hidden">
-                    <textarea style="width: 100% !importnt" class="input-xlarge" id="textarea" rows="5"></textarea>
-                    <div class="form-actions">
-                      <button type="submit" class="btn btn-primary">Save</button>
-                      <button class="btn">Cancel</button>
-                    </div>
-                  </fieldset>
-                </form>
-              </td>
-            </tr> -->
+      <tr style="background-color: whiteSmoke;">
+        <td>Notes</td>
+        <td>
+          <form class="form-inline" action="/note" method="POST">
+            <fieldset>
+              <input name="signature" value="@item.event.getSignature()" type="hidden">
+              <input name="url" value="@routes.Event.show(item.event.getCondition().getTypeName(), item.event.getSignature())" type="hidden">
+              <div style="margin:0 10px 0 0;">
+                <textarea style="width:100%;" class="input-xlarge" id="note" name="note" rows="6">@if(note != null) {@note.getText()}</textarea>
+              </div>
+              <div style="margin:10px 0 0 0;">
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </fieldset>
+          </form>
+        </td>
+      </tr>
     </tbody>
   </table>
-  
-  
   
   @if(item.count >= 2) {
     <div class="alert alert-info">Please note there are approximately @item.count errors of this type. This is just one sample.</div>

@@ -55,4 +55,13 @@ class NoteDAO extends BasicDAO<Note, Note> {
   public void delete(String signature) {
     deleteByQuery(createQuery().filter("signature = ", signature));
   }
+  
+  /**
+   * 
+   */
+  public Note find(String signature) {
+    return createQuery().filter("signature = ", signature).get();
+  }
+  
+  
 }
