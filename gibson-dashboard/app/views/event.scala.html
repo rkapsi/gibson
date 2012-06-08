@@ -13,6 +13,16 @@
         <td>Time</td>
         <td>@item.event.getCreationTime()</td>
       </tr>
+      @if(!item.getHostnames().isEmpty()) {
+      <tr>
+        <td>Hostname</td>
+        <td>
+          @for(hostname <- item.getHostnames()) {
+            <span class="label label">@hostname</span>
+          }
+        </td>
+      </tr>
+      }
       <tr>
         <td>Level</td>
         <td>@item.event.getLevel()</td>

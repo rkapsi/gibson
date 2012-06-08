@@ -127,4 +127,15 @@ class EventDAO extends BasicDAO<Event, Event> {
     
     return new TreeSet<String>(events().distinct("keywords", query));
   }
+  
+  /**
+   * Returns all distinct (!) hostname(s) under the given signature.
+   */
+  @SuppressWarnings("unchecked")
+  public SortedSet<String> getHostnames(String signature) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("signature", signature);
+    
+    return new TreeSet<String>(events().distinct("hostname", query));
+  }
 }
