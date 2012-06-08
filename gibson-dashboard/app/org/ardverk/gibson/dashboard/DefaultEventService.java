@@ -79,11 +79,12 @@ class DefaultEventService implements EventService {
       return null;
     }
     
-    // Get all distinct (!) keywords under that signature.
+    // Get all distinct (!) keywords and hostnames under that signature.
     event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
+    Set<String> hostnames = eventDAO.getHostnames(signature);
     long count = eventDAO.getEventCount(signature);
     
-    return new EventItem(event, count);
+    return new EventItem(event, new ArrayList<String>(hostnames), count);
   }
 
   @Override
@@ -120,5 +121,10 @@ class DefaultEventService implements EventService {
     
     Collections.sort(dst, Countable.DESCENDING);
     return new SearchItems(query, keywords, dst, total);
+  }
+
+  @Override
+  public void delete(String signature) {
+    eventDAO.delete(signature);
   }
 }

@@ -57,6 +57,13 @@ class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
+   * Deletes all {@link Event}s with the given signature
+   */
+  public void delete(String signature) {
+    deleteByQuery(createQuery().filter("signature = ", signature));
+  }
+  
+  /**
    * Returns the type names of all {@link Event}.
    */
   @SuppressWarnings("unchecked")
@@ -126,5 +133,16 @@ class EventDAO extends BasicDAO<Event, Event> {
     query.put("signature", signature);
     
     return new TreeSet<String>(events().distinct("keywords", query));
+  }
+  
+  /**
+   * Returns all distinct (!) hostname(s) under the given signature.
+   */
+  @SuppressWarnings("unchecked")
+  public SortedSet<String> getHostnames(String signature) {
+    BasicDBObject query = new BasicDBObject();
+    query.put("signature", signature);
+    
+    return new TreeSet<String>(events().distinct("hostname", query));
   }
 }

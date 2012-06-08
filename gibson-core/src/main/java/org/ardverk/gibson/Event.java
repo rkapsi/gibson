@@ -70,6 +70,8 @@ public class Event {
   
   private List<String> keywords;
   
+  private String hostname;
+  
   public ObjectId getId() {
     return id;
   }
@@ -164,6 +166,14 @@ public class Event {
 
   public void setKeywords(List<String> keywords) {
     this.keywords = keywords;
+  }
+  
+  public String getHostname() {
+    return hostname;
+  }
+
+  public void setHostname(String hostname) {
+    this.hostname = hostname;
   }
 
   @Override

@@ -16,24 +16,17 @@
 
 package org.ardverk.gibson.dashboard;
 
-import org.ardverk.gibson.Event;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(DefaultEventService.class)
-public interface EventService {
+@Singleton
+class DefaultNoteService implements NoteService {
   
-  public void drop();
+  @Inject
+  private NoteDAO noteDAO;
   
-  public TypeItems getTypeItems();
-  
-  public EventItems getEventItems(String typeName);
-  
-  public EventItem getEvent(String typeName, String signature);
-  
-  public long getEventCount(Event event);
-  
-  public SearchItems query(String query);
-  
-  public void delete(String signature);
+  @Override
+  public void drop() {
+    noteDAO.clear();
+  }
 }

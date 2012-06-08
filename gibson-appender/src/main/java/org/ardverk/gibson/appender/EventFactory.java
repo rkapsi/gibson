@@ -16,6 +16,8 @@
 
 package org.ardverk.gibson.appender;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,8 +28,11 @@ import java.util.Set;
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.EventUtils;
+import org.ardverk.gibson.Gibson;
 import org.ardverk.gibson.Level;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -37,6 +42,10 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
  * This factory turns {@link ILoggingEvent}s into {@link Event}.
  */
 class EventFactory {
+  
+  private static final Logger LOG = LoggerFactory.getLogger(EventFactory.class);
+  
+  private static String HOSTNAME = null;
   
   public static Event createEvent(ILoggingEvent evt) {
     Event event = new Event();
@@ -63,6 +72,8 @@ class EventFactory {
     
     event.setSignature(EventUtils.signature(event));
     event.setKeywords(new KeywordsList<String>(EventUtils.keywords(event)));
+    event.setHostname(getLocalhost());
+    
     return event;
   }
   
@@ -101,6 +112,17 @@ class EventFactory {
       return Condition.valueOf(proxy.getThrowable());
     }
     return null;
+  }
+  
+  private static String getLocalhost() {
+    if (HOSTNAME == null) {
+      try {
+        HOSTNAME = InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException err) {
+        LOG.warn(Gibson.MARKER, "UnknownHostException", err);
+      }
+    }
+    return HOSTNAME;
   }
   
   private EventFactory() {}

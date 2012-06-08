@@ -1,0 +1,70 @@
+/*
+ * Copyright 2012 Will Benedict, Felix Berger and Roger Kapsi
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */ 
+
+package org.ardverk.gibson.dashboard;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.bson.types.ObjectId;
+
+import com.google.code.morphia.annotations.Entity;
+import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Index;
+import com.google.code.morphia.annotations.Indexes;
+
+@Entity(Note.COLLECTION)
+@Indexes({
+  @Index("signature")
+})
+public class Note {
+
+  public static final String COLLECTION = "Notes";
+  
+  @Id
+  private ObjectId id;
+  
+  private String text;
+  
+  private String signature;
+  
+  public ObjectId getId() {
+    return id;
+  }
+
+  public void setId(ObjectId id) {
+    this.id = id;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public String getSignature() {
+    return signature;
+  }
+
+  public void setSignature(String signature) {
+    this.signature = signature;
+  }
+  
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this).toString();
+  }
+}

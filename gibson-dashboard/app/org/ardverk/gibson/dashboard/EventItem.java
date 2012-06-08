@@ -16,6 +16,7 @@
 
 package org.ardverk.gibson.dashboard;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.ardverk.gibson.Condition;
@@ -28,19 +29,26 @@ public class EventItem extends Item {
   @Required
   public final Event event;
   
+  public final List<String> hostnames;
+  
   @Required
   public final String exception;
   
   public EventItem(Event event, long count) {
+    this(event, wrap(event), count);
+  }
+  
+  public EventItem(Event event, List<String> hostnames, long count) {
     super(count);
     
     this.event = event;
+    this.hostnames = hostnames;
     
     Condition condition = event.getCondition();
     this.exception = condition.getMessage();
   }
   
-  public List<String> getKeywords(final int limit) {
+  public List<String> getKeywords(int limit) {
     List<String> keywords = event.getKeywords();
     
     if (limit >= 1 && limit < keywords.size()) {
@@ -48,5 +56,18 @@ public class EventItem extends Item {
     }
     
     return keywords;
+  }
+  
+  public List<String> getHostnames() {
+    return hostnames;
+  }
+  
+  private static List<String> wrap(Event event) {
+    String host = event.getHostname();
+    if (host == null) {
+      return Collections.emptyList();
+    }
+    
+    return Collections.singletonList(host);
   }
 }
