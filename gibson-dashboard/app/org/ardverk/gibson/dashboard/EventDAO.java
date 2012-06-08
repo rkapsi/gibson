@@ -57,6 +57,13 @@ class EventDAO extends BasicDAO<Event, Event> {
   }
   
   /**
+   * Deletes all {@link Event}s with the given signature
+   */
+  public void delete(String signature) {
+    deleteByQuery(createQuery().filter("signature = ", signature));
+  }
+  
+  /**
    * Returns the type names of all {@link Event}.
    */
   @SuppressWarnings("unchecked")

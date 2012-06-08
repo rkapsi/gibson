@@ -69,8 +69,25 @@
         <td>Signature</td>
         <td>@item.event.getSignature()</td>
       </tr>
+      <!-- <tr>
+              <td>Notes</td>
+              <td style="background-color: whiteSmoke">
+                <form class="form-inline" action="/notes/save" method="POST">
+                  <fieldset>
+                    <input name="signature" value="@item.event.getSignature()" type="hidden">
+                    <textarea style="width: 100% !importnt" class="input-xlarge" id="textarea" rows="5"></textarea>
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-primary">Save</button>
+                      <button class="btn">Cancel</button>
+                    </div>
+                  </fieldset>
+                </form>
+              </td>
+            </tr> -->
     </tbody>
   </table>
+  
+  
   
   @if(item.count >= 2) {
     <div class="alert alert-info">Please note there are approximately @item.count errors of this type. This is just one sample.</div>

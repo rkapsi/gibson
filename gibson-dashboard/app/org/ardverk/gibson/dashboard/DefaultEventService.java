@@ -122,4 +122,9 @@ class DefaultEventService implements EventService {
     Collections.sort(dst, Countable.DESCENDING);
     return new SearchItems(query, keywords, dst, total);
   }
+
+  @Override
+  public void delete(String signature) {
+    eventDAO.delete(signature);
+  }
 }
