@@ -16,7 +16,6 @@
 
 package org.ardverk.gibson.appender;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,7 +58,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     
     try {
       transport.connect();
-    } catch (IOException err) {
+    } catch (Exception err) {
       if (LOG.isErrorEnabled()) {
         LOG.error(Gibson.MARKER, "Failed to connect: " + uri, err);
       }
@@ -77,8 +76,8 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     if (transport != null) {
       try {
         transport.close();
-      } catch (IOException err) {
-        LOG.error(Gibson.MARKER, "IOException", err);
+      } catch (Exception err) {
+        LOG.error(Gibson.MARKER, "Exception", err);
       }
     }
   }
@@ -93,7 +92,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     if (markers != null) {
       String[] tokens = markers.split(",");
       
-      Set<String> dst = new HashSet<String>();
+      Set<String> dst = new HashSet<>();
       for (String token : tokens) {
         if ((token = StringUtils.trimToNull(token)) != null) {
           dst.add(token);

@@ -49,7 +49,7 @@ public class EventUtils {
       throw new NullPointerException("event");
     }
     
-    SortedSet<String> keywords = new TreeSet<String>();
+    SortedSet<String> keywords = new TreeSet<>();
     
     String message = event.getMessage();
     if (message != null) {

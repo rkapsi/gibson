@@ -46,7 +46,7 @@ public class MongoTransport implements Transport {
   
   private static final Logger LOG = LoggerFactory.getLogger(MongoTransport.class);
   
-  private List<Event> queue = new ArrayList<Event>();
+  private List<Event> queue = new ArrayList<>();
   
   private final MongoURI uri;
   
@@ -159,7 +159,7 @@ public class MongoTransport implements Transport {
         }
         
         events = queue;
-        queue = new ArrayList<Event>();
+        queue = new ArrayList<>();
       }
       
       try {

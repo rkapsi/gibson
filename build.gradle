@@ -5,10 +5,10 @@ allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
-  sourceCompatibility = 1.6
+  sourceCompatibility = 1.7
 
   group = 'org.ardverk.gibson'
-  version = '0.1.2'
+  version = '0.2'
 
   repositories {
     mavenCentral()
@@ -28,16 +28,18 @@ allprojects {
     deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
   }
   
-  uploadArchives {
-    repositories.mavenDeployer {
-      name = 'sshDeployer' // optional
-      configuration = configurations.deployerJars
-      repository(url: "scp://mvn.ardverk.org/repository/release") {
-        authentication(
-          userName: System.properties['ardverk.username'],
-          privateKey: new File(System.properties['ardverk.key']).absolutePath,
-          passphrase: System.properties['ardverk.passphrase']
-        )
+  if (System.properties['ardverk.key']) {
+    uploadArchives {
+      repositories.mavenDeployer {
+        name = 'sshDeployer' // optional
+        configuration = configurations.deployerJars
+        repository(url: "scp://mvn.ardverk.org/repository/release") {
+          authentication(
+            userName: System.properties['ardverk.username'],
+            privateKey: new File(System.properties['ardverk.key']).absolutePath,
+            passphrase: System.properties['ardverk.passphrase']
+          )
+        }
       }
     }
   }
