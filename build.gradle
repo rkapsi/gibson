@@ -8,7 +8,7 @@ allprojects {
   sourceCompatibility = 1.7
 
   group = 'org.ardverk.gibson'
-  version = '0.2.1'
+  version = '0.2.2'
 
   repositories {
     mavenCentral()
