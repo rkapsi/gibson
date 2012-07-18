@@ -26,13 +26,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.ardverk.gibson.Condition;
+import org.ardverk.gibson.Console;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.EventUtils;
 import org.ardverk.gibson.Gibson;
 import org.ardverk.gibson.Level;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -43,7 +42,7 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
  */
 class EventFactory {
   
-  private static final Logger LOG = LoggerFactory.getLogger(EventFactory.class);
+  private static final Console LOG = Console.getLogger(EventFactory.class);
   
   private static String HOSTNAME = null;
   

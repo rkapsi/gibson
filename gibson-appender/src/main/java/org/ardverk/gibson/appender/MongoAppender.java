@@ -20,12 +20,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.ardverk.gibson.Console;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.Gibson;
 import org.ardverk.gibson.transport.MongoTransport;
 import org.ardverk.gibson.transport.Transport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -39,7 +38,7 @@ import com.mongodb.MongoURI;
  */
 public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
-  private static final Logger LOG = LoggerFactory.getLogger(MongoAppender.class);
+  private static final Console LOG = Console.getLogger(MongoAppender.class);
   
   private volatile MongoURI uri = Gibson.URI;
   
@@ -62,6 +61,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
       if (LOG.isErrorEnabled()) {
         LOG.error(Gibson.MARKER, "Failed to connect: " + uri, err);
       }
+      
       return;
     }
     

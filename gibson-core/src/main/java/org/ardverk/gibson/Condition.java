@@ -23,9 +23,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.code.morphia.annotations.Embedded;
 
 /**
@@ -34,7 +31,7 @@ import com.google.code.morphia.annotations.Embedded;
 @Embedded
 public class Condition {
 
-  private static final Logger LOG = LoggerFactory.getLogger(Condition.class);
+  private static final Console LOG = Console.getLogger(Condition.class);
   
   private static final Method STACK_TRACE = getOurStackTrace();
   

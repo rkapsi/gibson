@@ -25,26 +25,28 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.ardverk.gibson.Console;
 import org.ardverk.gibson.DatastoreFactory;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.Gibson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.code.morphia.Datastore;
+import com.mongodb.DBPort;
+import com.mongodb.DBPortPool;
 import com.mongodb.DBTCPConnector;
 import com.mongodb.Mongo;
 import com.mongodb.MongoURI;
+import com.mongodb.ServerAddress;
 
 /**
  * An implementation of {@link Transport} that is backed by MongoDB.
  */
 public class MongoTransport implements Transport {
   
+  private static final Console LOG = Console.getLogger(MongoTransport.class);
+  
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
       new TransportThreadFactory(MongoTransport.class));
-  
-  private static final Logger LOG = LoggerFactory.getLogger(MongoTransport.class);
   
   private List<Event> queue = new ArrayList<>();
   
@@ -100,6 +102,15 @@ public class MongoTransport implements Transport {
     }
     
     this.mongo = new Mongo(uri);
+    
+    // [SIX-3989]: The Mongo driver and Morphia have really bad Exception handling. 
+    // Things will not bubble up if it fails to connect. Attempt to connect manually
+    // and let it fail fast if it does.
+    DBTCPConnector connector = mongo.getConnector();
+    ServerAddress address = connector.getAddress();
+    DBPortPool pool = connector.getDBPortPool(address);
+    DBPort port = pool.get();
+    port.ensureOpen(); // Throws an IOException!
     
     DatastoreFactory factory = new DatastoreFactory(mongo);
     final Datastore datastore = factory.createDatastore(database);
