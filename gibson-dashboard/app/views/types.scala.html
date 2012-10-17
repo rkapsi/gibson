@@ -11,12 +11,14 @@
     <table class="table table-bordered">
       <thead>
         <th>#</th>
+        <th>Velocity</th>
         <th>Type</th>
       </thead>
       <tbody>
         @for(element <- items.elements) {
           <tr>
             <td>@element.count</td>
+            <td>@element.trend.velocity</td>
             <td><a href="@routes.Events.show(element.typeName)">@element.typeName</a></td>
           </tr>
         }
