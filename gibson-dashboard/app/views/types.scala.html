@@ -1,4 +1,5 @@
 @(items: org.ardverk.gibson.dashboard.TypeItems)
+@import views.html.trendrow
 @main() {
 <div class="container">          
   @if(items.isEmpty()) {
@@ -11,12 +12,16 @@
     <table class="table table-bordered">
       <thead>
         <th>#</th>
+        <th>Delta</th>
+        <th>Velocity</th>
         <th>Type</th>
       </thead>
       <tbody>
         @for(element <- items.elements) {
-          <tr>
+          @trendrow(element.trend)
             <td>@element.count</td>
+            <td>@element.trend.delta</td>
+            <td>@element.trend.velocity</td>
             <td><a href="@routes.Events.show(element.typeName)">@element.typeName</a></td>
           </tr>
         }

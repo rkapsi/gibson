@@ -16,22 +16,24 @@
 
 package org.ardverk.gibson.dashboard;
 
+import org.ardverk.gibson.Event;
+import org.ardverk.gibson.EventUtils;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.ardverk.gibson.Event;
-import org.ardverk.gibson.EventUtils;
 
 @Singleton
 class DefaultEventService implements EventService {
   
   @Inject
   private EventDAO eventDAO;
+
+  @Inject
+  private TrendService trendService;
   
   @Override
   public void drop() {
@@ -45,9 +47,9 @@ class DefaultEventService implements EventService {
     
     long total = 0L;
     for (String typeName : typeNames) {
-      long count = eventDAO.getTypeNameCount(typeName);
-      dst.add(new TypeItem(typeName, count));
-      total += count;
+      Trend trend = trendService.getTrendForType(typeName);
+      dst.add(new TypeItem(typeName, trend));
+      total += trend.count;
     }
     
     Collections.sort(dst, Countable.DESCENDING);
@@ -63,8 +65,9 @@ class DefaultEventService implements EventService {
     for (String signature : signatures) {
       Event event = eventDAO.getEvent(typeName, signature);
       long count = eventDAO.getEventCount(signature);
+      Trend trend = trendService.getTrendForEvent(event);
       
-      dst.add(new EventItem(event, count));
+      dst.add(new EventItem(event, trend));
       total += count;
     }
     
@@ -82,9 +85,9 @@ class DefaultEventService implements EventService {
     // Get all distinct (!) keywords and hostnames under that signature.
     event.setKeywords(new ArrayList<String>(eventDAO.getKeywords(signature)));
     Set<String> hostnames = eventDAO.getHostnames(signature);
-    long count = eventDAO.getEventCount(signature);
+    Trend trend = trendService.getTrendForEvent(event);
     
-    return new EventItem(event, new ArrayList<String>(hostnames), count);
+    return new EventItem(event, new ArrayList<String>(hostnames), trend);
   }
 
   @Override

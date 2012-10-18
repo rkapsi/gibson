@@ -22,9 +22,12 @@ public class TypeItem extends Item {
 
   @Required
   public final String typeName;
+
+  public final Trend trend;
   
-  public TypeItem(String typeName, long count) {
-    super(count);
+  public TypeItem(String typeName, Trend trend) {
+    super(trend.count);
     this.typeName = typeName;
+    this.trend = trend;
   }
 }

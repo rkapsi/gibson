@@ -1,5 +1,5 @@
 @(item: org.ardverk.gibson.dashboard.EventItem, note: org.ardverk.gibson.dashboard.Note, limit: Integer = 100)
-
+@import views.html.trendrow
 @main() {
 <div class="container">
   <!-- Main hero unit for a primary marketing message or call to action -->
@@ -12,6 +12,18 @@
       <tr>
         <td>Time</td>
         <td>@item.event.getCreationTime()</td>
+      </tr>
+      <tr>
+        <td>Count</td>
+        <td>@item.count</td>
+      </tr>
+      <tr>
+        <td>Delta</td>
+        <td>@item.trend.delta</td>
+      </tr>
+      @trendrow(item.trend)
+        <td>Velocity</td>
+        <td>@item.trend.velocity</td>
       </tr>
       @if(!item.getHostnames().isEmpty()) {
       <tr>

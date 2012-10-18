@@ -1,0 +1,11 @@
+@(trend: org.ardverk.gibson.dashboard.Trend)
+
+@if(trend.direction == 1) {
+  <tr class="error">
+} else {
+  @if(trend.direction == 0 && trend.delta == 0) {
+    <tr class="success">
+  } else {
+    <tr class="warning">
+  }
+}
