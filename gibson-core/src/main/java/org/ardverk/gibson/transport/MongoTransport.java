@@ -48,7 +48,7 @@ public class MongoTransport implements Transport {
   private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool(
       new TransportThreadFactory(MongoTransport.class));
   
-  private List<Event> queue = new ArrayList<>();
+  private List<Event> queue = new ArrayList<Event>();
   
   private final MongoURI uri;
   
@@ -170,7 +170,7 @@ public class MongoTransport implements Transport {
         }
         
         events = queue;
-        queue = new ArrayList<>();
+        queue = new ArrayList<Event>();
       }
       
       try {

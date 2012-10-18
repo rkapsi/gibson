@@ -10,7 +10,7 @@ object ApplicationBuild extends Build {
     val appDependencies = Seq(
       "org.ardverk.gibson" % "gibson-core" % appVersion,
       "com.google.inject" % "guice" % "3.0",
-      "ch.qos.logback" % "logback-core" % "1.0.3"
+      "ch.qos.logback" % "logback-core" % "1.0.7"
     )
     
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
