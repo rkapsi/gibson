@@ -3,26 +3,28 @@ package org.ardverk.gibson.dashboard;
 public class Trend {
 
   /**
-   * Total number of exceptions
+   * Total number of exceptions.
    */
   public final long count;
   /**
-   * The diff from the previous snapshot
-   */
-  public final long delta;
-  /**
-   * Exceptions / second
+   * Current exception rate.
+   * Exception / second
    */
   public final double velocity;
   /**
-   * Dougtime
+   * Change in velocity.
+   * Exceptions / second / second
+   */
+  public final double acceleration;
+  /**
+   * Dougtime.
    */
   public final long timestamp;
 
-  public Trend(long count, long delta, double velocity, long timestamp) {
+  public Trend(long count, double velocity, double acceleration, long timestamp) {
     this.count = count;
-    this.delta = delta;
     this.velocity = velocity;
+    this.acceleration = acceleration;
     this.timestamp = timestamp;
   }
 
@@ -31,12 +33,12 @@ public class Trend {
   }
 
   public static Trend create(long count, Trend previous) {
-    long delta = count - previous.count;
     long timestamp = System.currentTimeMillis();
-    long timediff = timestamp - previous.timestamp;
-    double velocity = delta - previous.delta;
-    velocity = velocity / (timediff / 1000.0);
-    Trend newTrend = new Trend(count, delta, velocity, timestamp);
+    double timediff = (timestamp - previous.timestamp) / 1000.0;
+    double velocity = (count - previous.count) / timediff;
+    double acceleration = velocity - previous.velocity;
+    acceleration = acceleration / timediff ;
+    Trend newTrend = new Trend(count, velocity, acceleration, timestamp);
     return newTrend;
   }
 }
