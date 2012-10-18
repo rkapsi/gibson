@@ -1,4 +1,5 @@
 @(items: org.ardverk.gibson.dashboard.TypeItems)
+@import views.html.trendrow
 @main() {
 <div class="container">          
   @if(items.isEmpty()) {
@@ -17,15 +18,7 @@
       </thead>
       <tbody>
         @for(element <- items.elements) {
-          @if(element.trend.velocity < 0) {
-         <tr class="success">
-          } else {
-            @if(element.trend.velocity == 0) {
-              <tr class="warning">
-            } else {
-              <tr class="error">
-            }
-          }
+          @trendrow(element.trend.direction)
             <td>@element.count</td>
             <td>@element.trend.delta</td>
             <td>@element.trend.velocity</td>

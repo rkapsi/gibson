@@ -12,6 +12,10 @@ public class Trend {
     this.velocity = velocity;
   }
 
+  public int direction() {
+    return (int) Math.signum(velocity);
+  }
+
   public static Trend create(long count, Trend previous) {
     long delta = count - previous.count;
     long velocity = delta - previous.delta;

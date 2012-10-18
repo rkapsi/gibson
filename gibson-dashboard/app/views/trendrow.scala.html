@@ -1,0 +1,17 @@
+@(direction: Int)
+
+@direction match {
+  case -1 => {
+    <tr class="success">
+  }
+
+  case 0 => {
+    <tr class="warning">
+  }
+
+  case 1 => {
+    <tr class="error">
+  }
+}
+
+
