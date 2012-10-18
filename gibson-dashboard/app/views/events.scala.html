@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       @for(element <- items.elements) {
-          @trendrow(element.trend.direction)
+          @trendrow(element.trend)
           <td>@element.count</td>
             <td>@element.trend.delta</td>
             <td>@element.trend.velocity</td>

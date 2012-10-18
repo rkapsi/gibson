@@ -1,17 +1,11 @@
-@(direction: Int)
+@(trend: org.ardverk.gibson.dashboard.Trend)
 
-@direction match {
-  case -1 => {
+@if(trend.direction == 1) {
+  <tr class="error">
+} else {
+  @if(trend.direction == 0 && trend.delta == 0) {
     <tr class="success">
-  }
-
-  case 0 => {
+  } else {
     <tr class="warning">
   }
-
-  case 1 => {
-    <tr class="error">
-  }
 }
-
-
