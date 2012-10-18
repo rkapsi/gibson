@@ -9,4 +9,5 @@ public interface TrendService {
 
   public Trend getTrendForEvent(Event event);
   public Trend getTrendForType(String type);
+  public void clear();
 }
