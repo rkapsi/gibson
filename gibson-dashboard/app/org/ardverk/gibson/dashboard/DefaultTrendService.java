@@ -62,7 +62,7 @@ public class DefaultTrendService implements TrendService {
     } else {
       try {
         long count = countGetter.call();
-        trend = new Trend(count, count);
+        trend = new Trend(count, count, count);
         trendMap.put(key, trend);
         counterMap.put(key, countGetter);
       } catch (Exception e) {
@@ -78,11 +78,9 @@ public class DefaultTrendService implements TrendService {
     for (Map.Entry<String, Trend> e : trendMap.entrySet()) {
       String key = e.getKey();
       Trend trend = e.getValue();
-
       try {
         long count = counterMap.get(key).call();
-        long velocity = count - trend.count;
-        Trend newTrend = new Trend(count, velocity);
+        Trend newTrend = Trend.create(count, trend);
         trendMap.put(key, newTrend);
       } catch (Exception ex) {
         throw new RuntimeException(ex);
