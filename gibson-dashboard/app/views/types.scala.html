@@ -17,7 +17,15 @@
       </thead>
       <tbody>
         @for(element <- items.elements) {
-          <tr>
+          @if(element.trend.velocity < 0) {
+         <tr class="success">
+          } else {
+            @if(element.trend.velocity == 0) {
+              <tr class="warning">
+            } else {
+              <tr class="error">
+            }
+          }
             <td>@element.count</td>
             <td>@element.trend.delta</td>
             <td>@element.trend.velocity</td>
