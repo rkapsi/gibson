@@ -22,8 +22,8 @@
         <td>@item.trend.delta</td>
       </tr>
       @trendrow(item.trend)
-        <td>Velocity</td>
-        <td>@item.trend.velocity</td>
+        <td>Velocity (e/s)</td>
+        <td>@("%.2f".format(item.trend.velocity))</td>
       </tr>
       @if(!item.getHostnames().isEmpty()) {
       <tr>
