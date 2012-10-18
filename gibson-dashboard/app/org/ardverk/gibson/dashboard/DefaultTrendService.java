@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class DefaultTrendService implements TrendService {
 
-  private static final long TREND_FREQUENCY = 5;
+  private static final long TREND_FREQUENCY = 15;
   private static final TimeUnit TREND_TIMEUNIT = TimeUnit.SECONDS;
 
   private final Map<String, Callable<Long>> counterMap = new HashMap<>();
