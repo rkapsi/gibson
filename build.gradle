@@ -6,6 +6,7 @@ allprojects {
   apply plugin: 'idea'
 
   sourceCompatibility = 1.6
+  targetCompatibility = 1.6
 
   group = 'org.ardverk.gibson'
   version = '0.2.6'
