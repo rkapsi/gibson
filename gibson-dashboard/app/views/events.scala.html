@@ -9,8 +9,8 @@
   <table class="table table-bordered">
     <thead>
       <th>#</th>
-      <th>Delta</th>
       <th>Velocity (e/s)</th>
+      <th>Acceleration (e/s/s)</th>
       <th>Level</th>
       <th>Logger</th>
       <th>Message</th>
@@ -20,8 +20,8 @@
       @for(element <- items.elements) {
           @trendrow(element.trend)
           <td>@element.count</td>
-            <td>@element.trend.delta</td>
             <td>@("%.2f".format(element.trend.velocity))</td>
+            <td>@("%.2f".format(element.trend.acceleration))</td>
           @defining(routes.Event.show(items.typeName, element.event.getSignature())) { href =>
             <td><a href="@href">@element.event.getLevel()</a></td>
             <td><a href="@href">@element.event.getLogger()</a></td>
