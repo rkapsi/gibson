@@ -17,8 +17,8 @@ public class DefaultTrendService implements TrendService {
   private static final long TREND_FREQUENCY = 15;
   private static final TimeUnit TREND_TIMEUNIT = TimeUnit.SECONDS;
 
-  private final Map<String, Callable<Long>> counterMap = new HashMap<>();
-  private final Map<String, Trend> trendMap = new HashMap<>();
+  private final Map<String, Callable<Long>> counterMap = new HashMap<String, Callable<Long>>();
+  private final Map<String, Trend> trendMap = new HashMap<String, Trend>();
 
   private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 

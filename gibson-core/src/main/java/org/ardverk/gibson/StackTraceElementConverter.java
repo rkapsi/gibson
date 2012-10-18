@@ -63,7 +63,7 @@ class StackTraceElementConverter extends TypeConverter implements SimpleValueCon
     
     StackTraceElement element = (StackTraceElement)value;
     
-    Map<String, Object> map = new HashMap<>(4, 1.0f);
+    Map<String, Object> map = new HashMap<String, Object>(4, 1.0f);
     map.put("class", element.getClassName());
     map.put("method", element.getMethodName());
     map.put("file", element.getFileName());

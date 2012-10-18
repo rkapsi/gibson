@@ -92,7 +92,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     if (markers != null) {
       String[] tokens = markers.split(",");
       
-      Set<String> dst = new HashSet<>();
+      Set<String> dst = new HashSet<String>();
       for (String token : tokens) {
         if ((token = StringUtils.trimToNull(token)) != null) {
           dst.add(token);
