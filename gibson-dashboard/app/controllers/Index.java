@@ -16,14 +16,13 @@
 
 package controllers;
 
-import static org.ardverk.gibson.dashboard.Context.injector;
-
 import org.ardverk.gibson.dashboard.EventService;
 import org.ardverk.gibson.dashboard.TypeItems;
-
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.types;
+
+import static org.ardverk.gibson.dashboard.Context.injector;
 
 public class Index extends Controller {
   

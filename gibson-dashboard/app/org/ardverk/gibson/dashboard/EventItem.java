@@ -16,13 +16,12 @@
 
 package org.ardverk.gibson.dashboard;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Event;
-
 import play.data.validation.Constraints.Required;
+
+import java.util.Collections;
+import java.util.List;
 
 public class EventItem extends Item {
   
@@ -33,19 +32,22 @@ public class EventItem extends Item {
   
   @Required
   public final String exception;
+
+  public final Trend trend;
   
-  public EventItem(Event event, long count) {
-    this(event, wrap(event), count);
+  public EventItem(Event event, Trend trend) {
+    this(event, wrap(event), trend);
   }
   
-  public EventItem(Event event, List<String> hostnames, long count) {
-    super(count);
+  public EventItem(Event event, List<String> hostnames, Trend trend) {
+    super(trend.count);
     
     this.event = event;
     this.hostnames = hostnames;
     
     Condition condition = event.getCondition();
     this.exception = condition.getMessage();
+    this.trend = trend;
   }
   
   public List<String> getKeywords(int limit) {
