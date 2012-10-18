@@ -10,7 +10,7 @@
     <thead>
       <th>#</th>
       <th>Delta</th>
-      <th>Velocity</th>
+      <th>Velocity (e/s)</th>
       <th>Level</th>
       <th>Logger</th>
       <th>Message</th>
@@ -21,7 +21,7 @@
           @trendrow(element.trend)
           <td>@element.count</td>
             <td>@element.trend.delta</td>
-            <td>@element.trend.velocity</td>
+            <td>@("%.2f".format(element.trend.velocity))</td>
           @defining(routes.Event.show(items.typeName, element.event.getSignature())) { href =>
             <td><a href="@href">@element.event.getLevel()</a></td>
             <td><a href="@href">@element.event.getLogger()</a></td>

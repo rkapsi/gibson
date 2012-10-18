@@ -68,7 +68,7 @@ public class DefaultTrendService implements TrendService {
     } else {
       try {
         long count = countGetter.call();
-        trend = new Trend(count, count, count);
+        trend = new Trend(count, count, count, System.currentTimeMillis());
         trendMap.put(key, trend);
         counterMap.put(key, countGetter);
       } catch (Exception e) {

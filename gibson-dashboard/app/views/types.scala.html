@@ -13,7 +13,7 @@
       <thead>
         <th>#</th>
         <th>Delta</th>
-        <th>Velocity</th>
+        <th>Velocity (e/s)</th>
         <th>Type</th>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
           @trendrow(element.trend)
             <td>@element.count</td>
             <td>@element.trend.delta</td>
-            <td>@element.trend.velocity</td>
+            <td>@("%.2f".format(element.trend.velocity))</td>
             <td><a href="@routes.Events.show(element.typeName)">@element.typeName</a></td>
           </tr>
         }
