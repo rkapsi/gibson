@@ -16,15 +16,14 @@
 
 package controllers;
 
-import static controllers.Login.isAuthenticated;
-import static org.ardverk.gibson.dashboard.Context.injector;
-
 import org.ardverk.gibson.dashboard.EventService;
-
+import org.ardverk.gibson.dashboard.TrendService;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.admin;
-import views.html.types;
+
+import static controllers.Login.isAuthenticated;
+import static org.ardverk.gibson.dashboard.Context.injector;
 
 public class Admin extends Controller {
 
@@ -43,6 +42,8 @@ public class Admin extends Controller {
     
     EventService service = injector().getInstance(EventService.class);
     service.drop();
+    TrendService trendService = injector().getInstance(TrendService.class);
+    trendService.clear();
     return redirect("/");
   }
 }

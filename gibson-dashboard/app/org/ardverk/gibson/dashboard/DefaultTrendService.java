@@ -55,6 +55,12 @@ public class DefaultTrendService implements TrendService {
     });
   }
 
+  @Override
+  public synchronized void clear() {
+    trendMap.clear();
+    counterMap.clear();
+  }
+
   private synchronized Trend getTrendInfo(String key, Callable<Long> countGetter) {
     Trend trend = null;
     if (trendMap.containsKey(key)) {
