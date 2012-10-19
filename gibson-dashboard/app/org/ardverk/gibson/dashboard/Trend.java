@@ -29,7 +29,7 @@ public class Trend {
   }
 
   public int direction() {
-    return (int) Math.signum(velocity);
+    return (int) Math.signum(acceleration);
   }
 
   public static Trend create(long count, Trend previous) {
