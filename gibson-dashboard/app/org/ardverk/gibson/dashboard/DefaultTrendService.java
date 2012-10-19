@@ -1,11 +1,12 @@
 package org.ardverk.gibson.dashboard;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ardverk.gibson.Event;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -61,16 +62,21 @@ public class DefaultTrendService implements TrendService {
     counterMap.clear();
   }
 
-  private synchronized Trend getTrendInfo(String key, Callable<Long> countGetter) {
+  private Trend getTrendInfo(String key, Callable<Long> countGetter) {
     Trend trend = null;
-    if (trendMap.containsKey(key)) {
-      trend = trendMap.get(key);
-    } else {
+    synchronized (this) {
+      if (trendMap.containsKey(key)) {
+        trend = trendMap.get(key);
+      }
+    }
+    if (trend == null) {
       try {
         long count = countGetter.call();
         trend = new Trend(count, count, count, System.currentTimeMillis());
-        trendMap.put(key, trend);
-        counterMap.put(key, countGetter);
+        synchronized (this) {
+          trendMap.put(key, trend);
+          counterMap.put(key, countGetter);
+        }
       } catch (Exception e) {
         // TODO better way to handle this?
         throw new RuntimeException(e);
@@ -80,14 +86,28 @@ public class DefaultTrendService implements TrendService {
     return trend;
   }
 
-  private synchronized void updateTrends() {
-    for (Map.Entry<String, Trend> e : trendMap.entrySet()) {
-      String key = e.getKey();
-      Trend trend = e.getValue();
+  private void updateTrends() {
+    List<Pair<String, Trend>> trends = new ArrayList<Pair<String, Trend>>();
+    synchronized (this) {
+      for (Map.Entry<String, Trend> e : trendMap.entrySet()) {
+        trends.add(new ImmutablePair<String, Trend>(e.getKey(), e.getValue()));
+      }
+    }
+    for (Pair<String, Trend> p : trends) {
+      String key = p.getKey();
+      Trend trend = p.getValue();
       try {
-        long count = counterMap.get(key).call();
-        Trend newTrend = Trend.create(count, trend);
-        trendMap.put(key, newTrend);
+        Callable<Long> counter;
+        synchronized (this) {
+          counter = counterMap.get(key);
+        }
+        if (counter != null) {
+          long count = counter.call();
+          Trend newTrend = Trend.create(count, trend);
+          synchronized (this) {
+            trendMap.put(key, newTrend);
+          }
+        }
       } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
