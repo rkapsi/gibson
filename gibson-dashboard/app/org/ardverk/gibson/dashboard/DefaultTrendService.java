@@ -63,11 +63,9 @@ public class DefaultTrendService implements TrendService {
   }
 
   private Trend getTrendInfo(String key, Callable<Long> countGetter) {
-    Trend trend = null;
+    Trend trend;
     synchronized (this) {
-      if (trendMap.containsKey(key)) {
-        trend = trendMap.get(key);
-      }
+      trend = trendMap.get(key);
     }
     if (trend == null) {
       try {
