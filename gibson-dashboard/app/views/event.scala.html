@@ -18,11 +18,11 @@
         <td>@item.count</td>
       </tr>
       <tr>
-        <td>Velocity (e/s)</td>
+        <td>Velocity (e/m)</td>
         <td>@("%.2f".format(item.trend.velocity))</td>
       </tr>
       @trendrow(item.trend)
-        <td>Acceleration (e/s/s)</td>
+        <td>Acceleration (e/m/m)</td>
         <td>@("%.2f".format(item.trend.acceleration))</td>
       </tr>
       @if(!item.getHostnames().isEmpty()) {
