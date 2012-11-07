@@ -5,7 +5,7 @@ import PlayProject._
 object ApplicationBuild extends Build {
 
     val appName = "gibson-dashboard"
-    val appVersion = "0.2.7"
+    val appVersion = "0.2.8"
     
     val appDependencies = Seq(
       "org.ardverk.gibson" % "gibson-core" % appVersion,

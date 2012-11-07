@@ -9,7 +9,7 @@ allprojects {
   targetCompatibility = 1.6
 
   group = 'org.ardverk.gibson'
-  version = '0.2.7'
+  version = '0.2.8'
 
   repositories {
     mavenCentral()
