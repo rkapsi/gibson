@@ -8,12 +8,12 @@ public class Trend {
   public final long count;
   /**
    * Current exception rate.
-   * Exception / second
+   * Exception / minute
    */
   public final double velocity;
   /**
    * Change in velocity.
-   * Exceptions / second / second
+   * Exceptions / minute / minute
    */
   public final double acceleration;
   /**
@@ -34,10 +34,11 @@ public class Trend {
 
   public static Trend create(long count, Trend previous) {
     long timestamp = System.currentTimeMillis();
-    double timediff = (timestamp - previous.timestamp) / 1000.0;
+    // number of minutes between now and the previous timestamp
+    double timediff = ((timestamp - previous.timestamp) / 1000.0) / 60.0;
     double velocity = (count - previous.count) / timediff;
     double acceleration = velocity - previous.velocity;
-    acceleration = acceleration / timediff ;
+    acceleration = acceleration / timediff;
     Trend newTrend = new Trend(count, velocity, acceleration, timestamp);
     return newTrend;
   }

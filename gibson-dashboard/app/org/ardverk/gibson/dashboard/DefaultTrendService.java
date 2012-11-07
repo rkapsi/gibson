@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @Singleton
@@ -26,9 +27,11 @@ public class DefaultTrendService implements TrendService {
   @Inject
   private EventDAO eventDAO;
 
+  private volatile ScheduledFuture<?> scheduledFuture;
+
   @Inject
   public void init() {
-    executorService.scheduleAtFixedRate(new Runnable() {
+    scheduledFuture = executorService.scheduleAtFixedRate(new Runnable() {
       @Override
       public void run() {
         updateTrends();
@@ -58,7 +61,12 @@ public class DefaultTrendService implements TrendService {
 
   @Override
   public void clear() {
+    if (scheduledFuture != null) {
+      scheduledFuture.cancel(true);
+    }
     trendMap.clear();
+    // restart executor service
+    init();
   }
 
   private Trend getTrendInfo(String key, Callable<Long> countGetter) {
