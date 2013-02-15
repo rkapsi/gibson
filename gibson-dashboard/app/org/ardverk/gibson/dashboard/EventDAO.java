@@ -16,22 +16,22 @@
 
 package org.ardverk.gibson.dashboard;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import org.ardverk.gibson.Event;
-
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
 import com.google.code.morphia.query.Query;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.ardverk.gibson.Event;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Singleton
 class EventDAO extends BasicDAO<Event, Event> {
@@ -113,7 +113,36 @@ class EventDAO extends BasicDAO<Event, Event> {
   public long getEventCount(String signature) {
     return createQuery().filter("signature = ", signature).countAll();
   }
-  
+
+  public Date getTypeNameFirstOccurrence(String typeName) {
+    return getTypeNameCreationTime(typeName, true);
+  }
+
+  public Date getTypeNameLastOccurrence(String typeName) {
+    return getTypeNameCreationTime(typeName, false);
+  }
+
+  public Date getEventFirstOccurrence(String signature) {
+    return getEventCreationTime(signature, false);
+  }
+
+  public Date getEventLastOccurrence(String signature) {
+    return getEventCreationTime(signature, true);
+  }
+
+  private Date getEventCreationTime(String signature, boolean descending) {
+    return getEventCreationTimeForQuery(createQuery().filter("signature =", signature), descending);
+  }
+
+  private Date getTypeNameCreationTime(String typeName, boolean descending) {
+    return getEventCreationTimeForQuery(createQuery().filter("condition.typeName =", typeName), descending);
+  }
+
+  private Date getEventCreationTimeForQuery(Query<Event> query, boolean descending) {
+    String order = descending ? "-creationTime" : "creationTime";
+    return query.order(order).limit(1).get().getCreationTime();
+  }
+
   /**
    * Returns a list of distinct (!) signatures of all events that have these keywords.
    */
