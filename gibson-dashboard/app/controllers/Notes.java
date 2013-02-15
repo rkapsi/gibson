@@ -16,22 +16,22 @@
 
 package controllers;
 
-import static org.ardverk.gibson.dashboard.Context.injector;
-
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.ardverk.gibson.dashboard.Note;
 import org.ardverk.gibson.dashboard.NoteService;
-
 import play.data.DynamicForm;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import java.util.Date;
+
+import static org.ardverk.gibson.dashboard.Context.injector;
 
 public class Notes extends Controller {
   
   public static Result save() {
-    DynamicForm form = form().bindFromRequest();
+    DynamicForm form = Form.form().bindFromRequest();
     
     String signature = form.get("signature");
     String url = form.get("url");
