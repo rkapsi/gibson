@@ -6,8 +6,8 @@ import org.ardverk.gibson.Event;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,7 +20,8 @@ public class DefaultTrendService implements TrendService {
   private static final long TREND_FREQUENCY = 15;
   private static final TimeUnit TREND_TIMEUNIT = TimeUnit.SECONDS;
 
-  private final Map<String, Pair<Trend, Callable<Long>>> trendMap = new ConcurrentHashMap<String, Pair<Trend, Callable<Long>>>();
+  private final Map<String, Pair<Trend, TrendBuilder>> trendMap =
+      new ConcurrentHashMap<String, Pair<Trend, TrendBuilder>>();
 
   private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
@@ -41,20 +42,38 @@ public class DefaultTrendService implements TrendService {
 
   @Override
   public Trend getTrendForEvent(final Event event) {
-    return getTrendInfo(event.getSignature(), new Callable<Long>() {
+    return getTrendInfo(event.getSignature(), new TrendBuilder() {
       @Override
-      public Long call() throws Exception {
-        return eventDAO.getEventCount(event.getSignature());
+      public Trend build(Trend previous) {
+        long count = eventDAO.getEventCount(event.getSignature());
+        Date lastOccurrence = eventDAO.getEventLastOccurrence(event.getSignature());
+        Trend trend;
+        if (previous != null) {
+          trend = Trend.create(count, lastOccurrence, previous);
+        } else {
+          Date firstOccurrence = eventDAO.getEventFirstOccurrence(event.getSignature());
+          trend = new Trend(count, count, count, System.currentTimeMillis(), firstOccurrence, lastOccurrence);
+        }
+        return trend;
       }
     });
   }
 
   @Override
   public Trend getTrendForType(final String type) {
-    return getTrendInfo(type, new Callable<Long>() {
+    return getTrendInfo(type, new TrendBuilder() {
       @Override
-      public Long call() throws Exception {
-        return eventDAO.getTypeNameCount(type);
+      public Trend build(Trend previous) {
+        long count = eventDAO.getTypeNameCount(type);
+        Date lastOccurrence = eventDAO.getTypeNameLastOccurrence(type);
+        Trend trend;
+        if (previous != null) {
+          trend = Trend.create(count, lastOccurrence, previous);
+        } else {
+          Date firstOccurrence = eventDAO.getTypeNameFirstOccurrence(type);
+          trend = new Trend(count, count, count, System.currentTimeMillis(), firstOccurrence, lastOccurrence);
+        }
+        return trend;
       }
     });
   }
@@ -69,13 +88,16 @@ public class DefaultTrendService implements TrendService {
     init();
   }
 
-  private Trend getTrendInfo(String key, Callable<Long> countGetter) {
-    Pair<Trend, Callable<Long>> pair = trendMap.get(key);
+  private interface TrendBuilder {
+    public Trend build(Trend previous);
+  }
+
+  private Trend getTrendInfo(String key, TrendBuilder trendBuilder) {
+    Pair<Trend, TrendBuilder> pair = trendMap.get(key);
     if (pair == null) {
       try {
-        long count = countGetter.call();
-        Trend trend = new Trend(count, count, count, System.currentTimeMillis());
-        pair = new ImmutablePair<Trend, Callable<Long>>(trend, countGetter);
+        Trend trend = trendBuilder.build(null);
+        pair = new ImmutablePair<Trend, TrendBuilder>(trend, trendBuilder);
         trendMap.put(key, pair);
       } catch (Exception e) {
         // TODO better way to handle this?
@@ -87,16 +109,13 @@ public class DefaultTrendService implements TrendService {
   }
 
   private void updateTrends() {
-    for (Map.Entry<String, Pair<Trend, Callable<Long>>> e : trendMap.entrySet()) {
+    for (Map.Entry<String, Pair<Trend, TrendBuilder>> e : trendMap.entrySet()) {
       String key = e.getKey();
       Trend trend = e.getValue().getLeft();
       try {
-        Callable<Long> counter = e.getValue().getRight();
-        if (counter != null) {
-          long count = counter.call();
-          Trend newTrend = Trend.create(count, trend);
-          trendMap.put(key, new ImmutablePair<Trend, Callable<Long>>(newTrend, counter));
-        }
+        TrendBuilder trendBuilder = e.getValue().getRight();
+        Trend newTrend = trendBuilder.build(trend);
+        trendMap.put(key, new ImmutablePair<Trend, TrendBuilder>(newTrend, trendBuilder));
       } catch (Exception ex) {
         throw new RuntimeException(ex);
       }

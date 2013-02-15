@@ -16,12 +16,14 @@
 
 package controllers;
 
-import static org.ardverk.gibson.dashboard.Context.injector;
 import play.Configuration;
 import play.data.DynamicForm;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.login;
+
+import static org.ardverk.gibson.dashboard.Context.injector;
 
 public class Login extends Controller {
 
@@ -44,8 +46,8 @@ public class Login extends Controller {
     if (isAuthenticated()) {
       return redirect("/");
     }
-    
-    DynamicForm form = form().bindFromRequest();
+
+    DynamicForm form = Form.form().bindFromRequest();
     String username = form.get("username");
     String password = form.get("password");
     
