@@ -18,7 +18,7 @@ package org.ardverk.gibson.dashboard;
 
 import java.util.Date;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Entity;

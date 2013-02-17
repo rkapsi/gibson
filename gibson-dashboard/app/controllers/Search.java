@@ -18,7 +18,7 @@ package controllers;
 
 import static org.ardverk.gibson.dashboard.Context.injector;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ardverk.gibson.dashboard.EventService;
 import org.ardverk.gibson.dashboard.SearchItems;
 

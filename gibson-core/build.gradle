@@ -7,7 +7,7 @@ project.ext {
 dependencies {
   compile "org.slf4j:slf4j-api:${ext.slf4j}"
   
-  compile "commons-lang:commons-lang:${ext.commonslang}"
+  compile "org.apache.commons:commons-lang3:${ext.commonslang}"
   compile "commons-codec:commons-codec:${ext.commonscodec}"
   compile "commons-io:commons-io:${ext.commonsio}"
   

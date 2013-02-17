@@ -5,11 +5,11 @@ allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
-  sourceCompatibility = 1.6
-  targetCompatibility = 1.6
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
 
   group = 'org.ardverk.gibson'
-  version = '0.2.8'
+  version = '0.3'
 
   repositories {
     mavenCentral()
@@ -47,9 +47,9 @@ allprojects {
   
   project.ext {
     slf4j = "1.6.6"
-    commonsio = "2.3"
-    commonscodec = "1.6"
-    commonslang = "2.6"
+    commonsio = "2.4"
+    commonscodec = "1.7"
+    commonslang = "3.1"
     junit = "4.10"
   }
 }

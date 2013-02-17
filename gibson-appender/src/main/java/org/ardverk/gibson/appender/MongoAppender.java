@@ -19,7 +19,7 @@ package org.ardverk.gibson.appender;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.ardverk.gibson.Console;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.Gibson;
