@@ -7,6 +7,7 @@ import org.ardverk.gibson.Event;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -27,6 +28,9 @@ public class DefaultTrendService implements TrendService {
 
   @Inject
   private EventDAO eventDAO;
+
+  @Inject
+  private EventService eventService;
 
   private volatile ScheduledFuture<?> scheduledFuture;
 
@@ -109,13 +113,20 @@ public class DefaultTrendService implements TrendService {
   }
 
   private void updateTrends() {
+    // eagerly build trend data for new typeNames and event signatures
+    TypeItems typeItems = eventService.getTypeItems();
+    for (TypeItem item : typeItems.elements) {
+      eventService.getEventItems(item.typeName);
+    }
+
+    // calculate new trend data for all known objects
     for (Map.Entry<String, Pair<Trend, TrendBuilder>> e : trendMap.entrySet()) {
       String key = e.getKey();
       Trend trend = e.getValue().getLeft();
       try {
         TrendBuilder trendBuilder = e.getValue().getRight();
         Trend newTrend = trendBuilder.build(trend);
-        trendMap.put(key, new ImmutablePair<Trend, TrendBuilder>(newTrend, trendBuilder));
+        trendMap.put(key, new ImmutablePair<>(newTrend, trendBuilder));
       } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
