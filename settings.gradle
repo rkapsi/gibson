@@ -1,1 +1,1 @@
-include 'gibson-core', 'gibson-appender'
+include 'gibson-core', 'gibson-appender', 'gibson-dashboard'
