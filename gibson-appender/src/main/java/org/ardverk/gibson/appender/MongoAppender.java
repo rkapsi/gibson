@@ -40,7 +40,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   public static final String TAG_PROPERTY = "gibson-tag";
   
-  public static final String UNINITIALIZED_TAG = MongoAppender.class.getName() + "UNINITIALIZED_TAG";
+  public static final String UNINITIALIZED_TAG = MongoAppender.class.getName() + ".UNINITIALIZED_TAG";
   
   private static final Console LOG = Console.getLogger(MongoAppender.class);
     
