@@ -125,7 +125,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     Marker marker = evt.getMarker();
     if (marker != null) {
       // Skip LoggingEvents that don't have a matching Marker
-      if (markers != null && markers.contains(marker.getName())) {
+      if (markers != null && !markers.contains(marker.getName())) {
         return;
       }
       
