@@ -38,11 +38,15 @@ import com.mongodb.MongoURI;
  */
 public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
-  private static final Console LOG = Console.getLogger(MongoAppender.class);
+  public static final String TAG_PROPERTY = "gibson-tag";
   
+  public static final String UNINITIALIZED_TAG = MongoAppender.class.getName() + "__gibson-uninitilized-tag__";
+  
+  private static final Console LOG = Console.getLogger(MongoAppender.class);
+    
   private volatile MongoURI uri = Gibson.URI;
   
-  private volatile String tag = null;
+  private volatile String tag = UNINITIALIZED_TAG;
   
   private volatile Transport transport = null;
   
@@ -87,10 +91,6 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   // Called from logback.xml
   public void setUri(String uri) {
     this.uri = new MongoURI(uri);
-  }
-  
-  public void setTag(String tag) {
-    this.tag = tag;
   }
   
   // Called from logback.xml
@@ -144,10 +144,22 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     Transport transport = this.transport;
     if (transport != null && transport.isConnected()) {
       
-      Event event = EventFactory.createEvent(evt, tag);
+      Event event = EventFactory.createEvent(evt, getTag());
       if (event != null) {
         transport.send(event);
       }
     }
+  }
+  
+  private String getTag() {
+    if (tag == UNINITIALIZED_TAG) {
+      synchronized (this) {
+        if (tag == UNINITIALIZED_TAG) {
+          tag = getContext().getProperty(TAG_PROPERTY);
+        }
+      }
+    }
+    
+    return tag;
   }
 }
