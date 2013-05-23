@@ -42,6 +42,8 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   private volatile MongoURI uri = Gibson.URI;
   
+  private volatile String tag = null;
+  
   private volatile Transport transport = null;
   
   private volatile Set<String> markers = null;
@@ -85,6 +87,10 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   // Called from logback.xml
   public void setUri(String uri) {
     this.uri = new MongoURI(uri);
+  }
+  
+  public void setTag(String tag) {
+    this.tag = tag;
   }
   
   // Called from logback.xml
@@ -138,7 +144,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
     Transport transport = this.transport;
     if (transport != null && transport.isConnected()) {
       
-      Event event = EventFactory.createEvent(evt);
+      Event event = EventFactory.createEvent(evt, tag);
       if (event != null) {
         transport.send(event);
       }
