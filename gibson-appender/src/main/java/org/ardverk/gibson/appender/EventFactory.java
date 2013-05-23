@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ardverk.gibson.Condition;
 import org.ardverk.gibson.Console;
 import org.ardverk.gibson.Event;
@@ -46,7 +47,7 @@ class EventFactory {
   
   private static String HOSTNAME = null;
   
-  public static Event createEvent(ILoggingEvent evt) {
+  public static Event createEvent(ILoggingEvent evt, String tag) {
     Event event = new Event();
     
     event.setId(ObjectId.get());
@@ -70,7 +71,14 @@ class EventFactory {
     }
     
     event.setSignature(EventUtils.signature(event));
-    event.setKeywords(new KeywordsList<String>(EventUtils.keywords(event)));
+    
+    Set<String> keywords = EventUtils.keywords(event);
+    
+    if (!StringUtils.isBlank(tag)) {
+      keywords.add(tag);
+    }
+    
+    event.setKeywords(new KeywordsList<String>(keywords));
     event.setHostname(getLocalhost());
     
     return event;
