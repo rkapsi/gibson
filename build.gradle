@@ -9,7 +9,7 @@ allprojects {
   targetCompatibility = 1.7
 
   group = 'org.ardverk.gibson'
-  version = '0.3'
+  version = '0.4'
 
   repositories {
     mavenCentral()
@@ -46,15 +46,15 @@ allprojects {
   }
   
   project.ext {
-    slf4j = "1.7.2"
-    commonsio = "2.4"
-    commonscodec = "1.7"
-    commonslang = "3.1"
-    junit = "4.10"
+    slf4j = '1.7.6'
+    commonsio = '2.4'
+    commonscodec = '1.9'
+    commonslang = '3.1'
+    junit = '4.10'
   }
 }
 
 dependencies {
-  compile project(":gibson-core")
-  compile project(":gibson-appender")
+  compile project(':gibson-core')
+  compile project(':gibson-appender')
 }

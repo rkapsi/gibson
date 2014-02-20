@@ -31,7 +31,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.core.AppenderBase;
 
-import com.mongodb.MongoURI;
+import com.mongodb.MongoClientURI;
 
 /**
  * The {@link MongoAppender} sends {@link Event}s to MongoDB.
@@ -44,7 +44,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   private static final Console LOG = Console.getLogger(MongoAppender.class);
     
-  private volatile MongoURI uri = Gibson.URI;
+  private volatile MongoClientURI uri = Gibson.URI;
   
   private volatile String tag = UNINITIALIZED_TAG;
   
@@ -90,7 +90,7 @@ public class MongoAppender extends AppenderBase<ILoggingEvent> {
   
   // Called from logback.xml
   public void setUri(String uri) {
-    this.uri = new MongoURI(uri);
+    this.uri = new MongoClientURI(uri);
   }
   
   // Called from logback.xml

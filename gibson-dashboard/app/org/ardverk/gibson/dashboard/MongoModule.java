@@ -27,11 +27,11 @@ import org.slf4j.LoggerFactory;
 
 import play.Configuration;
 
-import com.google.code.morphia.Datastore;
+import org.mongodb.morphia.Datastore;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.mongodb.Mongo;
-import com.mongodb.MongoURI;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 
 class MongoModule extends AbstractModule {
   
@@ -46,7 +46,7 @@ class MongoModule extends AbstractModule {
   @Provides @Singleton
   Datastore getDatastore(Configuration configuration) throws IOException {
     
-    MongoURI uri = parseURI(configuration.getString(URI_KEY), Gibson.URI);
+    MongoClientURI uri = parseURI(configuration.getString(URI_KEY), Gibson.URI);
     
     String database = uri.getDatabase();
     if (database == null) {
@@ -57,14 +57,14 @@ class MongoModule extends AbstractModule {
       LOG.info("Connecting: uri=" + uri);
     }
     
-    Mongo mongo = new Mongo(uri);
+    MongoClient mongo = new MongoClient(uri);
     DatastoreFactory factory = new DatastoreFactory(mongo);
     return factory.createDatastore(database);
   }
   
-  private static MongoURI parseURI(String uri, MongoURI defaultValue) {
+  private static MongoClientURI parseURI(String uri, MongoClientURI defaultValue) {
     if (uri != null) {
-      return new MongoURI(uri);
+      return new MongoClientURI(uri);
     }
     
     return defaultValue;

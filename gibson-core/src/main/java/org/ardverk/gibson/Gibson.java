@@ -19,6 +19,7 @@ package org.ardverk.gibson;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoURI;
 
 /**
@@ -34,7 +35,7 @@ public class Gibson {
   /**
    * The default {@link MongoURI}.
    */
-  public static final MongoURI URI = new MongoURI("mongodb://localhost/Gibson");
+  public static final MongoClientURI URI = new MongoClientURI("mongodb://localhost/Gibson");
   
   
   private Gibson() {}

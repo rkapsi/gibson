@@ -29,13 +29,14 @@ import org.ardverk.gibson.Console;
 import org.ardverk.gibson.DatastoreFactory;
 import org.ardverk.gibson.Event;
 import org.ardverk.gibson.Gibson;
+import org.mongodb.morphia.Datastore;
 
-import com.google.code.morphia.Datastore;
 import com.mongodb.DBPort;
 import com.mongodb.DBPortPool;
 import com.mongodb.DBTCPConnector;
 import com.mongodb.Mongo;
-import com.mongodb.MongoURI;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 
 /**
@@ -50,17 +51,17 @@ public class MongoTransport implements Transport {
   
   private List<Event> queue = new ArrayList<Event>();
   
-  private final MongoURI uri;
+  private final MongoClientURI uri;
   
   private boolean open = true;
   
   private boolean connected = false;
   
-  private Mongo mongo = null;
+  private MongoClient mongo = null;
   
   private Future<?> future = null;
   
-  public MongoTransport(MongoURI uri) {
+  public MongoTransport(MongoClientURI uri) {
     this.uri = uri;
   }
 
@@ -101,7 +102,7 @@ public class MongoTransport implements Transport {
       LOG.info(Gibson.MARKER, "Connecting to: " + uri);
     }
     
-    this.mongo = new Mongo(uri);
+    this.mongo = new MongoClient(uri);
     
     // [SIX-3989]: The Mongo driver and Morphia have really bad Exception handling. 
     // Things will not bubble up if it fails to connect. Attempt to connect manually

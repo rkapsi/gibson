@@ -16,10 +16,11 @@
 
 package org.ardverk.gibson;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Morphia;
-import com.google.code.morphia.converters.DefaultConverters;
-import com.google.code.morphia.mapping.Mapper;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.converters.DefaultConverters;
+import org.mongodb.morphia.mapping.Mapper;
+
 import com.mongodb.Mongo;
 
 /**
