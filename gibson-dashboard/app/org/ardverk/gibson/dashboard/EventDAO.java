@@ -16,9 +16,9 @@
 
 package org.ardverk.gibson.dashboard;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.dao.BasicDAO;
-import com.google.code.morphia.query.Query;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;

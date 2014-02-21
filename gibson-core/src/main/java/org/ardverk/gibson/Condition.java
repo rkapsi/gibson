@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.code.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Embedded;
 
 /**
  * A {@link Condition} is simply a JSON serializable version of a {@link Throwable}.

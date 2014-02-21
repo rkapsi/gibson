@@ -1,19 +1,19 @@
 
 project.ext {
-  morphia = "0.99"
-  mongo = "2.10.1"
+  morphia = '0.106'
+  mongo = '2.11.4'
 }
 
 dependencies {
-  compile "org.slf4j:slf4j-api:${ext.slf4j}"
+  compile "org.slf4j:slf4j-api:${project.slf4j}"
   
-  compile "org.apache.commons:commons-lang3:${ext.commonslang}"
-  compile "commons-codec:commons-codec:${ext.commonscodec}"
-  compile "commons-io:commons-io:${ext.commonsio}"
+  compile "org.apache.commons:commons-lang3:${project.commonslang}"
+  compile "commons-codec:commons-codec:${project.commonscodec}"
+  compile "commons-io:commons-io:${project.commonsio}"
   
-  compile "org.mongodb:mongo-java-driver:${ext.mongo}"
-  compile "com.google.code.morphia:morphia:${ext.morphia}"
-  compile "com.google.code.morphia:morphia-logging-slf4j:${ext.morphia}"
+  compile "org.mongodb:mongo-java-driver:${project.mongo}"
+  compile "org.mongodb.morphia:morphia:${project.morphia}"
+  compile "org.mongodb.morphia:morphia-logging-slf4j:${project.morphia}"
   
-  testCompile "junit:junit:${ext.junit}"
+  testCompile "junit:junit:${project.junit}"
 }
