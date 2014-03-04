@@ -1,5 +1,0 @@
-# [Gibson Dashboard](https://github.com/rkapsi/gibson)
-
-## Mongo DB
-
-The dashboard will connect by default to localhost and a database called Gibson but you may change it with `-Dgibson.mongo.uri="mongodb://localhost/Gibson"`

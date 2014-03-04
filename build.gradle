@@ -1,23 +1,29 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/public"}
+  }
+  dependencies {
+    classpath 'com.github.townsfolk:gradle-release:1.2'
+  }
+}
+
+apply plugin: 'release'
+
 allprojects {
   apply plugin: 'java'
   apply plugin: 'maven'
-  apply plugin: 'eclipse-wtp'
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
   sourceCompatibility = 1.7
   targetCompatibility = 1.7
 
-  group = 'org.ardverk.gibson'
-  version = '0.4'
+  group = 'com.squarespace.gibson'
 
   repositories {
     mavenCentral()
     mavenLocal()
-    
-    maven {
-      url "http://morphia.googlecode.com/svn/mavenrepo"
-    }
   }
 
   configurations { 
@@ -25,36 +31,43 @@ allprojects {
     deployerJars
   }
   
-  dependencies {
-    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
-  }
-  
-  if (System.properties['ardverk.key']) {
-    uploadArchives {
-      repositories.mavenDeployer {
-        name = 'sshDeployer' // optional
-        configuration = configurations.deployerJars
-        repository(url: "scp://mvn.ardverk.org/repository/release") {
-          authentication(
-            userName: System.properties['ardverk.username'],
-            privateKey: new File(System.properties['ardverk.key']).absolutePath,
-            passphrase: System.properties['ardverk.passphrase']
-          )
-        }
-      }
-    }
+  test {
+    useTestNG()
   }
   
   project.ext {
-    slf4j = '1.7.6'
-    commonsio = '2.4'
-    commonscodec = '1.9'
-    commonslang = '3.1'
-    junit = '4.10'
   }
 }
 
 dependencies {
-  compile project(':gibson-core')
-  compile project(':gibson-appender')
+  compile 'org.slf4j:slf4j-api:1.7.6'
+  compile 'ch.qos.logback:logback-classic:1.1.1'
+  
+  compile 'org.apache.commons:commons-lang3:3.2.1'
+  compile 'commons-codec:commons-codec:1.9'
+  compile 'commons-io:commons-io:2.4'
 }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+  
+artifacts {
+  archives sourcesJar
+}
+
+//uploadArchives {
+//  repositories {
+//    mavenDeployer {
+//      repository(url: project.releaseRepositoryUrl)
+//      snapshotRepository(url: project.snapshotRepositoryUrl)
+//    }
+//  }
+//}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.6'
+}
+
+createReleaseTag.dependsOn ':uploadArchives'
