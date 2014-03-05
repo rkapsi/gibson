@@ -23,10 +23,11 @@ repositories {
   mavenCentral()
   mavenLocal()
 }
-  
+
 project.ext {
+  releaseRepositoryUrl = System.getenv('RELEASE_REPOSITORY_URL')
+  snapshotRepositoryUrl = System.getenv('SNAPSHOT_REPOSITORY_URL')
 }
-  
 
 dependencies {
   compile 'ch.qos.logback:logback-classic:1.1.1'
@@ -37,19 +38,19 @@ task sourcesJar(type: Jar, dependsOn: classes) {
   classifier = 'sources'
   from sourceSets.main.allSource
 }
-  
+
 artifacts {
   archives sourcesJar
 }
 
-//uploadArchives {
-//  repositories {
-//    mavenDeployer {
-//      repository(url: project.releaseRepositoryUrl)
-//      snapshotRepository(url: project.snapshotRepositoryUrl)
-//    }
-//  }
-//}
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: project.releaseRepositoryUrl)
+      snapshotRepository(url: project.snapshotRepositoryUrl)
+    }
+  }
+}
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.6'
