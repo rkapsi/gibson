@@ -6,8 +6,12 @@ earlier implementation that was a stand alone system with its own Dashboard.
 
   import com.squarespace.gibson.GibsonAppender
   
+  final PATTERN = "[signature=%X{Gibson.SIGNATURE}] %level %logger{0} - %msg%n"
+  
   appender("STDOUT", GibsonAppender) {
     appender(ConsoleAppender) {
-    
+      encoder(PatternLayoutEncoder) {
+        pattern = "${PATTERN}"
+      }
     }
   }
