@@ -34,7 +34,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.ThrowableProxy;
 
 /**
- * 
+ * An utility class for Gibson.
  */
 class GibsonUtils {
 

@@ -17,6 +17,8 @@
 
 package com.squarespace.gibson;
 
+import java.util.Iterator;
+
 import org.slf4j.MDC;
 import org.slf4j.Marker;
 
@@ -24,36 +26,38 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.spi.AppenderAttachable;
+import ch.qos.logback.core.spi.AppenderAttachableImpl;
 
 /**
  * The {@link GibsonAppender} calculates the unique "signature" of a log statement
  * with an {@link Exception} and makes it available in the {@value Gibson#SIGNATURE}
  * {@link MDC} property.
  */
-public class GibsonAppender extends AppenderBase<ILoggingEvent> {
+public class GibsonAppender extends AppenderBase<ILoggingEvent> 
+    implements AppenderAttachable<ILoggingEvent> {
   
   private static final Console LOG = Console.getLogger(GibsonAppender.class);
 
-  private volatile Appender<ILoggingEvent> appender = null;
+  private final AppenderAttachableImpl<ILoggingEvent> appenders = new AppenderAttachableImpl<>();
+  
+  private volatile int count = 0;
   
   @Override
   public void start() {
-    Appender<ILoggingEvent> appender = this.appender;
-    if (appender == null) {
-      addError("There are no Appender(s) registered.");
-      return;
+    for (Iterator<? extends Appender<?>> it 
+          = appenders.iteratorForAppenders(); it.hasNext(); ) {
+      it.next().start();
     }
     
-    appender.start();
     super.start();
   }
 
   @Override
   public void stop() {
-    Appender<ILoggingEvent> appender = this.appender;
-    if (appender != null) {
-      appender.stop();
-      this.appender = null;
+    for (Iterator<? extends Appender<?>> it 
+          = appenders.iteratorForAppenders(); it.hasNext(); ) {
+      it.next().stop();
     }
     
     super.stop();
@@ -61,28 +65,56 @@ public class GibsonAppender extends AppenderBase<ILoggingEvent> {
 
   @Override
   protected void append(ILoggingEvent evt) {
-    Appender<ILoggingEvent> appender = this.appender;
-    if (appender != null) {
-      
+    if (count >= 1) {
       try {
         process(evt);
       } catch (Exception err) {
         LOG.error(Gibson.MARKER, "Exception", err);
       }
-      
-      appender.doAppend(evt);
-    }
-  }
-  
-  public void addAppender(Appender<ILoggingEvent> appender) {
-    if (this.appender != null) {
-      addError("It is not possible to have more than one Appender");
-      return;
     }
     
-    this.appender = appender;
+    appenders.appendLoopOnAppenders(evt);
   }
   
+  @Override
+  public void addAppender(Appender<ILoggingEvent> appender) {
+    if (++count >= 2) {
+      addWarn("There is already an Appender registered.");
+    }
+    
+    appenders.addAppender(appender);
+  }
+
+  @Override
+  public Iterator<Appender<ILoggingEvent>> iteratorForAppenders() {
+    return appenders.iteratorForAppenders();
+  }
+
+  @Override
+  public Appender<ILoggingEvent> getAppender(String name) {
+    return appenders.getAppender(name);
+  }
+
+  @Override
+  public boolean isAttached(Appender<ILoggingEvent> appender) {
+    return appenders.isAttached(appender);
+  }
+
+  @Override
+  public void detachAndStopAllAppenders() {
+    appenders.detachAndStopAllAppenders();
+  }
+
+  @Override
+  public boolean detachAppender(Appender<ILoggingEvent> appender) {
+    return appenders.detachAppender(appender);
+  }
+
+  @Override
+  public boolean detachAppender(String name) {
+    return appenders.detachAppender(name);
+  }
+
   private void process(ILoggingEvent evt) {
     // Skip LoggingEvents that don't have a StackTrace
     IThrowableProxy proxy = evt.getThrowableProxy();
