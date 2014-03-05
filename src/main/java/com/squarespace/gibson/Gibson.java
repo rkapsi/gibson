@@ -17,6 +17,7 @@
 
 package com.squarespace.gibson;
 
+import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
@@ -26,9 +27,14 @@ import org.slf4j.MarkerFactory;
 public class Gibson {
 
   /**
+   * The name of the Gibson {@link MDC} signature.
+   */
+  public static final String SIGNATURE = "Gibson.SIGNATURE";
+  
+  /**
    * All logging events produced by Gibson itself must use this {@link Marker} to prevent recursions.
    */
-  public static final Marker MARKER = MarkerFactory.getMarker(Gibson.class.getName() + ".GIBSON");
+  static final Marker MARKER = MarkerFactory.getMarker(Gibson.class.getName() + ".GIBSON");
   
   private Gibson() {}
 }

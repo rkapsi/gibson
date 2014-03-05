@@ -17,70 +17,88 @@
 
 package com.squarespace.gibson;
 
+import org.slf4j.MDC;
+import org.slf4j.Marker;
+
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
+import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.AppenderBase;
 
 /**
- * 
+ * The {@link GibsonAppender} calculates the unique "signature" of a log statement
+ * with an {@link Exception} and makes it available in the {@value Gibson#SIGNATURE}
+ * {@link MDC} property.
  */
 public class GibsonAppender extends AppenderBase<ILoggingEvent> {
   
-  public static final String TAG_PROPERTY = "gibson-tag";
-  
-  public static final String UNINITIALIZED_TAG = GibsonAppender.class.getName() + ".UNINITIALIZED_TAG";
-  
   private static final Console LOG = Console.getLogger(GibsonAppender.class);
+
+  private volatile Appender<ILoggingEvent> appender = null;
   
   @Override
   public void start() {
+    Appender<ILoggingEvent> appender = this.appender;
+    if (appender == null) {
+      addError("There are no Appender(s) registered.");
+      return;
+    }
     
-    
+    appender.start();
     super.start();
   }
 
   @Override
   public void stop() {
+    Appender<ILoggingEvent> appender = this.appender;
+    if (appender != null) {
+      appender.stop();
+      this.appender = null;
+    }
+    
     super.stop();
-
   }
 
   @Override
   protected void append(ILoggingEvent evt) {
-    // Make sure we're never entering a recursion if there are any problems with the appender.
-    try {
-      //process(evt);
-    } catch (Exception err) {
-      LOG.error(Gibson.MARKER, "Exception", err);
+    Appender<ILoggingEvent> appender = this.appender;
+    if (appender != null) {
+      
+      try {
+        process(evt);
+      } catch (Exception err) {
+        LOG.error(Gibson.MARKER, "Exception", err);
+      }
+      
+      appender.doAppend(evt);
     }
   }
   
-  /*private void process(ILoggingEvent evt) {
+  public void addAppender(Appender<ILoggingEvent> appender) {
+    if (this.appender != null) {
+      addError("It is not possible to have more than one Appender");
+      return;
+    }
+    
+    this.appender = appender;
+  }
+  
+  private void process(ILoggingEvent evt) {
     // Skip LoggingEvents that don't have a StackTrace
     IThrowableProxy proxy = evt.getThrowableProxy();
     if (proxy == null) {
       return;
     }
     
+    // Skip LoggingEvents that originate from Gibson itself.
     Marker marker = evt.getMarker();
-    if (marker != null) {
-      // Skip LoggingEvents that don't have a matching Marker
-      if (markers != null && !markers.contains(marker.getName())) {
-        return;
-      }
-      
-      // Skip LoggingEvents that originate from Gibson itself.
-      if (marker.equals(Gibson.MARKER)) {
-        return;
-      }
+    if (marker != null && marker.equals(Gibson.MARKER)) {
+      return;
     }
     
-    Transport transport = this.transport;
-    if (transport != null && transport.isConnected()) {
-      
-      Event event = EventFactory.createEvent(evt, getTag());
-      if (event != null) {
-        transport.send(event);
-      }
+    String signature = GibsonUtils.signature(evt);
+    if (signature != null) {
+      MDC.put(Gibson.SIGNATURE, signature);
     }
-  }*/
+  }
 }

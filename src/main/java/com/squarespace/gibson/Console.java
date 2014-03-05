@@ -26,7 +26,7 @@ import org.slf4j.Marker;
 /**
  * A dummy logger to work around a chicken-egg problem. It outputs everything to {@link System#out} and {@link System#err}.
  */
-public class Console {
+class Console {
 
   public static Console getLogger(Class<?> clazz) {
     return new Console(clazz != null ? clazz.getSimpleName() : null);

@@ -36,9 +36,9 @@ import ch.qos.logback.classic.spi.ThrowableProxy;
 /**
  * 
  */
-public class EventUtils {
+class GibsonUtils {
 
-  private static final Logger LOG = LoggerFactory.getLogger(EventUtils.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GibsonUtils.class);
   
   /** Using MD5 for speed and it's sufficient for this use-case. */
   private static final String ALGORITHM = "MD5";
@@ -68,7 +68,7 @@ public class EventUtils {
     return Base64.encodeBase64URLSafeString(md.digest());
   }
   
-  private EventUtils() {}
+  private GibsonUtils() {}
   
   private static void append(MessageDigest md, Throwable throwable) {
     if (throwable != null) {
@@ -184,6 +184,7 @@ public class EventUtils {
     return new MessageDigestFactory() {
       @Override
       public MessageDigest newMessageDigest() {
+        // It is faster to clone a MessageDigest than to look it up via SPI.
         try {
           return (MessageDigest)md.clone();
         } catch (CloneNotSupportedException err) {
@@ -196,7 +197,7 @@ public class EventUtils {
   }
   
   /**
-   *
+   * A factory for {@link MessageDigest}s.
    */
   private static interface MessageDigestFactory {
     
